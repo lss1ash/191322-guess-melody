@@ -3,10 +3,17 @@
 
 (function () {
 
+  const KEYCODE = {
+    ARROW_LEFT: 37,
+    ARROW_RIGHT: 39
+  };
+
   const pageTemplates = document.getElementById(`templates`);
   const appDiv = document.querySelector(`.app`);
   const mainSection = appDiv.querySelector(`.main`);
   const pages = pageTemplates.content.children;
+
+  let currentPage = 0;
 
   const getPageByIndex = function (index) {
     if (index >= 0 && index < pages.length) {
@@ -16,13 +23,50 @@
   };
 
   const replacePage = function (pageContent) {
-    if (mainSection.children.length === 0) {
-      mainSection.appendChild(pageContent);
-    } else {
-      mainSection.replaceChild(mainSection.firstElementChild, pageContent);
+    if (pageContent) {
+      if (mainSection.children.length === 0) {
+        mainSection.appendChild(pageContent);
+      } else {
+        mainSection.replaceChild(pageContent, mainSection.firstElementChild);
+      }
     }
   };
 
-  replacePage(getPageByIndex(0));
+  const reducePageNum = () => {
+    if (currentPage > 0) {
+      currentPage--;
+      return true;
+    }
+    return false;
+  };
+
+  const increasePageNum = () => {
+    if (currentPage < pages.length - 1) {
+      currentPage++;
+      return true;
+    }
+    return false;
+  };
+
+  const keyDownHandler = function (e) {
+    if (e.altKey) {
+      switch (e.keyCode) {
+        case KEYCODE.ARROW_LEFT:
+          if (reducePageNum()) {
+            replacePage(getPageByIndex(currentPage));
+          }
+          break;
+        case KEYCODE.ARROW_RIGHT:
+          if (increasePageNum()) {
+            replacePage(getPageByIndex(currentPage));
+          }
+          break;
+      }
+    }
+  };
+
+  replacePage(getPageByIndex(currentPage));
+
+  document.addEventListener(`keydown`, keyDownHandler);
 
 }());
