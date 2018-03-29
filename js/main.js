@@ -1,7 +1,4 @@
-// 'use strict';
-// Линтер ругается на use strict
-
-(function () {
+(() => {
 
   const KEYCODE = {
     ARROW_LEFT: 37,
@@ -9,8 +6,7 @@
   };
 
   const pageTemplates = document.getElementById(`templates`);
-  const appDiv = document.querySelector(`.app`);
-  const mainSection = appDiv.querySelector(`.main`);
+  const mainSection = document.querySelector(`.app .main`);
   const pages = pageTemplates.content.children;
 
   let currentPage = 0;
@@ -68,5 +64,4 @@
   replacePage(getPageByIndex(currentPage));
 
   document.addEventListener(`keydown`, keyDownHandler);
-
-}());
+})();
