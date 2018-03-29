@@ -1,6 +1,6 @@
 (() => {
 
-  const KEYCODE = {
+  const KeyCode = {
     ARROW_LEFT: 37,
     ARROW_RIGHT: 39
   };
@@ -47,12 +47,12 @@
   const keyDownHandler = (e) => {
     if (e.altKey) {
       switch (e.keyCode) {
-        case KEYCODE.ARROW_LEFT:
+        case KeyCode.ARROW_LEFT:
           if (reducePageNum()) {
             replacePage(getPageByIndex(currentPage));
           }
           break;
-        case KEYCODE.ARROW_RIGHT:
+        case KeyCode.ARROW_RIGHT:
           if (increasePageNum()) {
             replacePage(getPageByIndex(currentPage));
           }
