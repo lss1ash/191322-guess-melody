@@ -11,14 +11,14 @@
 
   let currentPage = 0;
 
-  const getPageByIndex = function (index) {
+  const getPageByIndex = (index) => {
     if (index >= 0 && index < pages.length) {
       return pages[index].cloneNode(true);
     }
     return false;
   };
 
-  const replacePage = function (pageContent) {
+  const replacePage = (pageContent) => {
     if (pageContent) {
       if (mainSection.children.length === 0) {
         mainSection.appendChild(pageContent);
@@ -44,7 +44,7 @@
     return false;
   };
 
-  const keyDownHandler = function (e) {
+  const keyDownHandler = (e) => {
     if (e.altKey) {
       switch (e.keyCode) {
         case KEYCODE.ARROW_LEFT:
