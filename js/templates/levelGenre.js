@@ -1,4 +1,8 @@
 import getElementFromString from '../getElementFromString.js';
+import drawPage from '../drawPage.js';
+import resultTemplate from './result.js';
+import resultAttemptsLeftTemplate from './resultAttemptsLeft.js';
+import resultTimeLeftTemplate from './resultTimeLeft.js';
 
 // <!-- Игра на выбор жанра -->
 
@@ -80,9 +84,44 @@ const template = `<section class="main main--level main--level-genre">
         <label class="genre-answer-check" for="a-4"></label>
       </div>
 
-      <button class="genre-answer-send" type="submit">Ответить</button>
+      <button class="genre-answer-send" disabled type="submit">Ответить</button>
     </form>
   </div>
 </section>`;
 
-export default getElementFromString(template);
+const levelGenrePage = getElementFromString(template);
+const genreBoxes = levelGenrePage.querySelectorAll(`.genre-answer input[type=checkbox]`);
+const answer = levelGenrePage.querySelector(`.genre-answer-send`);
+
+const changeBoxCheckedHandler = () => {
+  let checked = false;
+  [...genreBoxes].forEach((checkbox) => {
+    checked = checked || checkbox.checked;
+  });
+  answer.disabled = !checked;
+};
+
+// Возвращает случайное число между min (включительно) и max (не включая max)
+const getRandomArbitrary = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
+
+const answerClickHandler = (e) => {
+  e.preventDefault();
+
+  answer.disabled = true;
+  [...genreBoxes].forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  switch (Math.floor(getRandomArbitrary(0, 3))) {
+    case 0: drawPage(resultTemplate); break;
+    case 1: drawPage(resultAttemptsLeftTemplate); break;
+    case 2: drawPage(resultTimeLeftTemplate); break;
+  }
+};
+
+[...genreBoxes].forEach((checkbox) => checkbox.addEventListener(`change`, changeBoxCheckedHandler));
+answer.addEventListener(`click`, answerClickHandler);
+
+export default levelGenrePage;

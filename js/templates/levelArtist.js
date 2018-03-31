@@ -1,4 +1,6 @@
 import getElementFromString from '../getElementFromString.js';
+import drawPage from '../drawPage.js';
+import levelGenreTemplate from './levelGenre.js';
 
 // <!-- Игра на выбор исполнителя -->
 
@@ -62,4 +64,12 @@ const template = `<section class="main main--level main--level-artist">
   </div>
 </section>`;
 
-export default getElementFromString(template);
+const levelArtistPage = getElementFromString(template);
+const answers = levelArtistPage.querySelectorAll(`.main-answer`);
+
+const answerClickHandler = () => {
+  drawPage(levelGenreTemplate);
+};
+[...answers].forEach((e) => e.addEventListener(`click`, answerClickHandler));
+
+export default levelArtistPage;
