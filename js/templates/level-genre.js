@@ -1,8 +1,8 @@
-import getElementFromString from '../getElementFromString.js';
-import drawPage from '../drawPage.js';
-import resultTemplate from './result.js';
-import resultAttemptsLeftTemplate from './resultAttemptsLeft.js';
-import resultTimeLeftTemplate from './resultTimeLeft.js';
+import getElementFromString from '../get-element-from-string';
+import drawPage from '../draw-page';
+import resultTemplate from './result';
+import resultAttemptsLeftTemplate from './result-attempts-left';
+import resultTimeLeftTemplate from './result-time-left';
 
 // <!-- Игра на выбор жанра -->
 
