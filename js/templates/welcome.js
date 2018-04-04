@@ -1,6 +1,6 @@
-import getElementFromString from '../getElementFromString.js';
-import drawPage from '../drawPage.js';
-import levelArtistTemplate from './levelArtist.js';
+import getElementFromString from '../get-element-from-string';
+import drawPage from '../draw-page';
+import levelArtistTemplate from './level-artist';
 
 // <!-- Приветствие -->
 

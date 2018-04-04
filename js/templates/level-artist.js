@@ -1,6 +1,6 @@
-import getElementFromString from '../getElementFromString.js';
-import drawPage from '../drawPage.js';
-import levelGenreTemplate from './levelGenre.js';
+import getElementFromString from '../get-element-from-string';
+import drawPage from '../draw-page';
+import levelGenreTemplate from './level-genre';
 
 // <!-- Игра на выбор исполнителя -->
 

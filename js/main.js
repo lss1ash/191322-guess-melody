@@ -1,5 +1,5 @@
-import welcomeTemplate from './templates/welcome.js';
-import drawPage from './drawPage.js';
+import welcomeTemplate from './templates/welcome';
+import drawPage from './draw-page';
 
 const contentLoadedHandler = () => {
   drawPage(welcomeTemplate);

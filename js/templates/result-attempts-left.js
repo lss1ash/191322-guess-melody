@@ -1,6 +1,6 @@
-import getElementFromString from '../getElementFromString.js';
-import drawPage from '../drawPage.js';
-import welcomeTemplate from './welcome.js';
+import getElementFromString from '../get-element-from-string';
+import drawPage from '../draw-page';
+import welcomeTemplate from './welcome';
 
 // <!-- Результат игры: проигрыш закончились попытки -->
 
