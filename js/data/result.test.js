@@ -148,5 +148,25 @@ describe(`Функция подсчёта набранных баллов игр
         {right: false, fast: true}], 0));
     });
 
+    it(`возвращает 7, если 7 правильно (из них 6 быстро), 3 ошибки`, () => {
+      assert.equal(7, calculateResult([{right: true, fast: true},
+        {right: true, fast: false},
+        {right: true, fast: true},
+        {right: false, fast: false},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: false, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: false, fast: true}], 0));
+    });
+
+    it(`возвращает -1, т.к. не все ответы даны`, () => {
+      assert.equal(-1, calculateResult([{right: false, fast: false},
+        {right: true, fast: false},
+        {right: false, fast: true},
+        {right: false, fast: false}], 0));
+    });
+
   });
 });
