@@ -96,5 +96,57 @@ describe(`Функция подсчёта набранных баллов игр
         {right: false, fast: false}], 0));
     });
 
+    it(`возвращает 20, если всё правильно, ошибок нет и все ответы быстрые`, () => {
+      assert.equal(20, calculateResult([{right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true}], 3));
+    });
+
+    it(`возвращает 18, если всё правильно, 1 ошибка и все ответы быстрые`, () => {
+      assert.equal(18, calculateResult([{right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true}], 2));
+    });
+
+    it(`возвращает 16, если всё правильно, 2 ошибки и все ответы быстрые`, () => {
+      assert.equal(16, calculateResult([{right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true}], 1));
+    });
+
+    it(`возвращает 12, если 9 правильно, 3 ошибки и все ответы быстрые`, () => {
+      assert.equal(12, calculateResult([{right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: true, fast: true},
+        {right: false, fast: true}], 0));
+    });
+
   });
 });
