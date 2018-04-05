@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import calculateResult from './result';
+import calculateResult from './calculateResult';
 
 describe(`Функция подсчёта набранных баллов игрока`, () => {
 
@@ -10,32 +10,34 @@ describe(`Функция подсчёта набранных баллов игр
       assert.equal(-1, calculateResult(true));
       assert.equal(-1, calculateResult(`test`));
       assert.equal(-1, calculateResult(NaN));
+      assert.equal(-1, calculateResult(null));
       assert.equal(-1, calculateResult({}));
     });
 
     it(`возвращает -1, если количество элементов массива с ответами !== 10 `, () => {
-      assert.equal(-1, calculateResult(new Array(0)));
-      assert.equal(-1, calculateResult(new Array(1)));
-      assert.equal(-1, calculateResult(new Array(2)));
-      assert.equal(-1, calculateResult(new Array(3)));
-      assert.equal(-1, calculateResult(new Array(4)));
-      assert.equal(-1, calculateResult(new Array(5)));
-      assert.equal(-1, calculateResult(new Array(6)));
-      assert.equal(-1, calculateResult(new Array(7)));
-      assert.equal(-1, calculateResult(new Array(8)));
-      assert.equal(-1, calculateResult(new Array(9)));
-      assert.equal(-1, calculateResult(new Array(11)));
-      assert.equal(-1, calculateResult(new Array(22)));
-      assert.equal(-1, calculateResult(new Array(66)));
+      assert.equal(-1, calculateResult(Array(0)));
+      assert.equal(-1, calculateResult(Array(1)));
+      assert.equal(-1, calculateResult(Array(2)));
+      assert.equal(-1, calculateResult(Array(3)));
+      assert.equal(-1, calculateResult(Array(4)));
+      assert.equal(-1, calculateResult(Array(5)));
+      assert.equal(-1, calculateResult(Array(6)));
+      assert.equal(-1, calculateResult(Array(7)));
+      assert.equal(-1, calculateResult(Array(8)));
+      assert.equal(-1, calculateResult(Array(9)));
+      assert.equal(-1, calculateResult(Array(11)));
+      assert.equal(-1, calculateResult(Array(22)));
+      assert.equal(-1, calculateResult(Array(66)));
     });
   });
 
-  describe(`Функция на вход принимает массив ответов пользователя`, () => {
+  describe(`Функция на вход принимает кол-во оставшихся нот`, () => {
     it(`возвращает -1, если второй параметр - не число `, () => {
       assert.equal(-1, calculateResult([]));
       assert.equal(-1, calculateResult([], `123`));
       assert.equal(-1, calculateResult([], 12.3));
       assert.equal(-1, calculateResult([], NaN));
+      assert.equal(-1, calculateResult([], null));
       assert.equal(-1, calculateResult([], true));
       assert.equal(-1, calculateResult([], []));
       assert.equal(-1, calculateResult([], {}));
