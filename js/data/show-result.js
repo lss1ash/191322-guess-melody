@@ -10,6 +10,10 @@ const showResult = (previousScores, result = {}) => {
     return -1;
   }
 
+  if (currentScore < 0 || notesLeft < 0 || timeLeft < 0) {
+    return -1;
+  }
+
   if (notesLeft === 0) {
     return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
   }
@@ -17,9 +21,21 @@ const showResult = (previousScores, result = {}) => {
   if (timeLeft === 0) {
     return `Время вышло! Вы не успели отгадать все мелодии`;
   }
-  // const result = answers.reduce((accumulator, {right, fast}) => Number(accumulator) + Number(right) + Number(right && fast), 0);
-  // return result - (Options.MAX_TRIES - notesLeft) * 2;
-  return {currentScore, notesLeft, timeLeft};
+
+  previousScores.push(currentScore);
+  const allScores = previousScores.length;
+  previousScores.sort((a, b) => a - b);
+
+  const filteredScores = [];
+  previousScores.forEach((value) => {
+    if (!filteredScores.includes(value)) {
+      filteredScores.push(value);
+    }
+  });
+
+  const currentPlace = filteredScores.length - filteredScores.indexOf(currentScore);
+  const currentPercent = Math.round(previousScores.indexOf(currentScore) / allScores * 100);
+  return `Вы заняли ${currentPlace} место из ${allScores} игроков. Это лучше, чем у ${currentPercent}% игроков`;
 };
 
 export default showResult;
