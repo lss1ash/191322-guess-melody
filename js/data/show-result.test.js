@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import showResult from './showResult';
+import showResult from './show-result';
 
 describe(`Функция вывода результата игрока`, () => {
 

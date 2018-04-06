@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import calculateResult from './calculateResult';
+import calculateResult from './calculate-result';
 
 describe(`Функция подсчёта набранных баллов игрока`, () => {
 
