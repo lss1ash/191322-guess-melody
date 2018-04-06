@@ -33,6 +33,12 @@ describe(`Функция вывода результата игрока`, () => 
       assert.equal(-1, showResult([], {currentScore: 1, notesLeft: 2}));
       assert.equal(-1, showResult([], {currentScore: 1, timeLeft: 3}));
       assert.equal(-1, showResult([], {notesLeft: 2, timeLeft: 3}));
+
+      assert.equal(-1, showResult([], {currentScore: `1`, notesLeft: `2`, timeLeft: `3`}));
+      assert.equal(-1, showResult([], {currentScore: [1], notesLeft: {two: 2}, timeLeft: 3}));
+      assert.equal(-1, showResult([], {currentScore: 1, notesLeft: 2, timeLeft: null}));
+      assert.equal(-1, showResult([], {currentScore: 1, notesLeft: NaN, timeLeft: 3}));
+      assert.equal(-1, showResult([], {currentScore: {}, notesLeft: [NaN], timeLeft: 666}));
     });
   });
 
