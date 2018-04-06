@@ -1,4 +1,4 @@
-const showResult = (previousScores, result = {}) => {
+export default (previousScores, result = {}) => {
 
   if (typeof result !== `object` || !(result instanceof Object)) {
     return -1;
@@ -37,5 +37,3 @@ const showResult = (previousScores, result = {}) => {
   const currentPercent = Math.round(previousScores.indexOf(currentScore) / allScores * 100);
   return `Вы заняли ${currentPlace} место из ${allScores} игроков. Это лучше, чем у ${currentPercent}% игроков`;
 };
-
-export default showResult;
