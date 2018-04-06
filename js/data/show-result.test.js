@@ -26,6 +26,14 @@ describe(`Функция вывода результата игрока`, () => 
       assert.equal(-1, showResult([], 555));
       assert.equal(-1, showResult([], null));
     });
+
+    it(`возвращает -1, если любой из трёх параметров объекта результата - не число`, () => {
+      assert.equal(-1, showResult([], {}));
+      assert.equal(-1, showResult([], {currentScore: 1}));
+      assert.equal(-1, showResult([], {currentScore: 1, notesLeft: 2}));
+      assert.equal(-1, showResult([], {currentScore: 1, timeLeft: 3}));
+      assert.equal(-1, showResult([], {notesLeft: 2, timeLeft: 3}));
+    });
   });
 
 });
