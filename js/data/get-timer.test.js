@@ -12,14 +12,9 @@ describe(`Функция создания таймера`, () => {
   });
 
   describe(`Функция возвращает объект`, () => {
-    it(`возвращает объект, если параметр - целое число`, () => {
-      const testIsObject = (value) => assert.isObject(getTimer(value));
-      [123, 2, 54, 1].forEach(testIsObject);
-    });
-
     it(`возвращает объект с методом tick, если параметр - целое число`, () => {
-      const testIsFunction = (value) => assert.isFunction(getTimer(value).tick);
-      [123, 2, 54, 1].forEach(testIsFunction);
+      const testIsObjectWithMethod = (value) => assert.isObject(getTimer(value)) && assert.isFunction(getTimer(value).tick);
+      [123, 2, 54, 1].forEach(testIsObjectWithMethod);
     });
   });
 
