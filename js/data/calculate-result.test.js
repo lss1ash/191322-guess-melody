@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import calculateResult from './calculate-result';
 
-const testEqual = (testValue) => assert.equal(-1, calculateResult(...testValue));
+const testEqual = (testValue) => assert.strictEqual(-1, calculateResult(...testValue));
 
 describe(`Функция подсчёта набранных баллов игрока`, () => {
 
@@ -27,7 +27,7 @@ describe(`Функция подсчёта набранных баллов игр
   describe(`За правильный ответ 1 балл; За быстрый правильный ответ (менее 30 секунд) — 2 балла; За каждую ошибку вычитается 2 балла.`, () => {
 
     it(`возвращает 10, если всё правильно, ошибок нет и все ответы не быстрые`, () => {
-      assert.equal(10, calculateResult([{right: true, fast: false},
+      assert.strictEqual(10, calculateResult([{right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
@@ -40,7 +40,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 8, если всё правильно, 1 ошибка и все ответы не быстрые`, () => {
-      assert.equal(8, calculateResult([{right: true, fast: false},
+      assert.strictEqual(8, calculateResult([{right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
@@ -53,7 +53,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 6, если всё правильно, 2 ошибки и все ответы не быстрые`, () => {
-      assert.equal(6, calculateResult([{right: true, fast: false},
+      assert.strictEqual(6, calculateResult([{right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
@@ -66,7 +66,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 3, если 9 правильно, 3 ошибки и все ответы не быстрые`, () => {
-      assert.equal(3, calculateResult([{right: true, fast: false},
+      assert.strictEqual(3, calculateResult([{right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
         {right: true, fast: false},
@@ -79,7 +79,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 20, если всё правильно, ошибок нет и все ответы быстрые`, () => {
-      assert.equal(20, calculateResult([{right: true, fast: true},
+      assert.strictEqual(20, calculateResult([{right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
@@ -92,7 +92,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 18, если всё правильно, 1 ошибка и все ответы быстрые`, () => {
-      assert.equal(18, calculateResult([{right: true, fast: true},
+      assert.strictEqual(18, calculateResult([{right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
@@ -105,7 +105,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 16, если всё правильно, 2 ошибки и все ответы быстрые`, () => {
-      assert.equal(16, calculateResult([{right: true, fast: true},
+      assert.strictEqual(16, calculateResult([{right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
@@ -118,7 +118,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 12, если 9 правильно, 3 ошибки и все ответы быстрые`, () => {
-      assert.equal(12, calculateResult([{right: true, fast: true},
+      assert.strictEqual(12, calculateResult([{right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
         {right: true, fast: true},
@@ -131,7 +131,7 @@ describe(`Функция подсчёта набранных баллов игр
     });
 
     it(`возвращает 7, если 7 правильно (из них 6 быстро), 3 ошибки`, () => {
-      assert.equal(7, calculateResult([{right: true, fast: true},
+      assert.strictEqual(7, calculateResult([{right: true, fast: true},
         {right: true, fast: false},
         {right: true, fast: true},
         {right: false, fast: false},
