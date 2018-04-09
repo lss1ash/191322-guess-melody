@@ -1,46 +1,26 @@
 import {assert} from 'chai';
 import calculateResult from './calculate-result';
 
+const testEqual = (testValue) => assert.equal(-1, calculateResult(...testValue));
+
 describe(`Функция подсчёта набранных баллов игрока`, () => {
 
   describe(`Функция на вход принимает массив ответов пользователя`, () => {
     it(`возвращает -1, если первый параметр - не массив `, () => {
-      assert.equal(-1, calculateResult());
-      assert.equal(-1, calculateResult(1));
-      assert.equal(-1, calculateResult(true));
-      assert.equal(-1, calculateResult(`test`));
-      assert.equal(-1, calculateResult(NaN));
-      assert.equal(-1, calculateResult(null));
-      assert.equal(-1, calculateResult({}));
+      const checks = [[], [1], [true], [`test`], [NaN], [null], [{}]];
+      checks.forEach(testEqual);
     });
 
     it(`возвращает -1, если количество элементов массива с ответами !== 10 `, () => {
-      assert.equal(-1, calculateResult(Array(0)));
-      assert.equal(-1, calculateResult(Array(1)));
-      assert.equal(-1, calculateResult(Array(2)));
-      assert.equal(-1, calculateResult(Array(3)));
-      assert.equal(-1, calculateResult(Array(4)));
-      assert.equal(-1, calculateResult(Array(5)));
-      assert.equal(-1, calculateResult(Array(6)));
-      assert.equal(-1, calculateResult(Array(7)));
-      assert.equal(-1, calculateResult(Array(8)));
-      assert.equal(-1, calculateResult(Array(9)));
-      assert.equal(-1, calculateResult(Array(11)));
-      assert.equal(-1, calculateResult(Array(22)));
-      assert.equal(-1, calculateResult(Array(66)));
+      const checks = [[Array(0)], [Array(1)], [Array(2)], [Array(3)], [Array(4)], [Array(5)], [Array(6)], [Array(7)], [Array(8)], [Array(9)], [Array(11)], [Array(22)], [Array(66)]];
+      checks.forEach(testEqual);
     });
   });
 
   describe(`Функция на вход принимает кол-во оставшихся нот`, () => {
     it(`возвращает -1, если второй параметр - не число `, () => {
-      assert.equal(-1, calculateResult([]));
-      assert.equal(-1, calculateResult([], `123`));
-      assert.equal(-1, calculateResult([], 12.3));
-      assert.equal(-1, calculateResult([], NaN));
-      assert.equal(-1, calculateResult([], null));
-      assert.equal(-1, calculateResult([], true));
-      assert.equal(-1, calculateResult([], []));
-      assert.equal(-1, calculateResult([], {}));
+      const checks = [[Array(10)], [Array(10), `123`], [Array(10), 12.3], [Array(10), NaN], [Array(10), null], [Array(10), true], [Array(10), []], [Array(10), {}]];
+      checks.forEach(testEqual);
     });
   });
 
@@ -161,13 +141,6 @@ describe(`Функция подсчёта набранных баллов игр
         {right: true, fast: true},
         {right: true, fast: true},
         {right: false, fast: true}], 0));
-    });
-
-    it(`возвращает -1, т.к. не все ответы даны`, () => {
-      assert.equal(-1, calculateResult([{right: false, fast: false},
-        {right: true, fast: false},
-        {right: false, fast: true},
-        {right: false, fast: false}], 0));
     });
 
   });

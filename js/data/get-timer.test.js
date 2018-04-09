@@ -6,27 +6,20 @@ describe(`Функция создания таймера`, () => {
   describe(`Функция на вход должна принимать время, в течение которого будет работать таймер`, () => {
     it(`возвращает -1, если параметр - не целое число `, () => {
       assert.equal(-1, getTimer());
-      assert.equal(-1, getTimer({}));
-      assert.equal(-1, getTimer([]));
-      assert.equal(-1, getTimer(`123`));
-      assert.equal(-1, getTimer(NaN));
-      assert.equal(-1, getTimer(null));
+      const testEqual = (value) => assert.equal(-1, getTimer(value));
+      [{}, [], `123`, NaN, null].forEach(testEqual);
     });
   });
 
   describe(`Функция возвращает объект`, () => {
     it(`возвращает объект, если параметр - целое число`, () => {
-      assert.isObject(getTimer(123));
-      assert.isObject(getTimer(2));
-      assert.isObject(getTimer(54));
-      assert.isObject(getTimer(1));
+      const testIsObject = (value) => assert.isObject(getTimer(value));
+      [123, 2, 54, 1].forEach(testIsObject);
     });
 
     it(`возвращает объект с методом tick, если параметр - целое число`, () => {
-      assert.isFunction(getTimer(123).tick);
-      assert.isFunction(getTimer(2).tick);
-      assert.isFunction(getTimer(54).tick);
-      assert.isFunction(getTimer(1).tick);
+      const testIsFunction = (value) => assert.isFunction(getTimer(value).tick);
+      [123, 2, 54, 1].forEach(testIsFunction);
     });
   });
 
