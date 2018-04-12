@@ -1,4 +1,4 @@
-import {getElementFromString, drawPage} from '../utils';
+import {getElementFromString, drawPage, getRandomArbitrary} from '../utils';
 import levelArtistTemplate from './level-artist';
 import testMelodies from '../data/test-melodies';
 
@@ -19,7 +19,8 @@ const welcomePage = getElementFromString(template);
 const play = welcomePage.querySelector(`.main-play`);
 
 const playClickHandler = () => {
-  drawPage(levelArtistTemplate(testMelodies.slice(0, 3)));
+  const randomStart = getRandomArbitrary(0, testMelodies.length - 3);
+  drawPage(levelArtistTemplate(testMelodies.slice(randomStart, randomStart + 3)));
 };
 play.addEventListener(`click`, playClickHandler);
 
