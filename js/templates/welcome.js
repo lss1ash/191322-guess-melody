@@ -1,5 +1,6 @@
 import {getElementFromString, drawPage} from '../utils';
 import levelArtistTemplate from './level-artist';
+import testMelodies from '../data/test-melodies';
 
 // <!-- Приветствие -->
 
@@ -18,7 +19,7 @@ const welcomePage = getElementFromString(template);
 const play = welcomePage.querySelector(`.main-play`);
 
 const playClickHandler = () => {
-  drawPage(levelArtistTemplate);
+  drawPage(levelArtistTemplate(testMelodies.slice(0, 3)));
 };
 play.addEventListener(`click`, playClickHandler);
 
