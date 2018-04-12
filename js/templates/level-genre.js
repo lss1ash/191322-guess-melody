@@ -113,8 +113,19 @@ const answerClickHandler = (e) => {
     checkbox.checked = false;
   });
 
+  const result = {
+    minutes: 3,
+    seconds: 12,
+    score: 10,
+    scoreFast: 10,
+    mistakes: 2,
+    place: 3,
+    placesAll: 15,
+    betterPercent: 66
+  };
+
   switch (Math.floor(getRandomArbitrary(0, 3))) {
-    case 0: drawPage(resultTemplate); break;
+    case 0: drawPage(resultTemplate(result)); break;
     case 1: drawPage(resultAttemptsLeftTemplate); break;
     case 2: drawPage(resultTimeLeftTemplate); break;
   }
