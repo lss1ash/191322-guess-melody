@@ -1,4 +1,4 @@
-import {getElementFromString, drawPage} from '../utils';
+import {getElementFromString, drawPage, getRandomArbitrary} from '../utils';
 import resultTemplate from './result';
 import resultAttemptsLeftTemplate from './result-attempts-left';
 import resultTimeLeftTemplate from './result-time-left';
@@ -98,11 +98,6 @@ const changeBoxCheckedHandler = () => {
     checked = checked || checkbox.checked;
   });
   answer.disabled = !checked;
-};
-
-// Возвращает случайное число между min (включительно) и max (не включая max)
-const getRandomArbitrary = (min, max) => {
-  return Math.random() * (max - min) + min;
 };
 
 const answerClickHandler = (e) => {

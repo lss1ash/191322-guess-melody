@@ -16,3 +16,8 @@ export const getElementFromString = (str) => {
   element.innerHTML = str;
   return element.firstElementChild ? element.firstElementChild : false;
 };
+
+// min <= random < max
+export const getRandomArbitrary = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
