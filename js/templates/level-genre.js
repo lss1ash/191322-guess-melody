@@ -5,6 +5,17 @@ import resultTimeLeftTemplate from './result-time-left';
 
 // <!-- Игра на выбор жанра -->
 
+const TEST_RESULT = {
+  minutes: 3,
+  seconds: 12,
+  score: 10,
+  scoreFast: 10,
+  mistakes: 2,
+  place: 3,
+  placesAll: 15,
+  betterPercent: 66
+};
+
 const getSongMarkup = (song, number) => {
   return `<div class="genre-answer">
     <div class="player-wrapper">
@@ -51,54 +62,45 @@ export default (genre, answers) => {
   </section>`;
 
   const levelGenrePageElement = getElementFromString(template);
-
-  // const genreBoxesElements = levelGenrePage.querySelectorAll(`.genre-answer input[type=checkbox]`);
-  // const changeBoxCheckedHandler = () => {
-  //   let checked = false;
-  //   [...genreBoxes].forEach((checkbox) => {
-  //     checked = checked || checkbox.checked;
-  //   });
-  //   answer.disabled = !checked;
-  // };
-  //
-  // const answerClickHandler = (e) => {
-  //   e.preventDefault();
-  //
-  //   answer.disabled = true;
-  //   [...genreBoxes].forEach((checkbox) => {
-  //     checkbox.checked = false;
-  //   });
-  //
-  //   const result = {
-  //     minutes: 3,
-  //     seconds: 12,
-  //     score: 10,
-  //     scoreFast: 10,
-  //     mistakes: 2,
-  //     place: 3,
-  //     placesAll: 15,
-  //     betterPercent: 66
-  //   };
-  //
-  //   switch (Math.floor(getRandomArbitrary(0, 3))) {
-  //     case 0: drawPage(resultTemplate(result)); break;
-  //     case 1: drawPage(resultAttemptsLeftTemplate); break;
-  //     case 2: drawPage(resultTimeLeftTemplate); break;
-  //   }
-  // };
-
+  const mainListElement = levelGenrePageElement.querySelector(`form.genre`);
 
   answers.forEach((song, number) => {
     const songElement = getElementFromString(getSongMarkup(song, number + 1));
-    // songElement.addEventListener(`click`, answerClickHandler);
-    levelGenrePageElement.appendChild(songElement);
+    mainListElement.appendChild(songElement);
   });
 
-  levelGenrePageElement.appendChild(getElementFromString(`<button class="genre-answer-send" disabled type="submit">Ответить</button>`));
+  const checkBoxes = mainListElement.querySelectorAll(`.genre-answer input[type=checkbox]`);
+  const sendButton = getElementFromString(`<button class="genre-answer-send" disabled type="submit">Ответить</button>`);
+  mainListElement.appendChild(sendButton);
 
+  const formClickHandler = ({target}) => {
+    if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `CHECKBOX`) {
+      let checked = false;
+      [...checkBoxes].forEach((checkbox) => {
+        checked = checked || checkbox.checked;
+      });
+      sendButton.disabled = !checked;
+    }
+  };
 
-  // [...genreBoxes].forEach((checkbox) => checkbox.addEventListener(`change`, changeBoxCheckedHandler));
-  // answer.addEventListener(`click`, answerClickHandler);
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+
+    sendButton.disabled = true;
+    [...checkBoxes].forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    switch (Math.floor(getRandomArbitrary(0, 3))) {
+      case 0: drawPage(resultTemplate(TEST_RESULT)); break;
+      case 1: drawPage(resultAttemptsLeftTemplate); break;
+      case 2: drawPage(resultTimeLeftTemplate); break;
+    }
+
+  };
+
+  mainListElement.addEventListener(`click`, formClickHandler);
+  mainListElement.addEventListener(`submit`, formSubmitHandler);
 
   return levelGenrePageElement;
 };

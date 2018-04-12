@@ -15,6 +15,13 @@ const getSongMarkup = (song, number) => {
   </div>`;
 };
 
+const formClickHandler = ({target}) => {
+  if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
+    const randomStart = getRandomArbitrary(0, testMelodies.length - 4);
+    drawPage(levelGenreTemplate(`Rock'n'Roll`, testMelodies.slice(randomStart, randomStart + 4)));
+  }
+};
+
 export default (answers) => {
 
   const template = `<section class="main main--level main--level-artist">
@@ -55,16 +62,12 @@ export default (answers) => {
   const levelArtistPageElement = getElementFromString(template);
   const mainListElement = levelArtistPageElement.querySelector(`form.main-list`);
 
-  const answerClickHandler = () => {
-    const randomStart = getRandomArbitrary(0, testMelodies.length - 4);
-    drawPage(levelGenreTemplate(`Rock'n'Roll`, testMelodies.slice(randomStart, randomStart + 4)));
-  };
-
   answers.forEach((song, number) => {
     const songElement = getElementFromString(getSongMarkup(song, number + 1));
-    songElement.addEventListener(`click`, answerClickHandler);
     mainListElement.appendChild(songElement);
   });
+
+  mainListElement.addEventListener(`click`, formClickHandler);
 
   return levelArtistPageElement;
 };
