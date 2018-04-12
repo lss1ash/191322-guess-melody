@@ -1,5 +1,6 @@
-import {getElementFromString, drawPage} from '../utils';
+import {getElementFromString, drawPage, getRandomArbitrary} from '../utils';
 import levelGenreTemplate from './level-genre';
+import testMelodies from '../data/test-melodies';
 
 // <!-- Игра на выбор исполнителя -->
 
@@ -55,7 +56,8 @@ export default (answers) => {
   const mainListElement = levelArtistPageElement.querySelector(`form.main-list`);
 
   const answerClickHandler = () => {
-    drawPage(levelGenreTemplate);
+    const randomStart = getRandomArbitrary(0, testMelodies.length - 4);
+    drawPage(levelGenreTemplate(`Rock'n'Roll`, testMelodies.slice(randomStart, randomStart + 4)));
   };
 
   answers.forEach((song, number) => {

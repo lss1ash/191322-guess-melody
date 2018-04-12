@@ -21,7 +21,7 @@ const getSongMarkup = (song, number) => {
   </div>`;
 };
 
-export default (answers) => {
+export default (genre, answers) => {
 
   const template = `<section class="main main--level main--level-genre">
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
@@ -43,10 +43,9 @@ export default (answers) => {
     </div>
 
     <div class="main-wrap">
-      <h2 class="title">Выберите инди-рок треки</h2>
+      <h2 class="title">Выберите ${genre} треки</h2>
       <form class="genre">
 
-        <button class="genre-answer-send" disabled type="submit">Ответить</button>
       </form>
     </div>
   </section>`;
@@ -54,8 +53,6 @@ export default (answers) => {
   const levelGenrePageElement = getElementFromString(template);
 
   // const genreBoxesElements = levelGenrePage.querySelectorAll(`.genre-answer input[type=checkbox]`);
-  const sendButton = levelGenrePageElement.querySelector(`.genre-answer-send`);
-
   // const changeBoxCheckedHandler = () => {
   //   let checked = false;
   //   [...genreBoxes].forEach((checkbox) => {
@@ -90,9 +87,18 @@ export default (answers) => {
   //   }
   // };
 
+
+  answers.forEach((song, number) => {
+    const songElement = getElementFromString(getSongMarkup(song, number + 1));
+    // songElement.addEventListener(`click`, answerClickHandler);
+    levelGenrePageElement.appendChild(songElement);
+  });
+
+  levelGenrePageElement.appendChild(getElementFromString(`<button class="genre-answer-send" disabled type="submit">Ответить</button>`));
+
+
   // [...genreBoxes].forEach((checkbox) => checkbox.addEventListener(`change`, changeBoxCheckedHandler));
   // answer.addEventListener(`click`, answerClickHandler);
 
-//export default levelGenrePage;
-
+  return levelGenrePageElement;
 };
