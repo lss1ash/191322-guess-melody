@@ -1,5 +1,4 @@
-import getElementFromString from '../get-element-from-string';
-import drawPage from '../draw-page';
+import {getElementFromString, drawPage} from '../utils';
 import welcomeTemplate from './welcome';
 
 // <!-- Результат игры: проигрыш время вышло -->

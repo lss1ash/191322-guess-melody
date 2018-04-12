@@ -1,5 +1,4 @@
-import getElementFromString from '../get-element-from-string';
-import drawPage from '../draw-page';
+import {getElementFromString, drawPage} from '../utils';
 import resultTemplate from './result';
 import resultAttemptsLeftTemplate from './result-attempts-left';
 import resultTimeLeftTemplate from './result-time-left';
