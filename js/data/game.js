@@ -5,7 +5,8 @@ export const GAME = {
   GENRE_SONGS_PER_LEVEL: 4,
   TOTAL_QUESTIONS: 10,
   GENRE: `levelGenre`,
-  ARTIST: `levelArtist`
+  ARTIST: `levelArtist`,
+  MISTAKES_TO_LOOSE: 3
 };
 
 export const INITIAL_STATE = {
@@ -66,7 +67,7 @@ const createRandomArtistLevel = () => {
   const tempMelodies = shuffleArray(melodies.slice());
   const rightMelody = tempMelodies.pop();
   const levelArtist = {
-    type: `levelArtist`,
+    type: GAME.ARTIST,
     question: `Кто исполняет эту песню?`,
     melodie: rightMelody,
     answers: []
@@ -75,16 +76,18 @@ const createRandomArtistLevel = () => {
     const melodie = i === 0 ? rightMelody : tempMelodies.pop();
     levelArtist.answers.push({
       melodie,
-      right: melodie.genre === rightMelody.genre
+      right: melodie.artist === rightMelody.artist
     });
   }
+  levelArtist.answers = shuffleArray(levelArtist.answers);
+  return levelArtist;
 };
 
 const createRandomGenreLevel = () => {
   const tempMelodies = shuffleArray(melodies.slice());
   const rightMelody = tempMelodies.pop();
   const levelGenre = {
-    type: `levelGenre`,
+    type: GAME.GENRE,
     question: `Выберите ${rightMelody.genre} треки`,
     answers: []
   };
@@ -95,6 +98,7 @@ const createRandomGenreLevel = () => {
       right: melodie.genre === rightMelody.genre
     });
   }
+  levelGenre.answers = shuffleArray(levelGenre.answers);
   return levelGenre;
 };
 
@@ -103,7 +107,7 @@ const createLevel = [createRandomArtistLevel, createRandomGenreLevel];
 export const getRandomLevels = () => {
   const randomLevels = [];
   for (let i = 0; i < GAME.TOTAL_QUESTIONS; i++) {
-    randomLevels.push(createLevel[getRandom(0, 2)]);
+    randomLevels.push(createLevel[getRandom(0, 2)]());
   }
   return randomLevels;
 };

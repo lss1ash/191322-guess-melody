@@ -23,8 +23,11 @@ export const getRandom = (min, max) => {
 };
 
 export const shuffleArray = (array) => {
-  array.forEach((item, index) => {
-    const randomIndex = getRandom(0, array.length);
-    [array[randomIndex], array[index]] = [array[index], array[randomIndex]];
-  });
+  for (let index in array) {
+    if (Object.prototype.hasOwnProperty.call(array, index)) {
+      const randomIndex = getRandom(0, array.length);
+      [array[randomIndex], array[index]] = [array[index], array[randomIndex]];
+    }
+  }
+  return array;
 };

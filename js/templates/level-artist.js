@@ -1,14 +1,26 @@
 import {getElementFromString, drawPage} from '../utils';
+import resultTemplate from './result';
 import levelArtistTemplate from './level-artist';
 import levelGenreTemplate from './level-genre';
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
-import {nextGameLevel} from '../main.js';
-import {GAME, getMistakes} from '../data/game';
+import {nextGameLevel, getMistakes} from '../main.js';
+import {GAME} from '../data/game';
 
 // <!-- Игра на выбор исполнителя -->
 
-const getSongMarkup = (melodie, number) => {
+const TEST_RESULT = {
+  minutes: 3,
+  seconds: 12,
+  score: 10,
+  scoreFast: 10,
+  mistakes: 2,
+  place: 3,
+  placesAll: 15,
+  betterPercent: 66
+};
+
+const getMelodieMarkup = ({melodie}, number) => {
   return `<div class="main-answer-wrapper">
     <input class="main-answer-r" type="radio" id="answer-${number}" name="answer" value="val-${number}"/>
     <label class="main-answer" for="answer-${number}">
@@ -17,18 +29,6 @@ const getSongMarkup = (melodie, number) => {
       ${melodie.artist}
     </label>
   </div>`;
-};
-
-const formClickHandler = ({target}) => {
-  if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
-    const nextLevel = nextGameLevel();
-    if (nextLevel) {
-      switch (nextLevel.type) {
-        case GAME.GENRE: drawPage(levelGenreTemplate(nextLevel)); break;
-        case GAME.ARTIST: drawPage(levelArtistTemplate(nextLevel)); break;
-      }
-    }
-  }
 };
 
 export default (level) => {
@@ -56,9 +56,25 @@ export default (level) => {
   const levelArtistPageElement = getElementFromString(template);
   const mainListElement = levelArtistPageElement.querySelector(`form.main-list`);
 
-  level.answers.forEach((song, number) => {
-    const songElement = getElementFromString(getSongMarkup(song, number + 1));
-    mainListElement.appendChild(songElement);
+  const formClickHandler = ({target}) => {
+    if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
+      const userAnswer = [...mainListElement.querySelectorAll(`input[type=radio]`)].map((radio) => radio.checked);
+
+      const nextLevel = nextGameLevel(userAnswer);
+      if (nextLevel) {
+        switch (nextLevel.type) {
+          case GAME.GENRE: drawPage(levelGenreTemplate(nextLevel)); break;
+          case GAME.ARTIST: drawPage(levelArtistTemplate(nextLevel)); break;
+        }
+      } else {
+        drawPage(resultTemplate(TEST_RESULT));
+      }
+    }
+  };
+
+  level.answers.forEach((melodie, number) => {
+    const melodieElement = getElementFromString(getMelodieMarkup(melodie, number + 1));
+    mainListElement.appendChild(melodieElement);
   });
 
   mainListElement.addEventListener(`click`, formClickHandler);
