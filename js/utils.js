@@ -18,6 +18,13 @@ export const getElementFromString = (str) => {
 };
 
 // min <= random < max
-export const getRandomArbitrary = (min, max) => {
-  return Math.random() * (max - min) + min;
+export const getRandom = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
+export const shuffleArray = (array) => {
+  array.forEach((item, index) => {
+    const randomIndex = getRandom(0, array.length);
+    [array[randomIndex], array[index]] = [array[index], array[randomIndex]];
+  });
 };

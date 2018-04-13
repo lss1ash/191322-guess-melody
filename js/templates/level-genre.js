@@ -1,22 +1,27 @@
-import {getElementFromString, drawPage, getRandomArbitrary} from '../utils';
-import resultTemplate from './result';
-import resultAttemptsLeftTemplate from './result-attempts-left';
-import resultTimeLeftTemplate from './result-time-left';
+import {getElementFromString, drawPage} from '../utils';
+// import resultTemplate from './result';
+// import resultAttemptsLeftTemplate from './result-attempts-left';
+// import resultTimeLeftTemplate from './result-time-left';
+import levelArtistTemplate from './level-artist';
+import levelGenreTemplate from './level-genre';
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
+import {nextGameLevel} from '../main.js';
+import {GAME, getMistakes} from '../data/game';
+
 
 // <!-- Игра на выбор жанра -->
 
-const TEST_RESULT = {
-  minutes: 3,
-  seconds: 12,
-  score: 10,
-  scoreFast: 10,
-  mistakes: 2,
-  place: 3,
-  placesAll: 15,
-  betterPercent: 66
-};
+// const TEST_RESULT = {
+//   minutes: 3,
+//   seconds: 12,
+//   score: 10,
+//   scoreFast: 10,
+//   mistakes: 2,
+//   place: 3,
+//   placesAll: 15,
+//   betterPercent: 66
+// };
 
 const getSongMarkup = (song, number) => {
   return `<div class="genre-answer">
@@ -34,13 +39,13 @@ const getSongMarkup = (song, number) => {
   </div>`;
 };
 
-export default (genre, answers) => {
+export default (level) => {
 
   const template = `<section class="main main--level main--level-genre">
     ${svgTemplate}
-    ${getMistakesTemplate(0)}
+    ${getMistakesTemplate(getMistakes)}
     <div class="main-wrap">
-      <h2 class="title">Выберите ${genre} треки</h2>
+      <h2 class="title">${level.question}</h2>
       <form class="genre"></form>
     </div>
   </section>`;
@@ -48,7 +53,7 @@ export default (genre, answers) => {
   const levelGenrePageElement = getElementFromString(template);
   const mainListElement = levelGenrePageElement.querySelector(`form.genre`);
 
-  answers.forEach((song, number) => {
+  level.answers.forEach((song, number) => {
     const songElement = getElementFromString(getSongMarkup(song, number + 1));
     mainListElement.appendChild(songElement);
   });
@@ -75,12 +80,13 @@ export default (genre, answers) => {
       checkbox.checked = false;
     });
 
-    switch (Math.floor(getRandomArbitrary(0, 3))) {
-      case 0: drawPage(resultTemplate(TEST_RESULT)); break;
-      case 1: drawPage(resultAttemptsLeftTemplate); break;
-      case 2: drawPage(resultTimeLeftTemplate); break;
+    const nextLevel = nextGameLevel();
+    if (nextLevel) {
+      switch (nextLevel.type) {
+        case GAME.GENRE: drawPage(levelGenreTemplate(nextLevel)); break;
+        case GAME.ARTIST: drawPage(levelArtistTemplate(nextLevel)); break;
+      }
     }
-
   };
 
   mainListElement.addEventListener(`click`, formClickHandler);
