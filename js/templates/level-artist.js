@@ -1,24 +1,9 @@
-import {getElementFromString, drawPage} from '../utils';
-import resultTemplate from './result';
-import levelArtistTemplate from './level-artist';
-import levelGenreTemplate from './level-genre';
+import {getElementFromString} from '../utils';
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
 import {nextGameLevel, getMistakes} from '../main.js';
-import {GAME} from '../data/game';
 
 // <!-- Игра на выбор исполнителя -->
-
-const TEST_RESULT = {
-  minutes: 3,
-  seconds: 12,
-  score: 10,
-  scoreFast: 10,
-  mistakes: 2,
-  place: 3,
-  placesAll: 15,
-  betterPercent: 66
-};
 
 const getMelodieMarkup = ({melodie}, number) => {
   return `<div class="main-answer-wrapper">
@@ -60,15 +45,7 @@ export default (level) => {
     if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
       const userAnswer = [...mainListElement.querySelectorAll(`input[type=radio]`)].map((radio) => radio.checked);
 
-      const nextLevel = nextGameLevel(userAnswer);
-      if (nextLevel) {
-        switch (nextLevel.type) {
-          case GAME.GENRE: drawPage(levelGenreTemplate(nextLevel)); break;
-          case GAME.ARTIST: drawPage(levelArtistTemplate(nextLevel)); break;
-        }
-      } else {
-        drawPage(resultTemplate(TEST_RESULT));
-      }
+      nextGameLevel(userAnswer);
     }
   };
 

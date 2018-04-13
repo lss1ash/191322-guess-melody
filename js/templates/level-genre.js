@@ -1,12 +1,7 @@
-import {getElementFromString, drawPage} from '../utils';
-import resultTemplate from './result';
-// import resultTimeLeftTemplate from './result-time-left';
-import levelArtistTemplate from './level-artist';
-import levelGenreTemplate from './level-genre';
+import {getElementFromString} from '../utils';
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
 import {nextGameLevel, getMistakes} from '../main.js';
-import {GAME} from '../data/game';
 
 // <!-- Игра на выбор жанра -->
 
@@ -69,15 +64,7 @@ export default (level) => {
       return retValue;
     });
 
-    const nextLevel = nextGameLevel(userAnswer);
-    if (nextLevel) {
-      switch (nextLevel.type) {
-        case GAME.GENRE: drawPage(levelGenreTemplate(nextLevel)); break;
-        case GAME.ARTIST: drawPage(levelArtistTemplate(nextLevel)); break;
-      }
-    } else {
-      drawPage(resultTemplate(TEST_RESULT));
-    }
+    nextGameLevel(userAnswer);
   };
 
   mainListElement.addEventListener(`click`, formClickHandler);

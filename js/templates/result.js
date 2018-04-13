@@ -1,3 +1,5 @@
+// <span class="main-comparison">Вы заняли ${result.place} место из ${result.placesAll}. Это&nbsp;лучше чем у&nbsp;${result.betterPercent}%&nbsp;игроков</span>
+
 import {getElementFromString} from '../utils';
 import {initializeGame} from '../main';
 
@@ -12,7 +14,7 @@ export default (result) => {
     <div class="main-stat">За&nbsp;${result.minutes}&nbsp;минуты и ${result.seconds}&nbsp;секунд
       <br>Вы&nbsp;набрали ${result.score} баллов (${result.scoreFast} быстрых),
       <br>совершив ${result.mistakes} ошибки</div>
-    <span class="main-comparison">Вы заняли ${result.place} место из ${result.placesAll}. Это&nbsp;лучше чем у&nbsp;${result.betterPercent}%&nbsp;игроков</span>
+      <span class="main-comparison">${result.comparison}</span>
     <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>
   </section>`;
 
