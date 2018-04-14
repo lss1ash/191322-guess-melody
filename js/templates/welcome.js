@@ -1,6 +1,8 @@
-import getElementFromString from '../get-element-from-string';
-import drawPage from '../draw-page';
+import {getElementFromString, drawPage} from '../utils';
 import levelArtistTemplate from './level-artist';
+import levelGenreTemplate from './level-genre';
+import {nextGameLevel} from '../main.js';
+import {GAME} from '../data/game';
 
 // <!-- Приветствие -->
 
@@ -19,7 +21,13 @@ const welcomePage = getElementFromString(template);
 const play = welcomePage.querySelector(`.main-play`);
 
 const playClickHandler = () => {
-  drawPage(levelArtistTemplate);
+  const level = nextGameLevel();
+  if (level) {
+    switch (level.type) {
+      case GAME.GENRE: drawPage(levelGenreTemplate(level)); break;
+      case GAME.ARTIST: drawPage(levelArtistTemplate(level)); break;
+    }
+  }
 };
 play.addEventListener(`click`, playClickHandler);
 

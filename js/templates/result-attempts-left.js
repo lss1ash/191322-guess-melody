@@ -1,6 +1,5 @@
-import getElementFromString from '../get-element-from-string';
-import drawPage from '../draw-page';
-import welcomeTemplate from './welcome';
+import {getElementFromString} from '../utils';
+import {initializeGame} from '../main';
 
 // <!-- Результат игры: проигрыш закончились попытки -->
 
@@ -16,7 +15,7 @@ const resultPage = getElementFromString(template);
 const replay = resultPage.querySelector(`.main-replay`);
 
 const replayClickHandler = () => {
-  drawPage(welcomeTemplate);
+  initializeGame();
 };
 replay.addEventListener(`click`, replayClickHandler);
 
