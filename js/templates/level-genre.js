@@ -64,16 +64,16 @@ export default class LevelGenreView extends AbstractView {
 
   bind() {
     this._form = this.element.querySelector(`form.genre`);
-    this._checkBoxes = this.element.querySelectorAll(`.genre-answer input[type=checkbox]`);
-    this._sendButton = this.element.querySelector(`.genre-answer-send`);
+    this._checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
+    this._sendButton = this._form.querySelector(`.genre-answer-send`);
 
     this._form.onsubmit = (evt) => {
       evt.preventDefault();
-      this._onNoteClick(evt);
+      this.onLevelSubmit();
     };
 
-    this._checkBoxes.onclick = () => {
-      this.onLevelSubmit();
+    this._form.onclick = (evt) => {
+      this._onNoteClick(evt);
     };
   }
 }
