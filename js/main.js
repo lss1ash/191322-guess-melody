@@ -1,7 +1,7 @@
 import {drawPage} from './utils';
 import {GAME, INITIAL_STATE, getRandomLevels} from './data/game';
 import showResult from './data/show-result';
-import welcomeTemplate from './templates/welcome';
+import WelcomeView from './templates/welcome';
 import resultAttemptsLeftTemplate from './templates/result-attempts-left';
 import resultTemplate from './templates/result';
 import levelArtistTemplate from './templates/level-artist';
@@ -45,7 +45,7 @@ export const getMistakes = () => gameState.mistakes;
 export const initializeGame = () => {
   gameState = resetGameState();
   gameState.levels = getRandomLevels();
-  drawPage(welcomeTemplate);
+  drawPage(new WelcomeView().element);
 };
 
 const testUserAnswer = () => {
