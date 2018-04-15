@@ -2,10 +2,10 @@ import {drawPage} from './utils';
 import {GAME, INITIAL_STATE, getRandomLevels} from './data/game';
 import showResult from './data/show-result';
 import WelcomeView from './templates/welcome';
-import resultAttemptsLeftTemplate from './templates/result-attempts-left';
+import ResultAttemptsLeftView from './templates/result-attempts-left';
 import ResultSuccessView from './templates/result-success';
-import levelArtistTemplate from './templates/level-artist';
-import levelGenreTemplate from './templates/level-genre';
+import LevelArtistView from './templates/level-artist';
+import LevelGenreView from './templates/level-genre';
 
 let gameState;
 
@@ -26,7 +26,7 @@ export const nextGameLevel = (answer) => {
     testCurrentAnswer(answer);
   }
   if (gameState.mistakes === GAME.MISTAKES_TO_LOOSE) {
-    drawPage(resultAttemptsLeftTemplate);
+    drawPage(new ResultAttemptsLeftView().element);
     return;
   }
   const level = gameState.currentLevel < GAME.TOTAL_QUESTIONS ? gameState.levels[gameState.currentLevel] : false;
@@ -34,8 +34,8 @@ export const nextGameLevel = (answer) => {
     gameState.currentLevel++;
 
     switch (level.type) {
-      case GAME.GENRE: drawPage(levelGenreTemplate(level)); break;
-      case GAME.ARTIST: drawPage(levelArtistTemplate(level)); break;
+      case GAME.GENRE: drawPage(new LevelGenreView(level).element); break;
+      case GAME.ARTIST: drawPage(new LevelArtistView(level).element); break;
     }
     return;
   }

@@ -1,22 +1,31 @@
-import {getElementFromString} from '../utils';
 import {initializeGame} from '../main';
+import AbstractView from '../abstract-view';
 
-// <!-- Результат игры: проигрыш закончились попытки -->
+export default class ResultAttemptsLeftView extends AbstractView {
+  constructor(result) {
+    super();
+    this.result = result;
+  }
 
-const template = `<section class="main main--result">
-  <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
+  get template() {
+    return `
+    <section class="main main--result">
+      <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
 
-  <h2 class="title">Какая жалость!</h2>
-  <div class="main-stat">У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!</div>
-  <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
-</section>`;
+      <h2 class="title">Какая жалость!</h2>
+      <div class="main-stat">У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!</div>
+      <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
+    </section>`;
+  }
 
-const resultPage = getElementFromString(template);
-const replay = resultPage.querySelector(`.main-replay`);
+  onReplayClick() {
+    initializeGame();
+  }
 
-const replayClickHandler = () => {
-  initializeGame();
-};
-replay.addEventListener(`click`, replayClickHandler);
-
-export default resultPage;
+  bind() {
+    this.element.querySelector(`.main-replay`).onclick = (evt) => {
+      evt.preventDefault();
+      this.onReplayClick();
+    };
+  }
+}

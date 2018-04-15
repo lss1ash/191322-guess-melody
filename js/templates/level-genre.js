@@ -1,74 +1,79 @@
-import {getElementFromString} from '../utils';
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
 import {nextGameLevel, getMistakes} from '../main.js';
+import AbstractView from '../abstract-view';
 
-// <!-- Игра на выбор жанра -->
+export default class LevelGenreView extends AbstractView {
+  constructor(level) {
+    super();
+    this.level = level;
+  }
 
-const getMelodieMarkup = ({melodie}, number) => {
-  return `<div class="genre-answer">
-    <div class="player-wrapper">
-      <div class="player">
-        <audio src="${melodie.src}"></audio>
-        <button class="player-control player-control--pause"></button>
-        <div class="player-track">
-          <span class="player-status"></span>
+  get template() {
+    return `
+    <section class="main main--level main--level-genre">
+      ${svgTemplate}
+      ${getMistakesTemplate(getMistakes())}
+      <div class="main-wrap">
+        <h2 class="title">${this.level.question}</h2>
+        <form class="genre">
+          ${this.level.answers.map((answer, number) => this._melodyTemplate(answer, number + 1)).join(``)}
+          <button class="genre-answer-send" disabled type="submit">Ответить</button>
+        </form>
+      </div>
+    </section>`;
+  }
+
+  _melodyTemplate({melodie}, number) {
+    return `
+    <div class="genre-answer">
+      <div class="player-wrapper">
+        <div class="player">
+          <audio src="${melodie.src}"></audio>
+          <button class="player-control player-control--pause"></button>
+          <div class="player-track">
+            <span class="player-status"></span>
+          </div>
         </div>
       </div>
-    </div>
-    <input type="checkbox" name="answer" value="answer-${number}" id="a-${number}">
-    <label class="genre-answer-check" for="a-${number}"></label>
-  </div>`;
-};
+      <input type="checkbox" name="answer" value="answer-${number}" id="a-${number}">
+      <label class="genre-answer-check" for="a-${number}"></label>
+    </div>`;
+  }
 
-export default (level) => {
-
-  const template = `<section class="main main--level main--level-genre">
-    ${svgTemplate}
-    ${getMistakesTemplate(getMistakes())}
-    <div class="main-wrap">
-      <h2 class="title">${level.question}</h2>
-      <form class="genre"></form>
-    </div>
-  </section>`;
-
-  const levelGenrePageElement = getElementFromString(template);
-  const mainListElement = levelGenrePageElement.querySelector(`form.genre`);
-
-  level.answers.forEach((answer, number) => {
-    const melodieElement = getElementFromString(getMelodieMarkup(answer, number + 1));
-    mainListElement.appendChild(melodieElement);
-  });
-
-  const checkBoxes = mainListElement.querySelectorAll(`.genre-answer input[type=checkbox]`);
-  const sendButton = getElementFromString(`<button class="genre-answer-send" disabled type="submit">Ответить</button>`);
-  mainListElement.appendChild(sendButton);
-
-  const formClickHandler = ({target}) => {
+  _onNoteClick({target}) {
     if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `CHECKBOX`) {
       let checked = false;
-      [...checkBoxes].forEach((checkbox) => {
+      [...this._checkBoxes].forEach((checkbox) => {
         checked = checked || checkbox.checked;
       });
-      sendButton.disabled = !checked;
+      this._sendButton.disabled = !checked;
     }
-  };
+  }
 
-  const formSubmitHandler = (e) => {
-    e.preventDefault();
-
-    sendButton.disabled = true;
-    const userAnswer = [...checkBoxes].map((checkbox) => {
+  onLevelSubmit() {
+    this._sendButton.disabled = true;
+    const userAnswer = [...this._checkBoxes].map((checkbox) => {
       const retValue = checkbox.checked;
       checkbox.checked = false;
       return retValue;
     });
 
     nextGameLevel(userAnswer);
-  };
+  }
 
-  mainListElement.addEventListener(`click`, formClickHandler);
-  mainListElement.addEventListener(`submit`, formSubmitHandler);
+  bind() {
+    this._form = this.element.querySelector(`form.genre`);
+    this._checkBoxes = this.element.querySelectorAll(`.genre-answer input[type=checkbox]`);
+    this._sendButton = this.element.querySelector(`.genre-answer-send`);
 
-  return levelGenrePageElement;
-};
+    this._form.onsubmit = (evt) => {
+      evt.preventDefault();
+      this._onNoteClick(evt);
+    };
+
+    this._checkBoxes.onclick = () => {
+      this.onLevelSubmit();
+    };
+  }
+}
