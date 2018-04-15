@@ -3,7 +3,7 @@ import {GAME, INITIAL_STATE, getRandomLevels} from './data/game';
 import showResult from './data/show-result';
 import WelcomeView from './templates/welcome';
 import resultAttemptsLeftTemplate from './templates/result-attempts-left';
-import resultTemplate from './templates/result';
+import ResultSuccessView from './templates/result-success';
 import levelArtistTemplate from './templates/level-artist';
 import levelGenreTemplate from './templates/level-genre';
 
@@ -39,7 +39,7 @@ export const nextGameLevel = (answer) => {
     }
     return;
   }
-  drawPage(resultTemplate(compileResult()));
+  drawPage(new ResultSuccessView(compileResult()));
 };
 export const getMistakes = () => gameState.mistakes;
 export const initializeGame = () => {

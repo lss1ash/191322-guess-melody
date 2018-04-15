@@ -1,22 +1,31 @@
-import {getElementFromString, drawPage} from '../utils';
-import welcomeTemplate from './welcome';
+import {initializeGame} from '../main';
+import AbstractView from '../abstract-view';
 
-// <!-- Результат игры: проигрыш время вышло -->
+export default class ResultTimeLeftView extends AbstractView {
+  constructor(result) {
+    super();
+    this.result = result;
+  }
 
-const template = `<section class="main main--result">
-  <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
+  get template() {
+    return `
+    <section class="main main--result">
+      <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
 
-  <h2 class="title">Увы и ах!</h2>
-  <div class="main-stat">Время вышло!<br>Вы не успели отгадать все мелодии</div>
-  <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
-</section>`;
+      <h2 class="title">Увы и ах!</h2>
+      <div class="main-stat">Время вышло!<br>Вы не успели отгадать все мелодии</div>
+      <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
+    </section>`;
+  }
 
-const resultPage = getElementFromString(template);
-const replay = resultPage.querySelector(`.main-replay`);
+  onReplayClick() {
+    initializeGame();
+  }
 
-const replayClickHandler = () => {
-  drawPage(welcomeTemplate);
-};
-replay.addEventListener(`click`, replayClickHandler);
-
-export default resultPage;
+  bind() {
+    this.element.querySelector(`.main-replay`).onclick = (evt) => {
+      evt.preventDefault();
+      this.onReplayClick();
+    };
+  }
+}
