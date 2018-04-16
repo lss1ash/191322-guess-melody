@@ -1,7 +1,7 @@
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
-import {getMistakes} from '../main.js';
 import AbstractView from '../abstract-view';
+import game from '../main';
 
 export default class LevelArtistView extends AbstractView {
   constructor(level) {
@@ -13,7 +13,7 @@ export default class LevelArtistView extends AbstractView {
     return `
     <section class="main main--level main--level-artist">
       ${svgTemplate}
-      ${getMistakesTemplate(getMistakes())}
+      ${getMistakesTemplate(game.state.mistakes)}
       <div class="main-wrap">
         <h2 class="title main-title">Кто исполняет эту песню?</h2>
         <div class="player-wrapper">
@@ -45,6 +45,7 @@ export default class LevelArtistView extends AbstractView {
   }
 
   onFormClick() {
+    throw new Error(`Click handler is required`);
   }
 
   bind() {

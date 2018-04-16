@@ -1,9 +1,3 @@
-import {drawPage} from '../utils';
-import getLevelArtist from './level-artist';
-import getLevelGenre from './level-genre';
-import {nextGameLevel} from '../main.js';
-import {GAME} from '../data/game';
-
 import AbstractView from '../abstract-view';
 
 export default class WelcomeView extends AbstractView {
@@ -26,13 +20,7 @@ export default class WelcomeView extends AbstractView {
   }
 
   onPlayClick() {
-    const level = nextGameLevel();
-    if (level) {
-      switch (level.type) {
-        case GAME.GENRE: drawPage(getLevelGenre(level).element); break;
-        case GAME.ARTIST: drawPage(getLevelArtist(level).element); break;
-      }
-    }
+    throw new Error(`You need to create handler first!`);
   }
 
   bind() {

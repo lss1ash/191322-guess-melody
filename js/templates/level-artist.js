@@ -1,4 +1,4 @@
-import {nextGameLevel} from '../main.js';
+import game from '../main';
 import LevelArtistView from './level-artist-view';
 
 export default (data) => {
@@ -7,7 +7,7 @@ export default (data) => {
   levelArtist.onFormClick = ({target}) => {
     if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
       const userAnswer = [...levelArtist.element.querySelectorAll(`input[type=radio]`)].map((radio) => radio.checked);
-      nextGameLevel(userAnswer);
+      game.nextLevel(userAnswer);
     }
   };
 

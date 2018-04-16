@@ -1,4 +1,3 @@
-import {initializeGame} from '../main';
 import AbstractView from '../abstract-view';
 
 export default class ResultSuccessView extends AbstractView {
@@ -22,7 +21,7 @@ export default class ResultSuccessView extends AbstractView {
   }
 
   onReplayClick() {
-    initializeGame();
+    throw new Error(`You need to create handler first!`);
   }
 
   bind() {

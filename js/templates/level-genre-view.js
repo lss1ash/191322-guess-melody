@@ -1,7 +1,7 @@
 import svgTemplate from './svg';
 import getMistakesTemplate from './mistakes';
-import {nextGameLevel, getMistakes} from '../main.js';
 import AbstractView from '../abstract-view';
+import game from '../main';
 
 export default class LevelGenreView extends AbstractView {
   constructor(level) {
@@ -13,7 +13,7 @@ export default class LevelGenreView extends AbstractView {
     return `
     <section class="main main--level main--level-genre">
       ${svgTemplate}
-      ${getMistakesTemplate(getMistakes())}
+      ${getMistakesTemplate(game.state.mistakes)}
       <div class="main-wrap">
         <h2 class="title">${this.level.question}</h2>
         <form class="genre">
@@ -52,14 +52,7 @@ export default class LevelGenreView extends AbstractView {
   }
 
   onLevelSubmit() {
-    this.sendButton.disabled = true;
-    const userAnswer = [...this.checkBoxes].map((checkbox) => {
-      const retValue = checkbox.checked;
-      checkbox.checked = false;
-      return retValue;
-    });
-
-    nextGameLevel(userAnswer);
+    throw new Error(`Submit handler is required`);
   }
 
   bind() {

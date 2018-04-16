@@ -1,4 +1,4 @@
-import {nextGameLevel} from '../main.js';
+import game from '../main';
 import LevelGenreView from './level-genre-view';
 
 export default (data) => {
@@ -11,7 +11,7 @@ export default (data) => {
       checkbox.checked = false;
       return retValue;
     });
-    nextGameLevel(userAnswer);
+    game.nextLevel(userAnswer);
   };
 
   return levelGenre;
