@@ -1,5 +1,3 @@
-// <span class="main-comparison">Вы заняли ${result.place} место из ${result.placesAll}. Это&nbsp;лучше чем у&nbsp;${result.betterPercent}%&nbsp;игроков</span>
-
 import {initializeGame} from '../main';
 import AbstractView from '../abstract-view';
 

@@ -1,6 +1,6 @@
 import {drawPage} from '../utils';
-import levelArtistTemplate from './level-artist';
-import levelGenreTemplate from './level-genre';
+import getLevelArtist from './level-artist';
+import getLevelGenre from './level-genre';
 import {nextGameLevel} from '../main.js';
 import {GAME} from '../data/game';
 
@@ -29,8 +29,8 @@ export default class WelcomeView extends AbstractView {
     const level = nextGameLevel();
     if (level) {
       switch (level.type) {
-        case GAME.GENRE: drawPage(levelGenreTemplate(level)); break;
-        case GAME.ARTIST: drawPage(levelArtistTemplate(level)); break;
+        case GAME.GENRE: drawPage(getLevelGenre(level).element); break;
+        case GAME.ARTIST: drawPage(getLevelArtist(level).element); break;
       }
     }
   }
