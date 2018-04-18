@@ -1,7 +1,6 @@
 const mainSection = document.querySelector(`.app .main`);
 
 export const drawPage = (pageElement) => {
-
   if (mainSection) {
     if (mainSection.firstElementChild) {
       mainSection.replaceChild(pageElement, mainSection.firstElementChild);

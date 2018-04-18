@@ -1,65 +1,82 @@
 import {drawPage} from './utils';
 import {GAME, INITIAL_STATE, getRandomLevels} from './data/game';
 import showResult from './data/show-result';
-import welcomeTemplate from './templates/welcome';
-import resultAttemptsLeftTemplate from './templates/result-attempts-left';
-import resultTemplate from './templates/result';
-import levelArtistTemplate from './templates/level-artist';
-import levelGenreTemplate from './templates/level-genre';
+import getWelcome from './welcome';
+import getResultAttemptsLeft from './result-attempts-left';
+import getResultSuccess from './result-success';
+import getLevelArtist from './level-artist';
+import getLevelGenre from './level-genre';
 
-let gameState;
+class Game {
 
-const compileResult = () => {
-  return {
-    minutes: 10,
-    seconds: 23,
-    score: gameState.currentLevel,
-    scoreFast: gameState.currentLevel,
-    mistakes: gameState.mistakes,
-    comparison: showResult([], {currentScore: gameState.currentLevel, notesLeft: GAME.MISTAKES_TO_LOOSE - gameState.mistakes, timeLeft: 12})
-  };
-};
-
-export const resetGameState = () => Object.assign({}, INITIAL_STATE);
-export const nextGameLevel = (answer) => {
-  if (gameState.currentLevel > 0) {
-    testCurrentAnswer(answer);
-  }
-  if (gameState.mistakes === GAME.MISTAKES_TO_LOOSE) {
-    drawPage(resultAttemptsLeftTemplate);
-    return;
-  }
-  const level = gameState.currentLevel < GAME.TOTAL_QUESTIONS ? gameState.levels[gameState.currentLevel] : false;
-  if (level) {
-    gameState.currentLevel++;
-
-    switch (level.type) {
-      case GAME.GENRE: drawPage(levelGenreTemplate(level)); break;
-      case GAME.ARTIST: drawPage(levelArtistTemplate(level)); break;
+  set state(currentState) {
+    if (!this._state) {
+      this._state = {};
     }
-    return;
+    this._state = Object.assign(this._state, currentState);
   }
-  drawPage(resultTemplate(compileResult()));
-};
-export const getMistakes = () => gameState.mistakes;
-export const initializeGame = () => {
-  gameState = resetGameState();
-  gameState.levels = getRandomLevels();
-  drawPage(welcomeTemplate);
-};
 
-const testUserAnswer = () => {
-  return gameState.userAnswers[gameState.currentLevel - 1].every((value, index) => gameState.levels[gameState.currentLevel - 1].answers[index].right === value);
-};
-
-const testCurrentAnswer = (userAnswer) => {
-  gameState.userAnswers.push(userAnswer);
-  if (!testUserAnswer()) {
-    gameState.mistakes++;
+  get state() {
+    return this._state;
   }
-};
+
+  get result() {
+    return {
+      minutes: 10,
+      seconds: 23,
+      score: this.state.currentLevel,
+      scoreFast: this.state.currentLevel,
+      mistakes: this.state.mistakes,
+      comparison: showResult([], {currentScore: this.state.currentLevel, notesLeft: GAME.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
+    };
+  }
+
+  init() {
+    this.state = INITIAL_STATE;
+    this.state = {levels: getRandomLevels()};
+    drawPage(getWelcome().element);
+  }
+
+  nextLevel(answer) {
+    if (this.state.currentLevel > 0) {
+      this.testCurrentAnswer(answer);
+    }
+    if (this.state.mistakes === GAME.MISTAKES_TO_LOOSE) {
+      drawPage(getResultAttemptsLeft().element);
+      return;
+    }
+    const level = this.state.currentLevel < GAME.TOTAL_QUESTIONS ? this.state.levels[this.state.currentLevel] : false;
+    if (level) {
+      this.state = {currentLevel: this.state.currentLevel + 1};
+
+      switch (level.type) {
+        case GAME.GENRE: drawPage(getLevelGenre(level).element); break;
+        case GAME.ARTIST: drawPage(getLevelArtist(level).element); break;
+      }
+      return;
+    }
+    drawPage(getResultSuccess(this.result));
+  }
+
+  testUserAnswer() {
+    const currentLevel = this.state.levels[this.state.currentLevel - 1];
+    const userAnswers = this.state.userAnswers[this.state.currentLevel - 1];
+    return userAnswers.every((value, index) => currentLevel.answers[index].right === value);
+  }
+
+  testCurrentAnswer(userAnswer) {
+    this.state.userAnswers.push(userAnswer);
+    if (!this.testUserAnswer()) {
+      this.state = {mistakes: this.state.mistakes + 1};
+    }
+  }
+
+}
+
+const game = new Game();
+export default game;
 
 const contentLoadedHandler = () => {
-  initializeGame();
+  game.init();
 };
 document.addEventListener(`DOMContentLoaded`, contentLoadedHandler);
