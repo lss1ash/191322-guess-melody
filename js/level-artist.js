@@ -1,5 +1,5 @@
-import game from '../main';
-import LevelArtistView from './level-artist-view';
+import game from './main';
+import LevelArtistView from './views/level-artist-view';
 
 export default (data) => {
   const levelArtist = new LevelArtistView(data);

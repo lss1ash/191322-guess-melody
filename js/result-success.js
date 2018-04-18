@@ -1,5 +1,5 @@
-import game from '../main';
-import ResultSuccessView from './result-success-view';
+import game from './main';
+import ResultSuccessView from './views/result-success-view';
 
 export default (data) => {
   const resultSuccessView = new ResultSuccessView(data);

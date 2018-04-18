@@ -1,15 +1,15 @@
 import {drawPage} from './utils';
 import {GAME, INITIAL_STATE, getRandomLevels} from './data/game';
 import showResult from './data/show-result';
-import getWelcome from './templates/welcome';
-import getResultAttemptsLeft from './templates/result-attempts-left';
-import getResultSuccess from './templates/result-success';
-import getLevelArtist from './templates/level-artist';
-import getLevelGenre from './templates/level-genre';
+import getWelcome from './welcome';
+import getResultAttemptsLeft from './result-attempts-left';
+import getResultSuccess from './result-success';
+import getLevelArtist from './level-artist';
+import getLevelGenre from './level-genre';
 
 class Game {
 
-  setState(currentState) {
+  set state(currentState) {
     if (!this._state) {
       this._state = {};
     }
@@ -32,8 +32,8 @@ class Game {
   }
 
   init() {
-    this.setState(INITIAL_STATE);
-    this.setState({levels: getRandomLevels()});
+    this.state = INITIAL_STATE;
+    this.state = {levels: getRandomLevels()};
     drawPage(getWelcome().element);
   }
 
@@ -47,7 +47,7 @@ class Game {
     }
     const level = this.state.currentLevel < GAME.TOTAL_QUESTIONS ? this.state.levels[this.state.currentLevel] : false;
     if (level) {
-      this.setState({currentLevel: this.state.currentLevel + 1});
+      this.state = {currentLevel: this.state.currentLevel + 1};
 
       switch (level.type) {
         case GAME.GENRE: drawPage(getLevelGenre(level).element); break;
@@ -59,13 +59,15 @@ class Game {
   }
 
   testUserAnswer() {
-    return this.result.userAnswers[this.result.currentLevel - 1].every((value, index) => this.result.levels[this.result.currentLevel - 1].answers[index].right === value);
+    const currentLevel = this.state.levels[this.state.currentLevel - 1];
+    const userAnswers = this.state.userAnswers[this.state.currentLevel - 1];
+    return userAnswers.every((value, index) => currentLevel.answers[index].right === value);
   }
 
   testCurrentAnswer(userAnswer) {
     this.state.userAnswers.push(userAnswer);
     if (!this.testUserAnswer()) {
-      this.setState({mistakes: this.state.mistakes + 1});
+      this.state = {mistakes: this.state.mistakes + 1};
     }
   }
 

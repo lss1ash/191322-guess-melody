@@ -1,9 +1,9 @@
-import {drawPage} from '../utils';
+import {drawPage} from './utils';
 import getLevelArtist from './level-artist';
 import getLevelGenre from './level-genre';
-import {GAME} from '../data/game';
-import game from '../main';
-import WelcomeView from './welcome-view';
+import {GAME} from './data/game';
+import game from './main';
+import WelcomeView from './views/welcome-view';
 
 export default () => {
   const welcomeView = new WelcomeView();

@@ -1,5 +1,5 @@
-import game from '../main';
-import ResultAttemptsLeftView from './result-attempts-left-view';
+import game from './main';
+import ResultAttemptsLeftView from './views/result-attempts-left-view';
 
 export default (data) => {
   const resultAttemptsLeft = new ResultAttemptsLeftView(data);

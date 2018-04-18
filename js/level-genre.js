@@ -1,5 +1,5 @@
-import game from '../main';
-import LevelGenreView from './level-genre-view';
+import game from './main';
+import LevelGenreView from './views/level-genre-view';
 
 export default (data) => {
   const levelGenre = new LevelGenreView(data);

@@ -1,5 +1,5 @@
-import game from '../main';
-import ResultTimeLeftView from './result-time-left-view';
+import game from './main';
+import ResultTimeLeftView from './views/result-time-left-view';
 
 export default (data) => {
   const resultTimeLeft = new ResultTimeLeftView(data);

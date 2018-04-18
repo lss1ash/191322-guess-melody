@@ -1,6 +1,6 @@
-import svgTemplate from './svg';
-import getMistakesTemplate from './mistakes';
-import AbstractView from '../abstract-view';
+import svgTemplate from '../templates/svg';
+import getMistakesTemplate from '../templates/mistakes';
+import AbstractView from './abstract-view';
 import game from '../main';
 
 export default class LevelGenreView extends AbstractView {
