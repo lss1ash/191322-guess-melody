@@ -1,12 +1,23 @@
 import game from './main';
 import ResultSuccessView from '../views/result-success-view';
 
-export default (data) => {
-  const resultSuccessView = new ResultSuccessView(data);
+export default class ResultSuccessScreen {
+  constructor(data) {
+    this._data = data;
+  }
 
-  resultSuccessView.onReplayClick = () => {
-    game.init();
-  };
+  _init() {
+    this._resultSuccess = new ResultSuccessView(this._data);
+    this._resultSuccess.onReplayClick = () => {
+      game.init();
+    };
+  }
 
-  return resultSuccessView;
-};
+  get screen() {
+    if (!this._resultSuccess) {
+      this._init();
+    }
+    return this._resultSuccess.element;
+  }
+
+}

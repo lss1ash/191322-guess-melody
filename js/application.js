@@ -1,32 +1,34 @@
-const mainSection = document.querySelector(`.app .main`);
+import WelcomeScreen from './screens/welcome-screen';
 
-const drawScreen = (pageElement) => {
-  if (mainSection) {
-    if (mainSection.firstElementChild) {
-      mainSection.replaceChild(pageElement, mainSection.firstElementChild);
-    } else {
-      mainSection.appendChild(pageElement);
-    }
-  }
-};
+const mainSection = document.querySelector(`.app .main`);
 
 export default class Application {
 
   static showWelcome() {
     const welcome = new WelcomeScreen();
-    drawScreen(welcome.element);
+    Application.drawScreen(welcome.screen);
   }
 
   static showGame() {
-    const model = new QuestModel();
-    const gameScreen = new GameScreen(model);
-    drawScreen(gameScreen.element);
-    gameScreen.startGame();
+    // const gameModel = new GameModel();
+    // const gameScreen = new GameScreen(model);
+    // Application.drawScreen(gameScreen.element);
+    // gameScreen.startGame();
   }
+  //
+  // static showStats(stats) {
+  //   const statistics = new StatsScreen(stats);
+  //   drawScreen(statistics.element);
+  // }
 
-  static showStats(stats) {
-    const statistics = new StatsScreen(stats);
-    drawScreen(statistics.element);
+  static drawScreen(element) {
+    if (mainSection) {
+      if (mainSection.firstElementChild) {
+        mainSection.replaceChild(element, mainSection.firstElementChild);
+      } else {
+        mainSection.appendChild(element);
+      }
+    }
   }
 
 }
