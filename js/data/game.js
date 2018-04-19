@@ -1,9 +1,10 @@
 import {getRandom, shuffleArray} from '../utils';
 
-export const GAME = {
+export const Options = {
   ARTIST_SONGS_PER_LEVEL: 3,
   GENRE_SONGS_PER_LEVEL: 4,
   TOTAL_QUESTIONS: 10,
+  ANSWER_SPEED: 30,
   GENRE: `levelGenre`,
   ARTIST: `levelArtist`,
   MISTAKES_TO_LOOSE: 3
@@ -67,12 +68,12 @@ const createRandomArtistLevel = () => {
   const tempMelodies = shuffleArray(melodies.slice());
   const rightMelody = tempMelodies.pop();
   const levelArtist = {
-    type: GAME.ARTIST,
+    type: Options.ARTIST,
     question: `Кто исполняет эту песню?`,
     melodie: rightMelody,
     answers: []
   };
-  for (let i = 0; i < GAME.ARTIST_SONGS_PER_LEVEL; i++) {
+  for (let i = 0; i < Options.ARTIST_SONGS_PER_LEVEL; i++) {
     const melodie = i === 0 ? rightMelody : tempMelodies.pop();
     levelArtist.answers.push({
       melodie,
@@ -87,11 +88,11 @@ const createRandomGenreLevel = () => {
   const tempMelodies = shuffleArray(melodies.slice());
   const rightMelody = tempMelodies.pop();
   const levelGenre = {
-    type: GAME.GENRE,
+    type: Options.GENRE,
     question: `Выберите ${rightMelody.genre} треки`,
     answers: []
   };
-  for (let i = 0; i < GAME.GENRE_SONGS_PER_LEVEL; i++) {
+  for (let i = 0; i < Options.GENRE_SONGS_PER_LEVEL; i++) {
     const melodie = i === 0 ? rightMelody : tempMelodies.pop();
     levelGenre.answers.push({
       melodie,
@@ -106,7 +107,7 @@ const createLevel = [createRandomArtistLevel, createRandomGenreLevel];
 
 export const getRandomLevels = () => {
   const randomLevels = [];
-  for (let i = 0; i < GAME.TOTAL_QUESTIONS; i++) {
+  for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
     randomLevels.push(createLevel[getRandom(0, 2)]());
   }
   return randomLevels;

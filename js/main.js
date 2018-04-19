@@ -1,5 +1,5 @@
 import {drawPage} from './utils';
-import {GAME, INITIAL_STATE, getRandomLevels} from './data/game';
+import {Options, INITIAL_STATE, getRandomLevels} from './data/game';
 import showResult from './data/show-result';
 import getWelcome from './welcome';
 import getResultAttemptsLeft from './result-attempts-left';
@@ -27,7 +27,7 @@ class Game {
       score: this.state.currentLevel,
       scoreFast: this.state.currentLevel,
       mistakes: this.state.mistakes,
-      comparison: showResult([], {currentScore: this.state.currentLevel, notesLeft: GAME.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
+      comparison: showResult([], {currentScore: this.state.currentLevel, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
     };
   }
 
@@ -41,17 +41,17 @@ class Game {
     if (this.state.currentLevel > 0) {
       this.testCurrentAnswer(answer);
     }
-    if (this.state.mistakes === GAME.MISTAKES_TO_LOOSE) {
+    if (this.state.mistakes === Options.MISTAKES_TO_LOOSE) {
       drawPage(getResultAttemptsLeft().element);
       return;
     }
-    const level = this.state.currentLevel < GAME.TOTAL_QUESTIONS ? this.state.levels[this.state.currentLevel] : false;
+    const level = this.state.currentLevel < Options.TOTAL_QUESTIONS ? this.state.levels[this.state.currentLevel] : false;
     if (level) {
       this.state = {currentLevel: this.state.currentLevel + 1};
 
       switch (level.type) {
-        case GAME.GENRE: drawPage(getLevelGenre(level).element); break;
-        case GAME.ARTIST: drawPage(getLevelArtist(level).element); break;
+        case Options.GENRE: drawPage(getLevelGenre(level).element); break;
+        case Options.ARTIST: drawPage(getLevelArtist(level).element); break;
       }
       return;
     }
