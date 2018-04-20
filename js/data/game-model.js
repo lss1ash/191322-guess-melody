@@ -1,5 +1,8 @@
 import {getRandom, shuffleArray} from '../utils';
+import showResult from './show-result';
 import melodies from './melodies';
+
+const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
 
 const Options = {
   ARTIST_SONGS_PER_LEVEL: 3,
@@ -12,7 +15,6 @@ const Options = {
 };
 
 const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Options.GENRE) => {
-
   const tempMelodies = shuffleArray(melodies.slice());
   const rightMelody = tempMelodies.pop();
   const level = {
@@ -31,19 +33,25 @@ const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Option
   }
   level.answers = shuffleArray(level.answers);
   return level;
-
 };
 
 
 export default class GameModel {
   constructor() {
-    this._INITIAL_STATE = {
+    this.INITIAL_STATE = {
       currentLevel: 0,
+      currentFastScore: 0,
       levels: [],
       mistakes: 0,
       time: 0,
-      userAnswers: []
+      userAnswers: [],
+      previousScores
     };
+  }
+
+  init() {
+    this.state = this.INITIAL_STATE;
+    this.state = {levels: this._getRandomLevels()};
   }
 
   _getRandomLevels() {
@@ -54,71 +62,42 @@ export default class GameModel {
     return randomLevels;
   }
 
-  //   set state(currentState) {
-  //     if (!this._state) {
-  //       this._state = {};
-  //     }
-  //     this._state = Object.assign(this._state, currentState);
-  //   }
-  //
-  //   get state() {
-  //     return this._state;
-  //   }
-  //
-  //   get result() {
-  //     return {
-  //       minutes: 10,
-  //       seconds: 23,
-  //       score: this.state.currentLevel,
-  //       scoreFast: this.state.currentLevel,
-  //       mistakes: this.state.mistakes,
-  //       comparison: showResult([], {currentScore: this.state.currentLevel, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
-  //     };
-  //   }
-  //
-  //   init() {
-  //     this.state = INITIAL_STATE;
-  //     this.state = {levels: getRandomLevels()};
-  //     drawPage(getWelcome().element);
-  //   }
+  set state(currentState) {
+    if (!this._state) {
+      this._state = {};
+    }
+    this._state = Object.assign(this._state, currentState);
+  }
+
+  get state() {
+    return this._state;
+  }
+
+  get result() {
+    return {
+      minutes: 10,
+      seconds: 23,
+      score: this.state.currentLevel,
+      scoreFast: this.state.currentFastScore,
+      mistakes: this.state.mistakes,
+      comparison: showResult(this.previousScores, {currentScore: this.state.currentLevel, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
+    };
+  }
+
+  set answer(currentAnswer) {
+
+  }
+
+  get nextLevel() {
+
+  }
+
 
 }
 
 
-
-
-
-
-
 // class Game {
 //
-//   set state(currentState) {
-//     if (!this._state) {
-//       this._state = {};
-//     }
-//     this._state = Object.assign(this._state, currentState);
-//   }
-//
-//   get state() {
-//     return this._state;
-//   }
-//
-//   get result() {
-//     return {
-//       minutes: 10,
-//       seconds: 23,
-//       score: this.state.currentLevel,
-//       scoreFast: this.state.currentLevel,
-//       mistakes: this.state.mistakes,
-//       comparison: showResult([], {currentScore: this.state.currentLevel, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
-//     };
-//   }
-//
-//   init() {
-//     this.state = INITIAL_STATE;
-//     this.state = {levels: getRandomLevels()};
-//     drawPage(getWelcome().element);
-//   }
 //
 //   nextLevel(answer) {
 //     if (this.state.currentLevel > 0) {
