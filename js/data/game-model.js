@@ -48,19 +48,12 @@ export default class GameModel {
       userAnswers: [],
       previousScores
     };
+    this.Options = Options;
   }
 
   init() {
     this.state = this.INITIAL_STATE;
     this.state = {levels: this._getRandomLevels()};
-  }
-
-  _getRandomLevels() {
-    const randomLevels = [];
-    for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
-      randomLevels.push(createLevel());
-    }
-    return randomLevels;
   }
 
   set state(currentState) {
@@ -98,11 +91,25 @@ export default class GameModel {
     return true;
   }
 
+  _getRandomLevels() {
+    const randomLevels = [];
+    for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
+      randomLevels.push(createLevel());
+    }
+    return randomLevels;
+  }
+
   _checkAnswer(currentAnswer) {
     this.state.userAnswers.push(currentAnswer);
     if (!this._isCorrectAnswer()) {
       this.state = {mistakes: this.state.mistakes + 1};
     }
+  }
+
+  _isCorrectAnswer() {
+    const currentLevel = this.state.levels[this.state.currentLevel - 1];
+    const userAnswers = this.state.userAnswers[this.state.currentLevel - 1];
+    return userAnswers.every((value, index) => currentLevel.answers[index].right === value);
   }
 
   getNextLevel(currentAnswer) {
@@ -117,9 +124,4 @@ export default class GameModel {
     return false;
   }
 
-  _isCorrectAnswer() {
-    const currentLevel = this.state.levels[this.state.currentLevel - 1];
-    const userAnswers = this.state.userAnswers[this.state.currentLevel - 1];
-    return userAnswers.every((value, index) => currentLevel.answers[index].right === value);
-  }
 }

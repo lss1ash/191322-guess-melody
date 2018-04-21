@@ -1,4 +1,5 @@
 import WelcomeScreen from './screens/welcome-screen';
+import Game from './data/game';
 
 const mainSection = document.querySelector(`.app .main`);
 
@@ -10,8 +11,8 @@ export default class Application {
   }
 
   static showGame() {
-    // const gameModel = new GameModel();
-    // const gameScreen = new GameScreen(model);
+    const game = new Game();
+    game.start();
     // Application.drawScreen(gameScreen.element);
     // gameScreen.startGame();
   }
