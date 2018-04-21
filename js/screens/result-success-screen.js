@@ -1,4 +1,3 @@
-import game from './main';
 import ResultSuccessView from '../views/result-success-view';
 
 export default class ResultSuccessScreen {
@@ -9,7 +8,7 @@ export default class ResultSuccessScreen {
   _init() {
     this._resultSuccess = new ResultSuccessView(this._data);
     this._resultSuccess.onReplayClick = () => {
-      game.init();
+      // game.init();
     };
   }
 

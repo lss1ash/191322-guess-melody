@@ -1,4 +1,6 @@
 import WelcomeScreen from './screens/welcome-screen';
+import LevelArtistScreen from './screens/level-artist-screen';
+import LevelGenreScreen from './screens/level-genre-screen';
 import Game from './data/game';
 
 const mainSection = document.querySelector(`.app .main`);
@@ -13,14 +15,17 @@ export default class Application {
   static showGame() {
     const game = new Game();
     game.start();
-    // Application.drawScreen(gameScreen.element);
-    // gameScreen.startGame();
   }
-  //
-  // static showStats(stats) {
-  //   const statistics = new StatsScreen(stats);
-  //   drawScreen(statistics.element);
-  // }
+
+  static showArtist(level) {
+    const levelArtist = new LevelArtistScreen(level);
+    Application.drawScreen(levelArtist.screen);
+  }
+
+  static showGenre(level) {
+    const levelGenre = new LevelGenreScreen(level);
+    Application.drawScreen(levelGenre.screen);
+  }
 
   static drawScreen(element) {
     if (mainSection) {

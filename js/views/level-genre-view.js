@@ -1,7 +1,6 @@
 import svgTemplate from '../templates/svg';
-import getMistakesTemplate from '../templates/mistakes';
+// import getMistakesTemplate from '../templates/mistakes';
 import AbstractView from './abstract-view';
-import game from '../main';
 
 export default class LevelGenreView extends AbstractView {
   constructor(level) {
@@ -9,11 +8,12 @@ export default class LevelGenreView extends AbstractView {
     this.level = level;
   }
 
+  // ${getMistakesTemplate(game.state.mistakes)}
   get template() {
     return `
     <section class="main main--level main--level-genre">
       ${svgTemplate}
-      ${getMistakesTemplate(game.state.mistakes)}
+
       <div class="main-wrap">
         <h2 class="title">${this.level.question}</h2>
         <form class="genre">

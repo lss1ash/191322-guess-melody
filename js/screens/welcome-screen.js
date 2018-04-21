@@ -3,6 +3,8 @@
 // import getLevelGenre from './level-genre';
 // import {Options} from '../data/game';
 // import game from '../main';
+
+import Application from '../application';
 import WelcomeView from '../views/welcome-view';
 
 export default class WelcomeScreen {
@@ -17,6 +19,7 @@ export default class WelcomeScreen {
       //     case Options.ARTIST: drawPage(getLevelArtist(level).element); break;
       //   }
       // }
+      Application.showGame();
     };
   }
 

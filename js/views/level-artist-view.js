@@ -1,7 +1,6 @@
 import svgTemplate from '../templates/svg';
-import getMistakesTemplate from '../templates/mistakes';
+// import getMistakesTemplate from '../templates/mistakes';
 import AbstractView from './abstract-view';
-import game from '../main';
 
 export default class LevelArtistView extends AbstractView {
   constructor(level) {
@@ -9,11 +8,13 @@ export default class LevelArtistView extends AbstractView {
     this.level = level;
   }
 
+  // ${getMistakesTemplate()}
+
   get template() {
     return `
     <section class="main main--level main--level-artist">
       ${svgTemplate}
-      ${getMistakesTemplate(game.state.mistakes)}
+
       <div class="main-wrap">
         <h2 class="title main-title">Кто исполняет эту песню?</h2>
         <div class="player-wrapper">

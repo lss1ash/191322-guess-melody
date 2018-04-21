@@ -1,29 +1,32 @@
 import GameModel from './game-model';
 import Application from '../application';
-import LevelArtistScreen from '../screens/level-artist-screen';
-import LevelGenreScreen from '../screens/level-genre-screen';
 
 export default class Game {
   constructor() {
     this.model = new GameModel();
-    this.levelArtistScreen = new LevelArtistScreen();
-    this.levelGenreScreen = new LevelGenreScreen();
     this.model.init();
   }
 
   start() {
-
+    this.showScreen();
   }
 
   end() {
 
   }
 
-  showScreen() {
-    const level = this.model.getNextLevel();
+  nextLevel(currentAnswer) {
+    this.showScreen(currentAnswer);
+  }
+
+  showScreen(currentAnswer) {
+    const level = this.model.getNextLevel(currentAnswer);
+    // const levelArtist = new LevelArtistScreen(level);
+    // const levelGenre = new LevelGenreScreen(level);
+    // levelArtist.nextLevel = levelGenre.nextLevel = this.nextLevel;
     switch (level.type) {
-      case this.model.Options.ARTIST: Application.drawScreen(this.levelArtistScreen); break;
-      case this.model.Options.GENRE: Application.drawScreen(this.levelGenreScreen); break;
+      case this.model.Options.ARTIST: Application.showArtist(level); break;
+      case this.model.Options.GENRE: Application.showGenre(level); break;
     }
   }
 
