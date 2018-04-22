@@ -1,4 +1,4 @@
-import Application from '../application';
+import Application from '../app';
 import WelcomeView from '../views/welcome-view';
 
 export default class WelcomeScreen {

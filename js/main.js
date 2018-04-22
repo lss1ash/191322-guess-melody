@@ -1,4 +1,4 @@
-import Application from './application';
+import Application from './app';
 
 const onContentLoaded = () => {
   Application.showWelcome();

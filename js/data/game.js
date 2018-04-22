@@ -1,5 +1,5 @@
 import GameModel from './game-model';
-import Application from '../application';
+import Application from '../app';
 import LevelArtistScreen from '../screens/level-artist-screen';
 import LevelGenreScreen from '../screens/level-genre-screen';
 import ResultSuccessScreen from '../screens/result-success-screen';
