@@ -8,8 +8,12 @@ export default class ResultSuccessScreen {
   _init() {
     this._resultSuccess = new ResultSuccessView(this._data);
     this._resultSuccess.onReplayClick = () => {
-      // game.init();
+      this.replay();
     };
+  }
+
+  replay() {
+    throw new Error(`replay() must be replaced`);
   }
 
   get screen() {

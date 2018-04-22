@@ -22,7 +22,6 @@ export default (previousScores, result = {}) => {
     return `Время вышло! Вы не успели отгадать все мелодии`;
   }
 
-  previousScores.push(currentScore);
   const allScores = previousScores.length;
   previousScores.sort((a, b) => a - b);
 

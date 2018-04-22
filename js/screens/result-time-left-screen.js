@@ -5,8 +5,12 @@ export default class ResultTimeLeftScreen {
   _init() {
     this._resultTimeLeft = new ResultTimeLeftView();
     this._resultTimeLeft.onReplayClick = () => {
-      // game.init();
+      this.replay();
     };
+  }
+
+  replay() {
+    throw new Error(`replay() must be replaced`);
   }
 
   get screen() {

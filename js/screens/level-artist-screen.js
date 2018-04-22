@@ -1,5 +1,4 @@
 import LevelArtistView from '../views/level-artist-view';
-import Game from '../data/game';
 
 export default class LevelArtistScreen {
   constructor(level) {
@@ -11,9 +10,14 @@ export default class LevelArtistScreen {
     this._levelArtist.onFormClick = ({target}) => {
       if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
         const userAnswer = [...this._levelArtist.element.querySelectorAll(`input[type=radio]`)].map((radio) => radio.checked);
-        Game.nextLevel(userAnswer);
+        this.nextLevel(userAnswer);
       }
     };
+    this._levelArtist.mistakes = () => this._mistakes;
+  }
+
+  set mistakes(mistakes) {
+    this._mistakes = mistakes;
   }
 
   nextLevel() {

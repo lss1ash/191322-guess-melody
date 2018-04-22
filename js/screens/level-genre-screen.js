@@ -1,5 +1,4 @@
 import LevelGenreView from '../views/level-genre-view';
-import Game from '../data/game';
 
 export default class LevelGenreScreen {
   constructor(level) {
@@ -15,9 +14,13 @@ export default class LevelGenreScreen {
         checkbox.checked = false;
         return retValue;
       });
-      Game.nextLevel(userAnswer);
-      // ПРОБОВАТЬ ПАТТЕРН СЛУШАТЕЛЬ
+      this.nextLevel(userAnswer);
     };
+    this._levelGenre.mistakes = () => this._mistakes;
+  }
+
+  set mistakes(mistakes) {
+    this._mistakes = mistakes;
   }
 
   nextLevel() {

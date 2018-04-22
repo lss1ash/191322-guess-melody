@@ -68,13 +68,14 @@ export default class GameModel {
   }
 
   get result() {
+    this.state.previousScores.push(this.state.currentLevel + this.state.currentFastScore);
     return {
       minutes: 10,
       seconds: 23,
       score: this.state.currentLevel,
       scoreFast: this.state.currentFastScore,
       mistakes: this.state.mistakes,
-      comparison: showResult(this.previousScores, {currentScore: this.state.currentLevel, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
+      comparison: showResult(this.state.previousScores, {currentScore: this.state.currentLevel + this.state.currentFastScore, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
     };
   }
 
@@ -85,7 +86,7 @@ export default class GameModel {
     if (this.state.time >= Options.TOTAL_TIME) {
       return false;
     }
-    if (this.state.currentLevel === Options.TOTAL_QUESTIONS - 1) {
+    if (this.state.currentLevel === Options.TOTAL_QUESTIONS) {
       return false;
     }
     return true;
@@ -113,11 +114,14 @@ export default class GameModel {
   }
 
   getNextLevel(currentAnswer) {
+    console.log(`======= currentLevel: ${this.state.currentLevel}`);
+    console.log(currentAnswer);
     if (this.state.currentLevel > 0) {
       this._checkAnswer(currentAnswer);
     }
     if (this.hasNextLevel) {
       const level = this.state.levels[this.state.currentLevel];
+      console.log(level.answers);
       this.state = {currentLevel: this.state.currentLevel + 1};
       return level;
     }

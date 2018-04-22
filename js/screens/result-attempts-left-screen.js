@@ -5,8 +5,12 @@ export default class ResultAttemptsLeftScreen {
   _init() {
     this._resultAttemptsLeft = new ResultAttemptsLeftView();
     this._resultAttemptsLeft.onReplayClick = () => {
-      // game.init();
+      this.replay();
     };
+  }
+
+  replay() {
+    throw new Error(`replay() must be replaced`);
   }
 
   get screen() {
