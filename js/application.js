@@ -1,9 +1,7 @@
 import WelcomeScreen from './screens/welcome-screen';
-
 import Game from './data/game';
 
 const mainSection = document.querySelector(`.app .main`);
-
 
 export default class Application {
 
