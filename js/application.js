@@ -4,6 +4,7 @@ import Game from './data/game';
 
 const mainSection = document.querySelector(`.app .main`);
 
+
 export default class Application {
 
   static showWelcome() {
