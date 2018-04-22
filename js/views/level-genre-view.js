@@ -1,11 +1,10 @@
-import svgTemplate from '../templates/svg';
-import getMistakesTemplate from '../templates/mistakes';
 import AbstractView from './abstract-view';
 
 export default class LevelGenreView extends AbstractView {
-  constructor(level) {
+  constructor(level, time) {
     super();
     this.level = level;
+    this.time = time;
   }
 
   mistakes() {
@@ -15,8 +14,10 @@ export default class LevelGenreView extends AbstractView {
   get template() {
     return `
     <section class="main main--level main--level-genre">
-      ${svgTemplate}
-      ${getMistakesTemplate(this.mistakes())}
+      ${this._timeTemplate()}
+      <div class="main-mistakes">
+        ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
+      </div>
       <div class="main-wrap">
         <h2 class="title">${this.level.question}</h2>
         <form class="genre">
@@ -44,6 +45,22 @@ export default class LevelGenreView extends AbstractView {
     </div>`;
   }
 
+  _timeTemplate() {
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
+      <circle
+        cx="390" cy="390" r="370"
+        class="timer-line"
+        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+
+      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
+        <span class="timer-value-mins">${this.time.normalizedMinutes}</span><!--
+        --><span class="timer-value-dots">:</span><!--
+        --><span class="timer-value-secs">${this.time.normalizedSeconds}</span>
+      </div>
+    </svg>`;
+  }
+
   _onNoteClick({target}) {
     if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `CHECKBOX`) {
       let checked = false;
@@ -62,6 +79,10 @@ export default class LevelGenreView extends AbstractView {
     this._form = this.element.querySelector(`form.genre`);
     this.checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
     this.sendButton = this._form.querySelector(`.genre-answer-send`);
+    this._timer = {
+      minutesNode: this.element.querySelector(`.timer-value-mins`),
+      secondsNode: this.element.querySelector(`.timer-value-secs`)
+    };
 
     this._form.onsubmit = (evt) => {
       evt.preventDefault();

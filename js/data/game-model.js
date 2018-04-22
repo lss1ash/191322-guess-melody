@@ -1,8 +1,10 @@
-import {getRandom, shuffleArray} from '../utils';
+import {getRandom, getMinSec, shuffleArray} from '../utils';
 import showResult from './show-result';
 import melodies from './melodies';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
+
+const SECONDS_PER_MINUTE = 60;
 
 const Options = {
   ARTIST_SONGS_PER_LEVEL: 3,
@@ -12,8 +14,10 @@ const Options = {
   TOTAL_QUESTIONS: 10,
   ANSWER_SPEED: 30,
   MISTAKES_TO_LOOSE: 3,
-  TOTAL_TIME: 600
+  TOTAL_TIME: 5 * SECONDS_PER_MINUTE,
+  TIME_TO_STOP: 0
 };
+
 
 const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Options.GENRE) => {
   const tempMelodies = shuffleArray(melodies.slice());
@@ -39,16 +43,19 @@ const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Option
 
 export default class GameModel {
   constructor() {
+    this.Options = Options;
+    const {minutes, seconds} = getMinSec(Options.TOTAL_TIME);
     this.INITIAL_STATE = {
       currentLevel: 0,
       currentFastScore: 0,
       levels: [],
       mistakes: 0,
-      time: 0,
+      time: Options.TOTAL_TIME,
+      minutes,
+      seconds,
       userAnswers: [],
       previousScores
     };
-    this.Options = Options;
   }
 
   init() {
@@ -70,8 +77,8 @@ export default class GameModel {
   get result() {
     this.state.previousScores.push(this.state.currentLevel + this.state.currentFastScore);
     return {
-      minutes: 10,
-      seconds: 23,
+      minutes: this.state.minutes,
+      seconds: this.state.seconds,
       score: this.state.currentLevel,
       scoreFast: this.state.currentFastScore,
       mistakes: this.state.mistakes,
@@ -83,7 +90,7 @@ export default class GameModel {
     if (this.state.mistakes === Options.MISTAKES_TO_LOOSE) {
       return false;
     }
-    if (this.state.time >= Options.TOTAL_TIME) {
+    if (this.state.time === Options.TIME_TO_STOP) {
       return false;
     }
     if (this.state.currentLevel === Options.TOTAL_QUESTIONS) {
@@ -114,16 +121,35 @@ export default class GameModel {
   }
 
   getNextLevel(currentAnswer) {
-    console.log(`======= currentLevel: ${this.state.currentLevel}`);
-    console.log(currentAnswer);
     if (this.state.currentLevel > 0) {
       this._checkAnswer(currentAnswer);
     }
     if (this.hasNextLevel) {
       const level = this.state.levels[this.state.currentLevel];
-      console.log(level.answers);
       this.state = {currentLevel: this.state.currentLevel + 1};
       return level;
+    }
+    return false;
+  }
+
+  getNormalizedTime() {
+    const minutes = this.state.minutes.toString();
+    const seconds = this.state.seconds.toString();
+    const normalizedMinutes = minutes.length === 2 ? minutes : `0${minutes}`;
+    const normalizedSeconds = seconds.length === 2 ? seconds : `0${seconds}`;
+    return {normalizedMinutes, normalizedSeconds};
+  }
+
+  tick() {
+    if (this.state.time > 0) {
+      const time = this.state.time - 1;
+      const {minutes, seconds} = getMinSec(time);
+      this.state = {
+        time,
+        minutes,
+        seconds
+      };
+      return true;
     }
     return false;
   }

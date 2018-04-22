@@ -7,6 +7,11 @@ export default class AbstractView {
     }
   }
 
+  set timer(time) {
+    this._timer.minutesNode.innerText = time.normalizedMinutes;
+    this._timer.secondsNode.innerText = time.normalizedSeconds;
+  }
+
   get template() {
     throw new Error(`Template is required`);
   }

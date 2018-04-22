@@ -1,11 +1,10 @@
-import svgTemplate from '../templates/svg';
-import getMistakesTemplate from '../templates/mistakes';
 import AbstractView from './abstract-view';
 
 export default class LevelArtistView extends AbstractView {
-  constructor(level) {
+  constructor(level, time) {
     super();
     this.level = level;
+    this.time = time;
   }
 
   mistakes() {
@@ -15,8 +14,10 @@ export default class LevelArtistView extends AbstractView {
   get template() {
     return `
     <section class="main main--level main--level-artist">
-      ${svgTemplate}
-      ${getMistakesTemplate(this.mistakes())}
+      ${this._timeTemplate()}
+      <div class="main-mistakes">
+        ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
+      </div>
       <div class="main-wrap">
         <h2 class="title main-title">Кто исполняет эту песню?</h2>
         <div class="player-wrapper">
@@ -47,6 +48,22 @@ export default class LevelArtistView extends AbstractView {
     </div>`;
   }
 
+  _timeTemplate() {
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
+      <circle
+        cx="390" cy="390" r="370"
+        class="timer-line"
+        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+
+      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
+        <span class="timer-value-mins">${this.time.normalizedMinutes}</span><!--
+        --><span class="timer-value-dots">:</span><!--
+        --><span class="timer-value-secs">${this.time.normalizedSeconds}</span>
+      </div>
+    </svg>`;
+  }
+
   onFormClick() {
     throw new Error(`Click handler is required`);
   }
@@ -55,6 +72,10 @@ export default class LevelArtistView extends AbstractView {
     this._form = this.element.querySelector(`form.main-list`);
     this._checkBoxes = this.element.querySelectorAll(`.genre-answer input[type=checkbox]`);
     this._sendButton = this.element.querySelector(`.genre-answer-send`);
+    this._timer = {
+      minutesNode: this.element.querySelector(`.timer-value-mins`),
+      secondsNode: this.element.querySelector(`.timer-value-secs`)
+    };
 
     this._form.onclick = (evt) => {
       this.onFormClick(evt);

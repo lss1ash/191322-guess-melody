@@ -1,12 +1,13 @@
 import LevelGenreView from '../views/level-genre-view';
 
 export default class LevelGenreScreen {
-  constructor(level) {
+  constructor(level, time) {
     this._level = level;
+    this._time = time;
   }
 
   _init() {
-    this._levelGenre = new LevelGenreView(this._level);
+    this._levelGenre = new LevelGenreView(this._level, this._time);
     this._levelGenre.onLevelSubmit = () => {
       this._levelGenre.sendButton.disabled = true;
       const userAnswer = [...this._levelGenre.checkBoxes].map((checkbox) => {
@@ -32,6 +33,10 @@ export default class LevelGenreScreen {
       this._init();
     }
     return this._levelGenre.element;
+  }
+
+  drawTime(time) {
+    this._levelGenre.timer = time;
   }
 
 }

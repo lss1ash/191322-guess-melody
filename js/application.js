@@ -16,16 +16,6 @@ export default class Application {
     game.start();
   }
 
-  // static showArtist(level) {
-  //   const levelArtist = new LevelArtistScreen(level);
-  //   Application.drawScreen(levelArtist.screen);
-  // }
-  //
-  // static showGenre(level) {
-  //   const levelGenre = new LevelGenreScreen(level);
-  //   Application.drawScreen(levelGenre.screen);
-  // }
-
   static drawScreen(element) {
     if (mainSection) {
       if (mainSection.firstElementChild) {

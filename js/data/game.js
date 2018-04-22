@@ -10,6 +10,7 @@ export default class Game {
   constructor() {
     this.model = new GameModel();
     this.model.init();
+    this.timerInit();
   }
 
   start() {
@@ -40,19 +41,32 @@ export default class Game {
 
   showScreen(currentAnswer) {
     const level = this.model.getNextLevel(currentAnswer);
+    const time = this.model.getNormalizedTime();
     if (level) {
-      const levelArtist = new LevelArtistScreen(level);
-      const levelGenre = new LevelGenreScreen(level);
-      levelArtist.mistakes = this.model.state.mistakes;
-      levelGenre.mistakes = this.model.state.mistakes;
-      levelArtist.nextLevel = levelGenre.nextLevel = (userAnswer) => this.nextLevel(userAnswer);
       switch (level.type) {
-        case this.model.Options.ARTIST: Application.drawScreen(levelArtist.screen); break;
-        case this.model.Options.GENRE: Application.drawScreen(levelGenre.screen); break;
+        case this.model.Options.ARTIST:
+          this.level = new LevelArtistScreen(level, time);
+          break;
+        case this.model.Options.GENRE:
+          this.level = new LevelGenreScreen(level, time);
+          break;
       }
+      this.level.mistakes = this.model.state.mistakes;
+      this.level.nextLevel = (userAnswer) => this.nextLevel(userAnswer);
+      Application.drawScreen(this.level.screen);
     } else {
       this.end();
     }
+  }
+
+  timerInit() {
+    this._interval = setInterval(() => {
+      if (!this.model.tick()) {
+        clearInterval(this._interval);
+        this.end();
+      }
+      this.level.drawTime(this.model.getNormalizedTime());
+    }, 1000);
   }
 
 }

@@ -1,3 +1,5 @@
+const SECONDS_PER_MINUTE = 60;
+
 export const getElementFromString = (str) => {
   const element = document.createElement(`section`);
   element.innerHTML = str;
@@ -17,4 +19,13 @@ export const shuffleArray = (array) => {
     }
   }
   return array;
+};
+
+export const getMinSec = (time) => {
+  const minutes = Math.floor(time / SECONDS_PER_MINUTE);
+  const seconds = time - (minutes * SECONDS_PER_MINUTE);
+  return {
+    minutes,
+    seconds
+  };
 };
