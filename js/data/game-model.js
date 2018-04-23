@@ -75,8 +75,7 @@ export default class GameModel {
   }
 
   get result() {
-    this.state.previousScores.push(this.state.currentLevel + this.state.currentFastScore);
-    return {
+    const result = {
       minutes: this.state.minutes,
       seconds: this.state.seconds,
       score: this.state.currentLevel,
@@ -84,6 +83,8 @@ export default class GameModel {
       mistakes: this.state.mistakes,
       comparison: showResult(this.state.previousScores, {currentScore: this.state.currentLevel + this.state.currentFastScore, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
     };
+    this.state.previousScores.push(this.state.currentLevel + this.state.currentFastScore);
+    return result;
   }
 
   get hasNextLevel() {
