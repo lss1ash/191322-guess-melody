@@ -15,9 +15,11 @@ export default class Game {
 
   start() {
     this.showScreen();
+    this.fastScoreTimerInit();
   }
 
   end() {
+    clearInterval(this._fastInterval);
     const result = this.model.result;
     let resultScreen = false;
     if (result.score === this.model.Options.TOTAL_QUESTIONS) {
@@ -37,6 +39,7 @@ export default class Game {
 
   nextLevel(currentAnswer) {
     this.showScreen(currentAnswer);
+    this.fastScoreTimerInit();
   }
 
   showScreen(currentAnswer) {
@@ -66,6 +69,17 @@ export default class Game {
         this.end();
       }
       this.level.drawTime(this.model.getNormalizedTime());
+    }, 1000);
+  }
+
+  fastScoreTimerInit() {
+    if (this._fastInterval) {
+      clearInterval(this._fastInterval);
+    }
+    this._fastInterval = setInterval(() => {
+      if (!this.model.fastScoreTick()) {
+        clearInterval(this._fastInterval);
+      }
     }, 1000);
   }
 

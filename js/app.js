@@ -3,11 +3,9 @@ import WelcomeScreen from './screens/welcome-screen';
 import Game from './data/game';
 
 export default class Application {
-  constructor() {
-    this.mainSection = document.querySelector(`.app .main`);
-  }
 
   static showWelcome() {
+    this._mainSection = document.querySelector(`.app .main`);
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
   }
@@ -18,11 +16,11 @@ export default class Application {
   }
 
   static drawScreen(element) {
-    if (this.mainSection) {
-      if (this.mainSection.firstElementChild) {
-        this.mainSection.replaceChild(element, this.mainSection.firstElementChild);
+    if (this._mainSection) {
+      if (this._mainSection.firstElementChild) {
+        this._mainSection.replaceChild(element, this._mainSection.firstElementChild);
       } else {
-        this.mainSection.appendChild(element);
+        this._mainSection.appendChild(element);
       }
     }
   }

@@ -25,6 +25,7 @@ const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Option
   const level = {
     type: levelType,
     question: levelType === Options.ARTIST ? `Кто исполняет эту песню?` : `Выберите ${rightMelody.genre} треки`,
+    fastScoreTime: Options.ANSWER_SPEED,
     melodie: rightMelody,
     answers: []
   };
@@ -122,11 +123,14 @@ export default class GameModel {
   }
 
   getNextLevel(currentAnswer) {
-    if (this.state.currentLevel > 0) {
+    if (this._state.currentLevel > 0) {
       this._checkAnswer(currentAnswer);
     }
     if (this.hasNextLevel) {
-      const level = this.state.levels[this.state.currentLevel];
+      const level = this._state.levels[this._state.currentLevel];
+      if (level.fastScoreTime > 0 && this._state.currentLevel > 0 && this._isCorrectAnswer()) {
+        this._state.currentFastScore++;
+      }
       this.state = {currentLevel: this.state.currentLevel + 1};
       return level;
     }
@@ -143,6 +147,7 @@ export default class GameModel {
 
   tick() {
     if (this.state.time > 0) {
+      // console.log(`tick!`);
       const time = this.state.time - 1;
       const {minutes, seconds} = getMinSec(time);
       this.state = {
@@ -150,6 +155,17 @@ export default class GameModel {
         minutes,
         seconds
       };
+      return true;
+    }
+    return false;
+  }
+
+  fastScoreTick() {
+    const level = this._state.levels[this._state.currentLevel - 1];
+    // console.log(level.fastScoreTime);
+    // console.log(this._state.currentFastScore);
+    if (level.fastScoreTime > 0) {
+      this._state.levels[this._state.currentLevel - 1].fastScoreTime--;
       return true;
     }
     return false;
