@@ -49,7 +49,6 @@ export default class GameModel {
     const {minutes, seconds} = getMinSec(Options.TOTAL_TIME);
     this.INITIAL_STATE = {
       currentLevel: 0,
-      currentFastScore: 0,
       levels: [],
       mistakes: 0,
       time: Options.TOTAL_TIME,
@@ -137,9 +136,6 @@ export default class GameModel {
     }
     if (this.hasNextLevel) {
       const level = this._state.levels[this._state.currentLevel];
-      if (level.fastScoreTime > 0 && this._state.currentLevel > 0 && this._isCorrectAnswer()) {
-        this._state.currentFastScore++;
-      }
       this.state = {currentLevel: this.state.currentLevel + 1};
       return level;
     }
