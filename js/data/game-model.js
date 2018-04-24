@@ -150,19 +150,16 @@ export default class GameModel {
     return {normalizedMinutes, normalizedSeconds};
   }
 
-  tick() {
-    if (this.state.time > 0) {
-      // console.log(`tick!`);
-      const time = this.state.time - 1;
-      const {minutes, seconds} = getMinSec(time);
-      this.state = {
-        time,
-        minutes,
-        seconds
-      };
-      return true;
-    }
-    return false;
+  startGameTimer() {
+    // console.log(`tick!`);
+    const time = this.state.time - 1;
+    const {minutes, seconds} = getMinSec(time);
+    this.state = {
+      time,
+      minutes,
+      seconds
+    };
+    return true;
   }
 
   fastScoreTick() {
