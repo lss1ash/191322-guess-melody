@@ -1,5 +1,6 @@
 import {getRandom, getMinSec, shuffleArray} from '../utils';
 import showResult from './show-result';
+import calculateResult from './calculate-result';
 import melodies from './melodies';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
@@ -76,15 +77,16 @@ export default class GameModel {
   }
 
   get result() {
+    const {score, fast} = calculateResult(this.userAnswers, this.state.mistakes, this.Options.TOTAL_QUESTIONS);
     const result = {
       minutes: this.state.minutes,
       seconds: this.state.seconds,
-      score: this.state.currentLevel,
-      scoreFast: this.state.currentFastScore,
+      score,
+      scoreFast: fast,
       mistakes: this.state.mistakes,
-      comparison: showResult(this.state.previousScores, {currentScore: this.state.currentLevel + this.state.currentFastScore, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: 12})
+      comparison: showResult(this.state.previousScores, {currentScore: score, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: this.state.time})
     };
-    this.state.previousScores.push(this.state.currentLevel + this.state.currentFastScore);
+    this.state.previousScores.push(score);
     return result;
   }
 
@@ -110,16 +112,23 @@ export default class GameModel {
   }
 
   _checkAnswer(currentAnswer) {
-    this.state.userAnswers.push(currentAnswer);
-    if (!this._isCorrectAnswer()) {
+    const correct = this._isCorrectAnswer(currentAnswer);
+    const fast = correct && this._isFastAnswer();
+    if (!correct) {
       this.state = {mistakes: this.state.mistakes + 1};
     }
+    this.state.userAnswers.push({correct, fast});
   }
 
-  _isCorrectAnswer() {
+  _isCorrectAnswer(currentAnswer) {
     const currentLevel = this.state.levels[this.state.currentLevel - 1];
-    const userAnswers = this.state.userAnswers[this.state.currentLevel - 1];
-    return userAnswers.every((value, index) => currentLevel.answers[index].right === value);
+    return currentAnswer.every((value, index) => currentLevel.answers[index].right === value);
+  }
+
+
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  _isFastAnswer() {
+    return false;
   }
 
   getNextLevel(currentAnswer) {
