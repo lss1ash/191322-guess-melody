@@ -1,5 +1,5 @@
 import GameModel from './game-model';
-import Timer from './get-timer';
+import Timer from './timer';
 import Application from '../app';
 import {getNormalizedTime} from '../utils';
 import LevelArtistScreen from '../screens/level-artist-screen';
@@ -22,7 +22,11 @@ export default class Game {
   end() {
     const result = this.model.result;
     let resultScreen = false;
-    if (result.score === this.model.Options.TOTAL_QUESTIONS) {
+    if (this.model.state.currentLevel === this.model.Options.TOTAL_QUESTIONS) {
+      const leftSeconds = this.model.Options.TOTAL_TIME - result.time;
+      const normalizedLeftTime = getNormalizedTime(leftSeconds);
+      result.minutes = normalizedLeftTime.normalizedMinutes;
+      result.seconds = normalizedLeftTime.normalizedSeconds;
       resultScreen = new ResultSuccessScreen(result);
     }
     if (result.mistakes === this.model.Options.MISTAKES_TO_LOOSE) {
@@ -57,7 +61,7 @@ export default class Game {
       this.level.nextLevel = (userAnswer) => this.nextLevel(userAnswer);
       Application.drawScreen(this.level.screen);
     } else {
-      this.end();
+      this._timer.stop();
     }
   }
 

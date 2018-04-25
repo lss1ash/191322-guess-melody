@@ -1,17 +1,18 @@
 export default class Timer {
   constructor(seconds, callBackTick, callBackStop) {
-    if (!Number.isInteger(seconds) || seconds < 0) {
-      return -1;
-    }
     this.seconds = seconds;
     this.callBackTick = callBackTick;
     this.callBackStop = callBackStop;
   }
   start() {
+    if (!Number.isInteger(this.seconds) || this.seconds <= 0) {
+      return false;
+    }
     this._timerID = setInterval(this.tick.bind(this), 1000);
+    return true;
   }
   tick() {
-    if (this.seconds > 0) {
+    if (this.seconds >= 0) {
       if (this.callBackTick) {
         this.callBackTick();
       }

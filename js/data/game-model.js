@@ -1,7 +1,7 @@
 import {getRandom, shuffleArray} from '../utils';
 import showResult from './show-result';
 import calculateResult from './calculate-result';
-import Timer from './get-timer';
+import Timer from './timer';
 import melodies from './melodies';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
@@ -74,14 +74,18 @@ export default class GameModel {
   }
 
   get result() {
-    const {score, fast} = calculateResult(this.userAnswers, this.state.mistakes, this.Options.TOTAL_QUESTIONS);
+    let calculatedResult = {score: 0, fast: 0};
+    if (this.state.userAnswers.length === Options.TOTAL_QUESTIONS) {
+      calculatedResult = calculateResult(this.state.userAnswers, this.state.mistakes, this.Options.TOTAL_QUESTIONS);
+      this.state.previousScores.push(calculatedResult.score);
+    }
     const result = {
-      score,
-      scoreFast: fast,
+      score: calculatedResult.score,
+      scoreFast: calculatedResult.fast,
+      time: this.state.time,
       mistakes: this.state.mistakes,
-      comparison: showResult(this.state.previousScores, {currentScore: score, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: this.state.time})
+      comparison: showResult(this.state.previousScores, {currentScore: calculatedResult.score, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: this.state.time})
     };
-    this.state.previousScores.push(score);
     return result;
   }
 
@@ -107,12 +111,13 @@ export default class GameModel {
   }
 
   _checkAnswer(currentAnswer) {
-    const correct = this._isCorrectAnswer(currentAnswer);
-    const fast = correct && this._isFastAnswer();
-    if (!correct) {
+    const right = this._isCorrectAnswer(currentAnswer);
+    const fast = right && this._isFastAnswer();
+    if (!right) {
       this.state = {mistakes: this.state.mistakes + 1};
     }
-    this.state.userAnswers.push({correct, fast});
+    this.state.userAnswers.push({right, fast});
+    // console.log(`{${right}, ${fast}}`);
   }
 
   _isCorrectAnswer(currentAnswer) {
@@ -134,7 +139,8 @@ export default class GameModel {
     if (this.hasNextLevel) {
       const level = this._state.levels[this._state.currentLevel];
       this.state = {currentLevel: this.state.currentLevel + 1};
-      // this.getFastTimer();
+      this.getFastTimer();
+      // console.log(level.answers);
       return level;
     }
     return false;
