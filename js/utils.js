@@ -29,3 +29,10 @@ export const getMinSec = (time) => {
     seconds
   };
 };
+
+export const getNormalizedTime = (secondsLeft) => {
+  const {minutes, seconds} = getMinSec(secondsLeft);
+  const normalizedMinutes = minutes.toString().length === 2 ? minutes.toString() : `0${minutes}`;
+  const normalizedSeconds = seconds.toString().length === 2 ? seconds.toString() : `0${seconds}`;
+  return {normalizedMinutes, normalizedSeconds};
+};

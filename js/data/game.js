@@ -1,5 +1,7 @@
 import GameModel from './game-model';
+import Timer from './get-timer';
 import Application from '../app';
+import {getNormalizedTime} from '../utils';
 import LevelArtistScreen from '../screens/level-artist-screen';
 import LevelGenreScreen from '../screens/level-genre-screen';
 import ResultSuccessScreen from '../screens/result-success-screen';
@@ -10,16 +12,14 @@ export default class Game {
   constructor() {
     this.model = new GameModel();
     this.model.init();
-    this.timerInit();
   }
 
   start() {
+    this.timerInit();
     this.showScreen();
-    this.fastScoreTimerInit();
   }
 
   end() {
-    clearInterval(this._fastInterval);
     const result = this.model.result;
     let resultScreen = false;
     if (result.score === this.model.Options.TOTAL_QUESTIONS) {
@@ -28,7 +28,7 @@ export default class Game {
     if (result.mistakes === this.model.Options.MISTAKES_TO_LOOSE) {
       resultScreen = new ResultAttemptsLeftScreen();
     }
-    if (result.seconds === 0 && result.minutes === 0) {
+    if (result.time === 0) {
       resultScreen = new ResultTimeLeftScreen();
     }
     if (resultScreen) {
@@ -39,12 +39,11 @@ export default class Game {
 
   nextLevel(currentAnswer) {
     this.showScreen(currentAnswer);
-    this.fastScoreTimerInit();
   }
 
   showScreen(currentAnswer) {
     const level = this.model.getNextLevel(currentAnswer);
-    const time = this.model.getNormalizedTime();
+    const time = getNormalizedTime(this._timer.seconds);
     if (level) {
       switch (level.type) {
         case this.model.Options.ARTIST:
@@ -63,24 +62,12 @@ export default class Game {
   }
 
   timerInit() {
-    this._interval = setInterval(() => {
-      if (!this.model.tick()) {
-        clearInterval(this._interval);
-        this.end();
-      }
-      this.level.drawTime(this.model.getNormalizedTime());
-    }, 1000);
-  }
-
-  fastScoreTimerInit() {
-    if (this._fastInterval) {
-      clearInterval(this._fastInterval);
-    }
-    this._fastInterval = setInterval(() => {
-      if (!this.model.fastScoreTick()) {
-        clearInterval(this._fastInterval);
-      }
-    }, 1000);
+    this._timer = new Timer(this.model.Options.TOTAL_TIME, () => {
+      this.model.state = {time: this._timer.seconds};
+      this.level.drawTime(getNormalizedTime(this._timer.seconds));
+    },
+    () => this.end());
+    this._timer.start();
   }
 
 }

@@ -1,6 +1,7 @@
-import {getRandom, getMinSec, shuffleArray} from '../utils';
+import {getRandom, shuffleArray} from '../utils';
 import showResult from './show-result';
 import calculateResult from './calculate-result';
+import Timer from './get-timer';
 import melodies from './melodies';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
@@ -46,14 +47,11 @@ const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Option
 export default class GameModel {
   constructor() {
     this.Options = Options;
-    const {minutes, seconds} = getMinSec(Options.TOTAL_TIME);
     this.INITIAL_STATE = {
       currentLevel: 0,
       levels: [],
       mistakes: 0,
       time: Options.TOTAL_TIME,
-      minutes,
-      seconds,
       userAnswers: [],
       previousScores
     };
@@ -78,8 +76,6 @@ export default class GameModel {
   get result() {
     const {score, fast} = calculateResult(this.userAnswers, this.state.mistakes, this.Options.TOTAL_QUESTIONS);
     const result = {
-      minutes: this.state.minutes,
-      seconds: this.state.seconds,
       score,
       scoreFast: fast,
       mistakes: this.state.mistakes,
@@ -124,9 +120,10 @@ export default class GameModel {
     return currentAnswer.every((value, index) => currentLevel.answers[index].right === value);
   }
 
-
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   _isFastAnswer() {
+    if (this._fastScoreTimer) {
+      return this._fastScoreTimer.seconds > 0;
+    }
     return false;
   }
 
@@ -137,40 +134,18 @@ export default class GameModel {
     if (this.hasNextLevel) {
       const level = this._state.levels[this._state.currentLevel];
       this.state = {currentLevel: this.state.currentLevel + 1};
+      // this.getFastTimer();
       return level;
     }
     return false;
   }
 
-  getNormalizedTime() {
-    const minutes = this.state.minutes.toString();
-    const seconds = this.state.seconds.toString();
-    const normalizedMinutes = minutes.length === 2 ? minutes : `0${minutes}`;
-    const normalizedSeconds = seconds.length === 2 ? seconds : `0${seconds}`;
-    return {normalizedMinutes, normalizedSeconds};
-  }
-
-  startGameTimer() {
-    // console.log(`tick!`);
-    const time = this.state.time - 1;
-    const {minutes, seconds} = getMinSec(time);
-    this.state = {
-      time,
-      minutes,
-      seconds
-    };
-    return true;
-  }
-
-  fastScoreTick() {
-    const level = this._state.levels[this._state.currentLevel - 1];
-    // console.log(level.fastScoreTime);
-    // console.log(this._state.currentFastScore);
-    if (level.fastScoreTime > 0) {
-      this._state.levels[this._state.currentLevel - 1].fastScoreTime--;
-      return true;
+  getFastTimer() {
+    if (this._fastScoreTimer) {
+      this._fastScoreTimer.stop();
     }
-    return false;
+    this._fastScoreTimer = new Timer(Options.ANSWER_SPEED);
+    this._fastScoreTimer.start();
   }
 
 }
