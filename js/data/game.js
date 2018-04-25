@@ -28,11 +28,9 @@ export default class Game {
       result.minutes = normalizedLeftTime.normalizedMinutes;
       result.seconds = normalizedLeftTime.normalizedSeconds;
       resultScreen = new ResultSuccessScreen(result);
-    }
-    if (result.mistakes === this.model.Options.MISTAKES_TO_LOOSE) {
+    } else if (result.mistakes === this.model.Options.MISTAKES_TO_LOOSE) {
       resultScreen = new ResultAttemptsLeftScreen();
-    }
-    if (result.time === 0) {
+    } else if (result.time === 0) {
       resultScreen = new ResultTimeLeftScreen();
     }
     if (resultScreen) {

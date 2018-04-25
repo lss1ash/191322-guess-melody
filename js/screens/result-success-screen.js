@@ -13,7 +13,7 @@ export default class ResultSuccessScreen {
   }
 
   replay() {
-    throw new Error(`replay() must be replaced`);
+    throw new Error(`replay() must be implemented`);
   }
 
   get screen() {

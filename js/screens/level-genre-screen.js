@@ -25,7 +25,7 @@ export default class LevelGenreScreen {
   }
 
   nextLevel() {
-    throw new Error(`NextLevel must be replaced`);
+    throw new Error(`NextLevel must be implemented`);
   }
 
   get screen() {
