@@ -1,7 +1,6 @@
-import AbstractView from './abstract-view';
-import timerTemplate from './timer-template';
+import LevelView from './level-view';
 
-export default class LevelArtistView extends AbstractView {
+export default class LevelArtistView extends LevelView {
   constructor(level, time) {
     super();
     this.level = level;
@@ -15,7 +14,7 @@ export default class LevelArtistView extends AbstractView {
   get template() {
     return `
     <section class="main main--level main--level-artist">
-      ${timerTemplate(this.time)}
+      ${this.timerTemplate}
       <div class="main-mistakes">
         ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
       </div>
