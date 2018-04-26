@@ -11,8 +11,6 @@ const SECONDS_PER_MINUTE = 60;
 const Options = {
   ARTIST_SONGS_PER_LEVEL: 3,
   GENRE_SONGS_PER_LEVEL: 4,
-  ARTIST: `levelArtist`,
-  GENRE: `levelGenre`,
   TOTAL_QUESTIONS: 10,
   ANSWER_SPEED: 30,
   MISTAKES_TO_LOOSE: 3,
@@ -20,33 +18,50 @@ const Options = {
   TIME_TO_STOP: 0
 };
 
-
-const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Options.GENRE) => {
-  const tempMelodies = shuffleArray(melodies.slice());
-  const rightMelody = tempMelodies.pop();
-  const level = {
-    type: levelType,
-    question: levelType === Options.ARTIST ? `Кто исполняет эту песню?` : `Выберите ${rightMelody.genre} треки`,
-    fastScoreTime: Options.ANSWER_SPEED,
-    melodie: rightMelody,
-    answers: []
-  };
-  const songs = levelType === Options.ARTIST ? Options.ARTIST_SONGS_PER_LEVEL : Options.GENRE_SONGS_PER_LEVEL;
-  for (let i = 0; i < songs; i++) {
-    const melodie = i === 0 ? rightMelody : tempMelodies.pop();
-    level.answers.push({
-      melodie,
-      right: melodie.artist === rightMelody.artist
-    });
-  }
-  level.answers = shuffleArray(level.answers);
-  return level;
+const LevelType = {
+  GENRE: `genre`,
+  ARTIST: `artist`
 };
+
+const Genre = {
+  COUNTRY: `country`,
+  BLUES: `blues`,
+  FOLK: `folk`,
+  CLASSICAL: `classical`,
+  ELECTRONIC: `electronic`,
+  HIP_HOP: `hip-hop`,
+  JAZZ: `jazz`,
+  POP: `pop`,
+  ROCK: `rock`
+};
+
+// const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Options.GENRE) => {
+//   const tempMelodies = shuffleArray(melodies.slice());
+//   const rightMelody = tempMelodies.pop();
+//   const level = {
+//     type: levelType,
+//     question: levelType === Options.ARTIST ? `Кто исполняет эту песню?` : `Выберите ${rightMelody.genre} треки`,
+//     fastScoreTime: Options.ANSWER_SPEED,
+//     melodie: rightMelody,
+//     answers: []
+//   };
+//   const songs = levelType === Options.ARTIST ? Options.ARTIST_SONGS_PER_LEVEL : Options.GENRE_SONGS_PER_LEVEL;
+//   for (let i = 0; i < songs; i++) {
+//     const melodie = i === 0 ? rightMelody : tempMelodies.pop();
+//     level.answers.push({
+//       melodie,
+//       right: melodie.artist === rightMelody.artist
+//     });
+//   }
+//   level.answers = shuffleArray(level.answers);
+//   return level;
+// };
 
 
 export default class GameModel {
   constructor() {
     this.Options = Options;
+    this.LevelType = LevelType;
     this.INITIAL_STATE = {
       currentLevel: 0,
       levels: [],
@@ -59,7 +74,7 @@ export default class GameModel {
 
   init() {
     this.state = this.INITIAL_STATE;
-    this.state = {levels: this._getRandomLevels()};
+    // this.state = {levels: this._getRandomLevels()};
   }
 
   set state(currentState) {
@@ -105,7 +120,7 @@ export default class GameModel {
   _getRandomLevels() {
     const randomLevels = [];
     for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
-      randomLevels.push(createLevel());
+      // randomLevels.push(createLevel());
     }
     return randomLevels;
   }
@@ -122,6 +137,7 @@ export default class GameModel {
 
   _isCorrectAnswer(currentAnswer) {
     const currentLevel = this.state.levels[this.state.currentLevel - 1];
+    // if (currentLevel.type === this.LevelType.ARTIST)
     return currentAnswer.every((value, index) => currentLevel.answers[index].right === value);
   }
 

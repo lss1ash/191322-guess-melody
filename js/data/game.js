@@ -15,8 +15,8 @@ export default class Game {
   }
 
   start() {
-    this.timerInit();
-    this.showScreen();
+    // this.timerInit();
+    // this.showScreen();
   }
 
   end() {
@@ -48,10 +48,10 @@ export default class Game {
     const time = getNormalizedTime(this._timer.seconds);
     if (level) {
       switch (level.type) {
-        case this.model.Options.ARTIST:
+        case this.model.LevelType.ARTIST:
           this.level = new LevelArtistScreen(level, time);
           break;
-        case this.model.Options.GENRE:
+        case this.model.LevelType.GENRE:
           this.level = new LevelGenreScreen(level, time);
           break;
       }
