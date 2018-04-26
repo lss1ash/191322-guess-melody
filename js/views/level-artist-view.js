@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import timerTemplate from './timer-template';
 
 export default class LevelArtistView extends AbstractView {
   constructor(level, time) {
@@ -14,7 +15,7 @@ export default class LevelArtistView extends AbstractView {
   get template() {
     return `
     <section class="main main--level main--level-artist">
-      ${this._timeTemplate()}
+      ${timerTemplate(this.time)}
       <div class="main-mistakes">
         ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
       </div>
@@ -46,22 +47,6 @@ export default class LevelArtistView extends AbstractView {
         ${melodie.artist}
       </label>
     </div>`;
-  }
-
-  _timeTemplate() {
-    return `
-    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-      <circle
-        cx="390" cy="390" r="370"
-        class="timer-line"
-        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
-
-      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-        <span class="timer-value-mins">${this.time.normalizedMinutes}</span><!--
-        --><span class="timer-value-dots">:</span><!--
-        --><span class="timer-value-secs">${this.time.normalizedSeconds}</span>
-      </div>
-    </svg>`;
   }
 
   onFormClick() {
