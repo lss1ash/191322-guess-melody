@@ -2,7 +2,8 @@ import WelcomeScreen from './screens/welcome-screen';
 import Game from './data/game';
 import Data from './data/data';
 
-const URL = `https://es.dump.academy/guess-melody/questions`;
+// const URL = `https://es.dump.academy/guess-melody/questions`;
+const URL = `https://es.dump.academy/guess-melody/questionasdasdasdas`;
 
 export default class Application {
 
@@ -12,12 +13,7 @@ export default class Application {
     Application.drawScreen(welcome.screen);
 
     this.data = new Data(URL);
-    this.data.lo
-
-    // const audio = new Audio();
-    // audio.src = url;
-    // audio.preload = "auto";
-    // audio.volume = vol;
+    const audio = this.data.get();
   }
 
   static showGame() {

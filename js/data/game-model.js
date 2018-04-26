@@ -1,8 +1,8 @@
-import {getRandom, shuffleArray} from '../utils';
+// import {getRandom, shuffleArray} from '../utils';
 import showResult from './show-result';
 import calculateResult from './calculate-result';
 import Timer from './timer';
-import melodies from './melodies';
+// import melodies from './melodies';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
 
@@ -23,17 +23,17 @@ const LevelType = {
   ARTIST: `artist`
 };
 
-const Genre = {
-  COUNTRY: `country`,
-  BLUES: `blues`,
-  FOLK: `folk`,
-  CLASSICAL: `classical`,
-  ELECTRONIC: `electronic`,
-  HIP_HOP: `hip-hop`,
-  JAZZ: `jazz`,
-  POP: `pop`,
-  ROCK: `rock`
-};
+// const Genre = {
+//   COUNTRY: `country`,
+//   BLUES: `blues`,
+//   FOLK: `folk`,
+//   CLASSICAL: `classical`,
+//   ELECTRONIC: `electronic`,
+//   HIP_HOP: `hip-hop`,
+//   JAZZ: `jazz`,
+//   POP: `pop`,
+//   ROCK: `rock`
+// };
 
 // const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Options.GENRE) => {
 //   const tempMelodies = shuffleArray(melodies.slice());
