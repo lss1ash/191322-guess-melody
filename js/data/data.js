@@ -16,8 +16,9 @@ export default class Data {
           if (response.ok) {
             return response.json();
           }
-          throw new Error(`Не удалось загрузить информацию о музыке с сервера: ${response.statusText}`);
-        });
+          // return new Error(`Не удалось загрузить информацию о музыке с сервера: ${response.statusText}`);
+        })
+        .catch((err) => console.log(`test message: ${err}`));
   }
 
   loadAudio(url) {
@@ -38,20 +39,20 @@ export default class Data {
     }
   }
 
+  // , (error) => `Ошибка при чтении полученных данных: ${error}`)
+  // get(resolve) {
   get() {
     this.loadLevels()
-        .then((levels) => {
-          levels.forEach((level) => this.parseLevel(level));
-        }, (error) => `Ошибка при чтении полученных данных: ${error}`)
-        .then(() => {
-          const audioPromises = [];
-          for (let URL of this.audioURLs.values()) {
-            audioPromises.push(this.loadAudio(URL));
-          }
-          return audioPromises;
-        })
-        .then((audioPromises) => Promise.all(audioPromises))
-        .then((audio) => audio)
+        .then((levels) => levels.forEach((level) => this.parseLevel(level)))
+        // .then(() => {
+        //   const audioPromises = [];
+        //   for (let URL of this.audioURLs.values()) {
+        //     audioPromises.push(this.loadAudio(URL));
+        //   }
+        //   return audioPromises;
+        // })
+        // .then((audioPromises) => Promise.all(audioPromises))
+        // .then(resolve)
         .catch((error) => `Ошибка загрузки аудиофайлов: ${error}`);
   }
 }

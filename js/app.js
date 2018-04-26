@@ -13,7 +13,9 @@ export default class Application {
     Application.drawScreen(welcome.screen);
 
     this.data = new Data(URL);
-    const audio = this.data.get();
+    this.data.get((audio) => {
+      this.audio = audio;
+    });
   }
 
   static showGame() {
