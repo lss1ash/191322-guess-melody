@@ -1,19 +1,15 @@
-const Options = {
-  QUESTIONS_NUMBER: 10, // требуемое количество ответов
-  ANSWER_SPEED: 30, // скорость быстрого ответа на вопрос, секунд
-  MAX_TRIES: 3 // максимальное количество ошибок
-};
+export default (answers, mistakes, totalQuestions = 10) => {
 
-export default (answers, notesLeft) => {
-
-  if (!Array.isArray(answers) || answers.length !== Options.QUESTIONS_NUMBER) {
+  if (!Array.isArray(answers) || answers.length !== totalQuestions) {
     return -1;
   }
 
-  if (!Number.isInteger(notesLeft)) {
+  if (!Number.isInteger(mistakes)) {
     return -1;
   }
 
-  const result = answers.reduce((accumulator, {right, fast}) => Number(accumulator) + Number(right) + Number(right && fast), 0);
-  return result - (Options.MAX_TRIES - notesLeft) * 2;
+  let resultScore = answers.reduce((accumulator, {right, fast}) => Number(accumulator) + Number(right) + Number(right && fast), 0);
+  resultScore = resultScore - mistakes * 2;
+  const resultFast = answers.reduce((accumulator, {right, fast}) => Number(accumulator) + Number(right && fast), 0);
+  return {score: resultScore, fast: resultFast};
 };

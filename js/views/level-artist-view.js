@@ -1,19 +1,23 @@
-import svgTemplate from '../templates/svg';
-import getMistakesTemplate from '../templates/mistakes';
-import AbstractView from './abstract-view';
-import game from '../main';
+import LevelView from './level-view';
 
-export default class LevelArtistView extends AbstractView {
-  constructor(level) {
+export default class LevelArtistView extends LevelView {
+  constructor(level, time) {
     super();
     this.level = level;
+    this.time = time;
+  }
+
+  mistakes() {
+    throw new Error(`Mistakes is required`);
   }
 
   get template() {
     return `
     <section class="main main--level main--level-artist">
-      ${svgTemplate}
-      ${getMistakesTemplate(game.state.mistakes)}
+      ${this.timerTemplate}
+      <div class="main-mistakes">
+        ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
+      </div>
       <div class="main-wrap">
         <h2 class="title main-title">Кто исполняет эту песню?</h2>
         <div class="player-wrapper">
@@ -52,6 +56,10 @@ export default class LevelArtistView extends AbstractView {
     this._form = this.element.querySelector(`form.main-list`);
     this._checkBoxes = this.element.querySelectorAll(`.genre-answer input[type=checkbox]`);
     this._sendButton = this.element.querySelector(`.genre-answer-send`);
+    this._timer = {
+      minutesNode: this.element.querySelector(`.timer-value-mins`),
+      secondsNode: this.element.querySelector(`.timer-value-secs`)
+    };
 
     this._form.onclick = (evt) => {
       this.onFormClick(evt);
