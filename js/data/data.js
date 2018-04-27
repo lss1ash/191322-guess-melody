@@ -53,7 +53,9 @@ export default class Data {
     fetch(this.URL)
         .then((response) => {
           if (response.ok) {
-            return response.json();
+            const JSON = response.json();
+            console.dir(JSON);
+            return JSON;
           }
           throw new Error(`Не удалось загрузить информацию о музыке с сервера: ${response.statusText}`);
         })
