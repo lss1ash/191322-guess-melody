@@ -2,8 +2,8 @@ import WelcomeScreen from './screens/welcome-screen';
 import Game from './data/game';
 import Data from './data/data';
 
-// const URL = `https://es.dump.academy/guess-melody/questions`;
-const URL = `https://es.dump.academy/guess-melody/questionasdasdasdas`;
+const URL = `https://es.dump.academy/guess-melody/questions`;
+// const URL = `https://es.dump.academyqaasdas/guess-melody/questionasdasdasdas`;
 
 export default class Application {
 
