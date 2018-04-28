@@ -9,14 +9,14 @@ export default class Data {
     this.audioURLs = new Set();
   }
 
-  loadLevels(response) {
+  _loadLevels(response) {
     if (response.ok) {
       return response.json();
     }
     throw new Error(`Не удалось загрузить информацию о музыке с сервера: ${response.statusText}`);
   }
 
-  loadAudio(url) {
+  _loadAudio(url) {
     return new Promise((resolve, reject) => {
       const audio = new Audio();
       audio.volume = 1;
@@ -27,40 +27,28 @@ export default class Data {
     });
   }
 
-  parseLevel(level) {
+  _parseLevel(level) {
     switch (level.type) {
       case LevelType.ARTIST: this.audioURLs.add(level.src); break;
       case LevelType.GENRE: level.answers.forEach((answer) => this.audioURLs.add(answer.src)); break;
     }
   }
 
-  fillAudioSet(levels) {
+  _fillAudioSet(levels) {
     return new Promise((resolve) => {
       this.levels = levels;
-      levels.forEach((level) => this.parseLevel(level));
+      levels.forEach((level) => this._parseLevel(level));
       resolve();
     });
   }
 
-  // , (error) => `Ошибка при чтении полученных данных: ${error}`)
-  // get(resolve) {
   get() {
 
-    // const getLevels(levels) => {
-    //   return new Promise
-    // };
-
     fetch(this.URL)
-        .then((response) => {
-          if (response.ok) {
-            const JSON = response.json();
-            console.dir(JSON);
-            return JSON;
-          }
-          throw new Error(`Не удалось загрузить информацию о музыке с сервера: ${response.statusText}`);
-        })
+        .then(this._loadLevels)
         .then((levels) => {
-          return this.fillAudioSet(levels);
+          console.dir(levels);
+          return this._fillAudioSet(levels);
         })
         .then(() => console.dir(this.audioURLs))
         .catch((error) => console.log(`Ошибка получения : ${error}`));
