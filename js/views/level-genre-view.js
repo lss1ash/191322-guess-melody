@@ -37,6 +37,7 @@ export default class LevelGenreView extends LevelView {
     <div class="genre-answer">
       <div class="player-wrapper">
         <div class="player">
+          <!-- -->
           <button class="player-control player-control--pause"></button>
           <div class="player-track">
             <span class="player-status"></span>

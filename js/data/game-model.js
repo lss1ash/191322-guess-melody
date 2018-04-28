@@ -93,12 +93,12 @@ export default class GameModel {
   }
 
   _checkAnswer(currentAnswer) {
-    const isCorrect = this._isCorrectAnswer(currentAnswer);
-    const fast = isCorrect && this._isFastAnswer();
-    if (!isCorrect) {
+    const right = this._isCorrectAnswer(currentAnswer);
+    const fast = right && this._isFastAnswer();
+    if (!right) {
       this.state = {mistakes: this.state.mistakes + 1};
     }
-    this.state.userAnswers.push({isCorrect, fast});
+    this.state.userAnswers.push({right, fast});
     console.log(`{${currentAnswer}}`);
   }
 
