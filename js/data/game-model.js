@@ -99,7 +99,7 @@ export default class GameModel {
       this.state = {mistakes: this.state.mistakes + 1};
     }
     this.state.userAnswers.push({right, fast});
-    console.log(`{${currentAnswer}}`);
+    // console.log(`{${currentAnswer}}`);
   }
 
   _isCorrectAnswer(currentAnswer) {
@@ -125,7 +125,7 @@ export default class GameModel {
       const level = this._state.levels[this._state.currentLevel];
       this.state = {currentLevel: this.state.currentLevel + 1};
       this.getFastTimer();
-      console.log(level.answers);
+      // console.log(level.answers);
       return level;
     }
     return false;
