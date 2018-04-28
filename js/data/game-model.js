@@ -41,7 +41,7 @@ const LevelType = {
 //   const level = {
 //     type: levelType,
 //     question: levelType === Options.ARTIST ? `Кто исполняет эту песню?` : `Выберите ${rightMelody.genre} треки`,
-//     fastScoreTime: Options.ANSWER_SPEED,
+
 //     melodie: rightMelody,
 //     answers: []
 //   };
@@ -74,7 +74,6 @@ export default class GameModel {
 
   init() {
     this.state = this.INITIAL_STATE;
-    // this.state = {levels: this._getRandomLevels()};
   }
 
   set state(currentState) {
@@ -117,28 +116,30 @@ export default class GameModel {
     return true;
   }
 
-  _getRandomLevels() {
-    const randomLevels = [];
-    for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
-      // randomLevels.push(createLevel());
-    }
-    return randomLevels;
-  }
+  // _getRandomLevels() {
+  //   const randomLevels = [];
+  //   for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
+  //     // randomLevels.push(createLevel());
+  //   }
+  //   return randomLevels;
+  // }
 
   _checkAnswer(currentAnswer) {
-    const right = this._isCorrectAnswer(currentAnswer);
-    const fast = right && this._isFastAnswer();
-    if (!right) {
+    const isCorrect = this._isCorrectAnswer(currentAnswer);
+    const fast = isCorrect && this._isFastAnswer();
+    if (!isCorrect) {
       this.state = {mistakes: this.state.mistakes + 1};
     }
-    this.state.userAnswers.push({right, fast});
-    // console.log(`{${right}, ${fast}}`);
+    this.state.userAnswers.push({isCorrect, fast});
+    // console.log(`{${isCorrect}, ${fast}}`);
   }
 
   _isCorrectAnswer(currentAnswer) {
     const currentLevel = this.state.levels[this.state.currentLevel - 1];
-    // if (currentLevel.type === this.LevelType.ARTIST)
-    return currentAnswer.every((value, index) => currentLevel.answers[index].right === value);
+    if (currentLevel.type === this.LevelType.GENRE) {
+      return currentAnswer.every((value, index) => (currentLevel.answers[index].genre === currentLevel.genre) === value);
+    }
+    return currentAnswer.every((value, index) => currentLevel.answers[index].isCorrect === value);
   }
 
   _isFastAnswer() {

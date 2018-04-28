@@ -1,26 +1,14 @@
-import WelcomeScreen from './screens/welcome-screen';
 import Game from './data/game';
-import Data from './data/data';
-
-const URL = `https://es.dump.academy/guess-melody/questions`;
-// const URL = `https://es.dump.academyqaasdas/guess-melody/questionasdasdasdas`;
 
 export default class Application {
 
   static showWelcome() {
     this._mainSection = document.querySelector(`.app .main`);
-    const welcome = new WelcomeScreen();
-    Application.drawScreen(welcome.screen);
-
-    this.data = new Data(URL);
-    this.data.get((audio) => {
-      this.audio = audio;
-    });
+    this.game = new Game();
   }
 
   static showGame() {
-    const game = new Game();
-    game.start();
+    this.game.start();
   }
 
   static drawScreen(element) {
