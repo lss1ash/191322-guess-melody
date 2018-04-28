@@ -5,9 +5,6 @@ export default class WelcomeScreen {
 
   _init() {
     this._welcome = new WelcomeView();
-    this._welcome.onPlayClick = () => {
-      Application.showGame();
-    };
   }
 
   get screen() {
@@ -15,6 +12,12 @@ export default class WelcomeScreen {
       this._init();
     }
     return this._welcome.element;
+  }
+
+  setHandler() {
+    this._welcome.onPlayClick = () => {
+      Application.showGame();
+    };
   }
 
 }

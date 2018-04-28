@@ -28,12 +28,15 @@ export default class LevelGenreView extends LevelView {
     </section>`;
   }
 
-  _melodyTemplate({melodie}, number) {
+  // <!--
+  // <audio src="${melodie.src}"></audio>
+  // -->
+
+  _melodyTemplate(melodie, number) {
     return `
     <div class="genre-answer">
       <div class="player-wrapper">
         <div class="player">
-          <audio src="${melodie.src}"></audio>
           <button class="player-control player-control--pause"></button>
           <div class="player-track">
             <span class="player-status"></span>

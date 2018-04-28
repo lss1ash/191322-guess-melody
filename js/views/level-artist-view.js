@@ -36,14 +36,14 @@ export default class LevelArtistView extends LevelView {
     </section>`;
   }
 
-  _melodyTemplate({melodie}, number) {
+  _melodyTemplate(melodie, number) {
     return `
     <div class="main-answer-wrapper">
       <input class="main-answer-r" type="radio" id="answer-${number}" name="answer" value="val-${number}"/>
       <label class="main-answer" for="answer-${number}">
-        <img class="main-answer-preview" src="${melodie.image}"
-             alt="${melodie.artist}" width="134" height="134">
-        ${melodie.artist}
+        <img class="main-answer-preview" src="${melodie.image.url}"
+             alt="${melodie.title}" width="134" height="134">
+        ${melodie.title}
       </label>
     </div>`;
   }

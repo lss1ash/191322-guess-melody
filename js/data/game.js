@@ -1,6 +1,6 @@
 import GameModel from './game-model';
 import Timer from './timer';
-import AudioData from './data/audio-data';
+import AudioData from './audio-data';
 import Application from '../app';
 import {getNormalizedTime} from '../utils';
 import WelcomeScreen from '../screens/welcome-screen';
@@ -18,8 +18,8 @@ export default class Game {
   }
 
   start() {
-    // this.timerInit();
-    // this.showScreen();
+    this.timerInit();
+    this.showScreen();
   }
 
   end() {
@@ -78,16 +78,20 @@ export default class Game {
   getAudio() {
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
+    console.log(`spinner has been shown`);
     // welcome.showSpinner();
 
     const onAudioLoaded = (levels, audios) => {
       this.model.state.levels = levels;
       this.model.audios = audios;
       // welcome.hideSpinner();
+      welcome.setHandler();
+      console.log(`spinner has been hidden`);
     };
 
     const onAudioLoadingError = (error) => {
       // welcome.showError(error);
+      console.log(`${error}`);
     };
     const audio = new AudioData(onAudioLoaded, onAudioLoadingError);
     audio.get();
