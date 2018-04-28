@@ -1,5 +1,6 @@
 import showResult from './show-result';
 import calculateResult from './calculate-result';
+import Statistic from './statistic';
 import Timer from './timer';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
