@@ -79,7 +79,7 @@ export default class GameModel {
     return result;
   }
 
-  get hasNextLevel() {
+  get _hasNextLevel() {
     if (this.state.mistakes === Options.MISTAKES_TO_LOOSE) {
       return false;
     }
@@ -117,26 +117,27 @@ export default class GameModel {
     return false;
   }
 
-  getNextLevel(currentAnswer) {
-    if (this._state.currentLevel > 0) {
-      this._checkAnswer(currentAnswer);
-    }
-    if (this.hasNextLevel) {
-      const level = this._state.levels[this._state.currentLevel];
-      this.state = {currentLevel: this.state.currentLevel + 1};
-      this.getFastTimer();
-      // console.log(level.answers);
-      return level;
-    }
-    return false;
-  }
-
-  getFastTimer() {
+  _getFastTimer() {
     if (this._fastScoreTimer) {
       this._fastScoreTimer.stop();
     }
     this._fastScoreTimer = new Timer(Options.ANSWER_SPEED);
     this._fastScoreTimer.start();
   }
+
+  getNextLevel(currentAnswer) {
+    if (this._state.currentLevel > 0) {
+      this._checkAnswer(currentAnswer);
+    }
+    if (this._hasNextLevel) {
+      const level = this._state.levels[this._state.currentLevel];
+      this.state = {currentLevel: this.state.currentLevel + 1};
+      this._getFastTimer();
+      // console.log(level.answers);
+      return level;
+    }
+    return false;
+  }
+
 
 }
