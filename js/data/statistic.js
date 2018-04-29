@@ -1,9 +1,7 @@
 export default class Statistic {
 
-  constructor(onSuccess = () => {}, onError = () => {}) {
+  constructor() {
 
-    this.onSuccess = onSuccess;
-    this.onError = onError;
     this.URL = `https://es.dump.academy/guess-melody/stats/191322`;
     this.params = {
       headers: {
@@ -25,7 +23,7 @@ export default class Statistic {
     return new Request(this.URL, params);
   }
 
-  get() {
+  get(onSuccess = () => {}, onError = () => {}) {
     fetch(this.prepareRequest(`GET`))
         .then((response) => {
           if (response.ok) {
@@ -35,18 +33,18 @@ export default class Statistic {
           }
           throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`);
         })
-        .then((data) => this.onSuccess(data))
-        .catch((err) => this.onError(err));
+        .then((data) => onSuccess(data))
+        .catch((err) => onError(err));
   }
 
-  post(score) {
+  post(score, onSuccess = () => {}, onError = () => {}) {
     fetch(this.prepareRequest(`POST`, score))
         .then((response) => {
           if (response.ok) {
-            this.onSuccess();
+            return onSuccess();
           }
           throw new Error(`Ошибка сохранения данных: ${response.status} ${response.statusText}`);
         })
-        .catch((err) => this.onError(err));
+        .catch((err) => onError(err));
   }
 }

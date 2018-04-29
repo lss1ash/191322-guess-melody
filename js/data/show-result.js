@@ -1,4 +1,4 @@
-export default (previousScores, result = {}) => {
+export default (statistic, result = {}) => {
 
   if (typeof result !== `object` || !(result instanceof Object)) {
     return -1;
@@ -22,19 +22,19 @@ export default (previousScores, result = {}) => {
     return `Время вышло! Вы не успели отгадать все мелодии`;
   }
 
-  previousScores.push(result.currentScore);
+  statistic.push(result.currentScore);
 
-  const allScores = previousScores.length;
-  previousScores.sort((a, b) => a - b);
+  const allScores = statistic.length;
+  statistic.sort((a, b) => a - b);
 
   const filteredScores = [];
-  previousScores.forEach((value) => {
+  statistic.forEach((value) => {
     if (!filteredScores.includes(value)) {
       filteredScores.push(value);
     }
   });
 
   const currentPlace = filteredScores.length - filteredScores.indexOf(currentScore);
-  const currentPercent = Math.round(previousScores.indexOf(currentScore) / allScores * 100);
+  const currentPercent = Math.round(statistic.indexOf(currentScore) / allScores * 100);
   return `Вы заняли ${currentPlace} место из ${allScores} игроков. Это лучше, чем у ${currentPercent}% игроков`;
 };

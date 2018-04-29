@@ -13,8 +13,8 @@ import ResultTimeLeftScreen from '../screens/result-time-left-screen';
 export default class Game {
   constructor() {
     this.model = new GameModel();
+    this.model.onStatisticGetSuccess = () => this.getAudio();
     this.model.init();
-    this.getAudio();
   }
 
   start() {
@@ -78,7 +78,7 @@ export default class Game {
   getAudio() {
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
-    // console.log(`spinner has been shown`);
+    console.log(`spinner has been shown`);
     // welcome.showSpinner();
 
     const onAudioLoaded = (levels, audios) => {
@@ -86,17 +86,15 @@ export default class Game {
       this.model.audios = audios;
       // welcome.hideSpinner();
       welcome.setHandler();
-      // console.log(`spinner has been hidden`);
+      console.log(`spinner has been hidden`);
     };
 
-    const onAudioLoadingError = () => {
-    // const onAudioLoadingError = (error) => {
+    // const onAudioLoadingError = () => {
+    const onAudioLoadingError = (error) => {
       // welcome.showError(error);
-      // console.log(`${error}`);
+      console.log(`${error}`);
     };
     const audio = new AudioData(onAudioLoaded, onAudioLoadingError);
     audio.get();
   }
-
-
 }

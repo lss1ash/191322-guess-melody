@@ -3,8 +3,6 @@ import calculateResult from './calculate-result';
 import Statistic from './statistic';
 import Timer from './timer';
 
-const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
-
 const SECONDS_PER_MINUTE = 60;
 
 const Options = {
@@ -22,35 +20,24 @@ const LevelType = {
   ARTIST: `artist`
 };
 
-// const Genre = {
-//   COUNTRY: `country`,
-//   BLUES: `blues`,
-//   FOLK: `folk`,
-//   CLASSICAL: `classical`,
-//   ELECTRONIC: `electronic`,
-//   HIP_HOP: `hip-hop`,
-//   JAZZ: `jazz`,
-//   POP: `pop`,
-//   ROCK: `rock`
-// };
-
-
 export default class GameModel {
   constructor() {
     this.Options = Options;
     this.LevelType = LevelType;
+    this.statistic = new Statistic();
     this.INITIAL_STATE = {
       currentLevel: 0,
       levels: [],
       mistakes: 0,
       time: Options.TOTAL_TIME,
       userAnswers: [],
-      previousScores
+      statistic: []
     };
   }
 
   init() {
     this.state = this.INITIAL_STATE;
+    this.statistic.get((statistic) => this._onStatisticGetSuccess(statistic), (error) => this.onStatisticGetError(error));
   }
 
   set state(currentState) {
@@ -68,14 +55,14 @@ export default class GameModel {
     let calculatedResult = {score: 0, fast: 0};
     if (this.state.userAnswers.length === Options.TOTAL_QUESTIONS) {
       calculatedResult = calculateResult(this.state.userAnswers, this.state.mistakes, this.Options.TOTAL_QUESTIONS);
-      this.state.previousScores.push(calculatedResult.score);
+      this.statistic.post(calculatedResult.score, () => {}, (error) => this.onStatisticPostError(error));
     }
     const result = {
       score: calculatedResult.score,
       scoreFast: calculatedResult.fast,
       time: this.state.time,
       mistakes: this.state.mistakes,
-      comparison: showResult(this.state.previousScores, {currentScore: calculatedResult.score, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: this.state.time})
+      comparison: showResult(this.state.statistic, {currentScore: calculatedResult.score, notesLeft: Options.MISTAKES_TO_LOOSE - this.state.mistakes, timeLeft: this.state.time})
     };
     return result;
   }
@@ -100,7 +87,6 @@ export default class GameModel {
       this.state = {mistakes: this.state.mistakes + 1};
     }
     this.state.userAnswers.push({right, fast});
-    // console.log(`{${currentAnswer}}`);
   }
 
   _isCorrectAnswer(currentAnswer) {
@@ -134,11 +120,26 @@ export default class GameModel {
       const level = this._state.levels[this._state.currentLevel];
       this.state = {currentLevel: this.state.currentLevel + 1};
       this._getFastTimer();
-      // console.log(level.answers);
+      console.log(level.answers);
       return level;
     }
     return false;
   }
 
+  _onStatisticGetSuccess(statistic) {
+    this.state = {statistic};
+    this.onStatisticGetSuccess();
+  }
 
+  onStatisticGetSuccess() {
+    throw new Error(`Must be implemented`);
+  }
+
+  onStatisticGetError(error) {
+    throw new Error(`Ошибка получения статистических данных: ${error}`);
+  }
+
+  onStatisticPostError(error) {
+    throw new Error(`Ошибка сохранения статистических данных: ${error}`);
+  }
 }
