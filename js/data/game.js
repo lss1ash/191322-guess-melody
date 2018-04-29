@@ -82,7 +82,7 @@ export default class Game {
   getAudio() {
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
-    console.log(`spinner has been shown`);
+    // console.log(`spinner has been shown`);
     // welcome.showSpinner();
 
     const onAudioLoaded = (levels, audios) => {
@@ -90,7 +90,7 @@ export default class Game {
       this.model.audios = audios;
       // welcome.hideSpinner();
       welcome.setHandler();
-      console.log(`spinner has been hidden`);
+      // console.log(`spinner has been hidden`);
     };
 
     // const onAudioLoadingError = () => {
