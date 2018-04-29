@@ -41,6 +41,23 @@ body {
   width: $layout-width;
 }
 
+.dialog {
+  position: absolute;
+  z-index: 1000;
+  top: 42%;
+  left: 15%;
+  right: 15%;
+  padding: 5px 20px;
+  border-radius: 8px;
+  opacity: .85;
+  border: 2px solid $color-orange;
+  background-color: $color-text-dark;
+
+  &--hidden {
+    display: none;
+  }
+}
+
 .copyright {
   bottom: 2em;
   color: $color-beige;
