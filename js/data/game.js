@@ -85,9 +85,8 @@ export default class Game {
     // console.log(`spinner has been shown`);
     // welcome.showSpinner();
 
-    const onAudioLoaded = (levels, audios) => {
+    const onAudioLoaded = (levels) => {
       this.model.state.levels = levels;
-      this.model.audios = audios;
       // welcome.hideSpinner();
       welcome.setHandler();
       // console.log(`spinner has been hidden`);
