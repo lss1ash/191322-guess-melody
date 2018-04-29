@@ -1,10 +1,17 @@
 import LevelView from './level-view';
 
+const PlayerState = {
+  PAUSED: `paused`,
+  PLAYING: `playing`
+};
+
 export default class LevelGenreView extends LevelView {
   constructor(level, time) {
     super();
     this.level = level;
     this.time = time;
+    this.classPaused = `player-control--pause`;
+    this.state = PlayerState.PAUSED;
   }
 
   mistakes() {
@@ -28,17 +35,15 @@ export default class LevelGenreView extends LevelView {
     </section>`;
   }
 
-  // <!--
-  // <audio src="${melodie.src}"></audio>
-  // -->
+  // ${answer.audio.outerHTML}
 
-  _melodyTemplate(melodie, number) {
+  _melodyTemplate(answer, number) {
     return `
     <div class="genre-answer">
       <div class="player-wrapper">
         <div class="player">
-          <!-- -->
-          <button class="player-control player-control--pause"></button>
+
+          <button class="player-control player-control--pause" data-number="${number}"></button>
           <div class="player-track">
             <span class="player-status"></span>
           </div>
@@ -49,13 +54,54 @@ export default class LevelGenreView extends LevelView {
     </div>`;
   }
 
-  _onNoteClick({target}) {
-    if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `CHECKBOX`) {
-      let checked = false;
-      [...this.checkBoxes].forEach((checkbox) => {
-        checked = checked || checkbox.checked;
+  _onFormClick(evt) {
+    if (evt.target.tagName.toUpperCase() === `INPUT` && evt.target.type.toUpperCase() === `CHECKBOX`) {
+      this._onNoteClick();
+    } else if (evt.target.tagName.toUpperCase() === `BUTTON`) {
+      evt.preventDefault();
+      this._onButtonClick(evt.target);
+    }
+  }
+
+  _onNoteClick() {
+    let checked = false;
+    [...this.checkBoxes].forEach((checkbox) => {
+      checked = checked || checkbox.checked;
+    });
+    this.sendButton.disabled = !checked;
+  }
+
+  _onButtonClick(target) {
+    if (PlayerState.PLAYING) {
+      if (target.classList.contains(this.classPaused)) {
+        this._pauseAll();
+        this._play(target);
+      } else {
+        this._pauseAll();
+      }
+    } else {
+      this._play(target);
+    }
+  }
+
+  _pauseAll() {
+    this.level.answers.forEach((answer) => {
+      if (!answer.audio.paused) {
+        answer.audio.pause();
+      }
+      [...this.playButtons].forEach((button) => {
+        if (!button.classList.contains(this.classPaused)) {
+          button.classList.add(this.classPaused);
+        }
       });
-      this.sendButton.disabled = !checked;
+    });
+    this.state = PlayerState.PAUSED;
+  }
+
+  _play(target) {
+    this.level.answers[+target.dataset.number - 1].audio.play();
+    if (target.classList.contains(this.classPaused)) {
+      target.classList.remove(this.classPaused);
     }
   }
 
@@ -66,19 +112,25 @@ export default class LevelGenreView extends LevelView {
   bind() {
     this._form = this.element.querySelector(`form.genre`);
     this.checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
+    this.playButtons = this._form.querySelectorAll(`.genre-answer .player-control`);
     this.sendButton = this._form.querySelector(`.genre-answer-send`);
     this._timer = {
       minutesNode: this.element.querySelector(`.timer-value-mins`),
       secondsNode: this.element.querySelector(`.timer-value-secs`)
     };
 
+    this.level.answers.forEach((answer) => {
+      answer.onpaused = () => this._pauseAll();
+    });
+
     this._form.onsubmit = (evt) => {
       evt.preventDefault();
+      this.pauseAll();
       this.onLevelSubmit();
     };
 
     this._form.onclick = (evt) => {
-      this._onNoteClick(evt);
+      this._onFormClick(evt);
     };
   }
 }
