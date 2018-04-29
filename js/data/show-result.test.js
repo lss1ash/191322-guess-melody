@@ -32,10 +32,10 @@ describe(`Функция вывода результата игрока`, () => 
 
   describe(`Функция на выходе выдаёт строку результата`, () => {
     it(`возвращает строку "Вы заняли i место из t игроков. Это лучше, чем у n% игроков" в случае выигрыша`, () => {
-      assert.strictEqual(`Вы заняли 2 место из 7 игроков. Это лучше, чем у 43% игроков`, showResult([1, 1, 5, 8, 8, 11], {currentScore: 8, notesLeft: 3, timeLeft: 3}));
+      assert.strictEqual(`Вы заняли 2 место из 7 игроков. Это лучше, чем у 43% игроков`, showResult([{score: 1}, {score: 1}, {score: 5}, {score: 8}, {score: 8}, {score: 11}], {currentScore: 8, notesLeft: 3, timeLeft: 3}));
       assert.strictEqual(`Вы заняли 1 место из 1 игроков. Это лучше, чем у 0% игроков`, showResult([], {currentScore: 20, notesLeft: 3, timeLeft: 10}));
-      assert.strictEqual(`Вы заняли 2 место из 5 игроков. Это лучше, чем у 60% игроков`, showResult([4, 5, 8, 11], {currentScore: 10, notesLeft: 8, timeLeft: 20}));
-      assert.strictEqual(`Вы заняли 1 место из 12 игроков. Это лучше, чем у 75% игроков`, showResult([1, 1, 1, 1, 5, 5, 5, 8, 11, 77, 77], {currentScore: 77, notesLeft: 999, timeLeft: 888}));
+      assert.strictEqual(`Вы заняли 2 место из 5 игроков. Это лучше, чем у 60% игроков`, showResult([{score: 4}, {score: 5}, {score: 8}, {score: 11}], {currentScore: 10, notesLeft: 8, timeLeft: 20}));
+      assert.strictEqual(`Вы заняли 1 место из 12 игроков. Это лучше, чем у 75% игроков`, showResult([{score: 1}, {score: 1}, {score: 1}, {score: 1}, {score: 5}, {score: 5}, {score: 5}, {score: 8}, {score: 11}, {score: 77}, {score: 77}], {currentScore: 77, notesLeft: 999, timeLeft: 888}));
     });
 
     it(`возвращает строку "Время вышло! Вы не успели отгадать все мелодии" в случае отсутствия времени`, () => {
