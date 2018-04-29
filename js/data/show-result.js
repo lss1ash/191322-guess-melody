@@ -22,6 +22,7 @@ export default (statistic, result = {}) => {
     return `Время вышло! Вы не успели отгадать все мелодии`;
   }
 
+  statistic = statistic.map((value) => value.score);
   statistic.push(result.currentScore);
 
   const allScores = statistic.length;

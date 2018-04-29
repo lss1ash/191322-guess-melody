@@ -4,7 +4,7 @@ export default class Application {
 
   static showWelcome() {
     this._app = document.querySelector(`.app`);
-    this._dialog = this._app.querySelector(`.dialog`);
+    this.dialog = this._app.querySelector(`.dialog`);
     this._mainSection = this._app.querySelector(`.main`);
     this.game = new Game();
   }

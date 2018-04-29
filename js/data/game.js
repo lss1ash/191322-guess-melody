@@ -9,11 +9,15 @@ import LevelGenreScreen from '../screens/level-genre-screen';
 import ResultSuccessScreen from '../screens/result-success-screen';
 import ResultAttemptsLeftScreen from '../screens/result-attempts-left-screen';
 import ResultTimeLeftScreen from '../screens/result-time-left-screen';
+import DialogView from '../views/dialog-view';
 
 export default class Game {
   constructor() {
     this.model = new GameModel();
+    this.dialog = new DialogView(Application.dialog);
     this.model.onStatisticGetSuccess = () => this.getAudio();
+    this.model.onStatisticGetError = (error) => this.showError(`Ошибка получения статистических данных`, error);
+    this.model.onStatisticPostError = (error) => this.showError(`Ошибка сохранения статистических данных`, error);
     this.model.init();
   }
 
@@ -91,10 +95,13 @@ export default class Game {
 
     // const onAudioLoadingError = () => {
     const onAudioLoadingError = (error) => {
-      // welcome.showError(error);
-      console.log(`${error}`);
+      this.dialog.show(`Ошибка при загрузке аудио`, `${error}`);
     };
     const audio = new AudioData(onAudioLoaded, onAudioLoadingError);
     audio.get();
+  }
+
+  showError(header, error) {
+    this.dialog.show(`${header}`, `${error}`);
   }
 }
