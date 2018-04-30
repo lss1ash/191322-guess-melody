@@ -82,18 +82,13 @@ export default class Game {
   getAudio() {
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
-    // console.log(`spinner has been shown`);
-    // welcome.showSpinner();
 
     const onAudioLoaded = (levels, audios) => {
       this.model.state.levels = levels;
       this.model.audios = audios;
-      // welcome.hideSpinner();
       welcome.setHandler();
-      // console.log(`spinner has been hidden`);
     };
 
-    // const onAudioLoadingError = () => {
     const onAudioLoadingError = (error) => {
       this.dialog.show(`Ошибка при загрузке аудио`, `${error}`);
     };
