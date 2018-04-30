@@ -2,6 +2,7 @@ import LevelArtistView from '../views/level-artist-view';
 
 export default class LevelArtistScreen {
   constructor(level, time) {
+    this.AUDIO_START_POSITION = 0;
     this._level = level;
     this._time = time;
   }
@@ -32,6 +33,10 @@ export default class LevelArtistScreen {
 
   drawTime(time) {
     this._levelArtist.timer = time;
+  }
+
+  rewind() {
+    this._levelArtist.audio.fastSeek(this.AUDIO_START_POSITION);
   }
 
   onScreenShow() {

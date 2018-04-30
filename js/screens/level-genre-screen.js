@@ -2,6 +2,7 @@ import LevelGenreView from '../views/level-genre-view';
 
 export default class LevelGenreScreen {
   constructor(level, time) {
+    this.AUDIO_START_POSITION = 0;
     this._level = level;
     this._time = time;
   }
@@ -37,6 +38,10 @@ export default class LevelGenreScreen {
 
   drawTime(time) {
     this._levelGenre.timer = time;
+  }
+
+  rewind() {
+    this._levelGenre.answers.forEach((answer) => answer.audio.fastSeek(this.AUDIO_START_POSITION));
   }
 
   onScreenShow() {

@@ -31,4 +31,9 @@ export default class LevelView extends AbstractView {
       </div>
       </svg>`;
   }
+
+  blinkRed() {
+    this._timer.minutesNode.classList.add(`timer-value--red-blink`);
+    this._timer.secondsNode.classList.add(`timer-value--red-blink`);
+  }
 }
