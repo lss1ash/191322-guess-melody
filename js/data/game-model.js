@@ -21,19 +21,6 @@ const LevelType = {
   ARTIST: `artist`
 };
 
-// const Genre = {
-//   COUNTRY: `country`,
-//   BLUES: `blues`,
-//   FOLK: `folk`,
-//   CLASSICAL: `classical`,
-//   ELECTRONIC: `electronic`,
-//   HIP_HOP: `hip-hop`,
-//   JAZZ: `jazz`,
-//   POP: `pop`,
-//   ROCK: `rock`
-// };
-
-
 export default class GameModel {
   constructor() {
     this.Options = Options;
@@ -99,7 +86,6 @@ export default class GameModel {
       this.state = {mistakes: this.state.mistakes + 1};
     }
     this.state.userAnswers.push({right, fast});
-    // console.log(`{${currentAnswer}}`);
   }
 
   _isCorrectAnswer(currentAnswer) {
@@ -133,11 +119,9 @@ export default class GameModel {
       const level = this._state.levels[this._state.currentLevel];
       this.state = {currentLevel: this.state.currentLevel + 1};
       this._getFastTimer();
-      // console.log(level.answers);
       return level;
     }
     return false;
   }
-
 
 }
