@@ -8,11 +8,9 @@ export default class LevelArtistScreen {
 
   _init() {
     this._levelArtist = new LevelArtistView(this._level, this._time);
-    this._levelArtist.onFormClick = ({target}) => {
-      if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
-        const userAnswer = [...this._levelArtist.element.querySelectorAll(`input[type=radio]`)].map((radio) => radio.checked);
-        this.nextLevel(userAnswer);
-      }
+    this._levelArtist.onFormClick = () => {
+      const userAnswer = [...this._levelArtist.radioButtons].map((radio) => radio.checked);
+      this.nextLevel(userAnswer);
     };
     this._levelArtist.mistakes = () => this._mistakes;
   }

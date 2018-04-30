@@ -1,17 +1,10 @@
 import LevelView from './level-view';
 
-const PlayerState = {
-  PAUSED: `paused`,
-  PLAYING: `playing`
-};
-
 export default class LevelGenreView extends LevelView {
   constructor(level, time) {
     super();
     this.level = level;
     this.time = time;
-    this.classPaused = `player-control--pause`;
-    this.state = PlayerState.PAUSED;
   }
 
   mistakes() {
@@ -35,15 +28,13 @@ export default class LevelGenreView extends LevelView {
     </section>`;
   }
 
-  // ${answer.audio.outerHTML}
-
   _melodyTemplate(answer, number) {
     return `
     <div class="genre-answer">
       <div class="player-wrapper">
         <div class="player">
-
-          <button class="player-control player-control--pause" data-number="${number}"></button>
+          <audio></audio>
+          <button class="player-control" data-number="${number}"></button>
           <div class="player-track">
             <span class="player-status"></span>
           </div>
@@ -59,7 +50,12 @@ export default class LevelGenreView extends LevelView {
       this._onNoteClick();
     } else if (evt.target.tagName.toUpperCase() === `BUTTON`) {
       evt.preventDefault();
-      this._onButtonClick(evt.target);
+      if (evt.target.classList.contains(`player-control`)) {
+        this._onButtonClick(evt.target);
+      } else if (evt.target.classList.contains(`genre-answer-send`)) {
+        this._pauseAll();
+        this.onLevelSubmit();
+      }
     }
   }
 
@@ -72,8 +68,8 @@ export default class LevelGenreView extends LevelView {
   }
 
   _onButtonClick(target) {
-    if (PlayerState.PLAYING) {
-      if (target.classList.contains(this.classPaused)) {
+    if (this.PlayerState.PLAYING) {
+      if (!target.classList.contains(this.pauseClass)) {
         this._pauseAll();
         this._play(target);
       } else {
@@ -89,19 +85,20 @@ export default class LevelGenreView extends LevelView {
       if (!answer.audio.paused) {
         answer.audio.pause();
       }
-      [...this.playButtons].forEach((button) => {
-        if (!button.classList.contains(this.classPaused)) {
-          button.classList.add(this.classPaused);
+      [...this._playButtons].forEach((button) => {
+        if (button.classList.contains(this.pauseClass)) {
+          button.classList.remove(this.pauseClass);
         }
       });
     });
-    this.state = PlayerState.PAUSED;
+    this.state = this.PlayerState.PAUSED;
   }
 
   _play(target) {
     this.level.answers[+target.dataset.number - 1].audio.play();
-    if (target.classList.contains(this.classPaused)) {
-      target.classList.remove(this.classPaused);
+    this.state = this.PlayerState.PLAYING;
+    if (!target.classList.contains(this.pauseClass)) {
+      target.classList.add(this.pauseClass);
     }
   }
 
@@ -112,15 +109,15 @@ export default class LevelGenreView extends LevelView {
   bind() {
     this._form = this.element.querySelector(`form.genre`);
     this.checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
-    this.playButtons = this._form.querySelectorAll(`.genre-answer .player-control`);
+    this._playButtons = this._form.querySelectorAll(`.player-control`);
     this.sendButton = this._form.querySelector(`.genre-answer-send`);
     this._timer = {
       minutesNode: this.element.querySelector(`.timer-value-mins`),
       secondsNode: this.element.querySelector(`.timer-value-secs`)
     };
 
-    this.level.answers.forEach((answer) => {
-      answer.onpaused = () => this._pauseAll();
+    this.level.answers.forEach((answer, index) => {
+      this.level.answers[index].audio.onended = () => this._pauseAll();
     });
 
     this._form.onsubmit = (evt) => {

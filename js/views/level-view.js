@@ -3,6 +3,12 @@ import AbstractView from './abstract-view';
 export default class LevelView extends AbstractView {
   constructor() {
     super();
+    this.pauseClass = `player-control--pause`;
+    this.PlayerState = {
+      PAUSED: `paused`,
+      PLAYING: `playing`
+    };
+    this.state = this.PlayerState.PAUSED;
   }
 
   set timer(time) {
