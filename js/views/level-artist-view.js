@@ -63,24 +63,24 @@ export default class LevelArtistView extends LevelView {
 
   _onPlayerToggle() {
     if (this.state === this.PlayerState.PLAYING) {
-      this._pause();
+      this.pause();
     } else {
-      this._play();
+      this.play();
     }
   }
 
-  _pause() {
+  pause() {
     this.level.audio.pause();
-    if (this._playButton.classList.contains(this.pauseClass)) {
-      this._playButton.classList.remove(this.pauseClass);
+    if (this.playButton.classList.contains(this.pauseClass)) {
+      this.playButton.classList.remove(this.pauseClass);
     }
     this.state = this.PlayerState.PAUSED;
   }
 
-  _play() {
+  play() {
     this.level.audio.play();
-    if (!this._playButton.classList.contains(this.pauseClass)) {
-      this._playButton.classList.add(this.pauseClass);
+    if (!this.playButton.classList.contains(this.pauseClass)) {
+      this.playButton.classList.add(this.pauseClass);
     }
     this.state = this.PlayerState.PLAYING;
   }
@@ -92,20 +92,20 @@ export default class LevelArtistView extends LevelView {
   bind() {
     this._form = this.element.querySelector(`form.main-list`);
     this.radioButtons = this.element.querySelectorAll(`.main-answer-wrapper input[type=radio]`);
-    this._playButton = this.element.querySelector(`.player-control`);
+    this.playButton = this.element.querySelector(`.player-control`);
     this._timer = {
       minutesNode: this.element.querySelector(`.timer-value-mins`),
       secondsNode: this.element.querySelector(`.timer-value-secs`)
     };
 
-    this.level.audio.onended = () => this._pause();
+    this.level.audio.onended = () => this.pause();
 
     this._form.onclick = (evt) => {
-      this._pause();
+      this.pause();
       this._onFormClick(evt);
     };
 
-    this._playButton.onclick = (evt) => {
+    this.playButton.onclick = (evt) => {
       this._onButtonClick(evt);
     };
   }

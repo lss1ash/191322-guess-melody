@@ -39,4 +39,12 @@ export default class LevelGenreScreen {
     this._levelGenre.timer = time;
   }
 
+  onScreenShow() {
+    this._levelGenre.autoPlay();
+  }
+
+  onEnd() {
+    this._levelGenre.pauseAll();
+  }
+
 }

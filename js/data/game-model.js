@@ -120,7 +120,7 @@ export default class GameModel {
       const level = this._state.levels[this._state.currentLevel];
       this.state = {currentLevel: this.state.currentLevel + 1};
       this._getFastTimer();
-      // console.log(level.answers);
+      console.log(level.answers);
       return level;
     }
     return false;

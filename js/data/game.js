@@ -27,6 +27,7 @@ export default class Game {
   }
 
   end() {
+    this.level.onEnd();
     const result = this.model.result;
     let resultScreen = false;
     if (this.model.state.currentLevel === this.model.Options.TOTAL_QUESTIONS) {
@@ -65,6 +66,7 @@ export default class Game {
       this.level.mistakes = this.model.state.mistakes;
       this.level.nextLevel = (userAnswer) => this.nextLevel(userAnswer);
       Application.drawScreen(this.level.screen);
+      this.level.onScreenShow();
     } else {
       this._timer.stop();
     }
@@ -82,14 +84,14 @@ export default class Game {
   getAudio() {
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
-    // console.log(`spinner has been shown`);
+    console.log(`spinner has been shown`);
     // welcome.showSpinner();
 
     const onAudioLoaded = (levels) => {
       this.model.state.levels = levels;
       // welcome.hideSpinner();
       welcome.setHandler();
-      // console.log(`spinner has been hidden`);
+      console.log(`spinner has been hidden`);
     };
 
     // const onAudioLoadingError = () => {

@@ -34,4 +34,12 @@ export default class LevelArtistScreen {
     this._levelArtist.timer = time;
   }
 
+  onScreenShow() {
+    this._levelArtist.play();
+  }
+
+  onEnd() {
+    this._levelArtist.pause();
+  }
+
 }

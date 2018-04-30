@@ -53,7 +53,7 @@ export default class LevelGenreView extends LevelView {
       if (evt.target.classList.contains(`player-control`)) {
         this._onButtonClick(evt.target);
       } else if (evt.target.classList.contains(`genre-answer-send`)) {
-        this._pauseAll();
+        this.pauseAll();
         this.onLevelSubmit();
       }
     }
@@ -70,17 +70,17 @@ export default class LevelGenreView extends LevelView {
   _onButtonClick(target) {
     if (this.PlayerState.PLAYING) {
       if (!target.classList.contains(this.pauseClass)) {
-        this._pauseAll();
+        this.pauseAll();
         this._play(target);
       } else {
-        this._pauseAll();
+        this.pauseAll();
       }
     } else {
       this._play(target);
     }
   }
 
-  _pauseAll() {
+  pauseAll() {
     this.level.answers.forEach((answer) => {
       if (!answer.audio.paused) {
         answer.audio.pause();
@@ -102,6 +102,15 @@ export default class LevelGenreView extends LevelView {
     }
   }
 
+  autoPlay() {
+    for (let i = 0; i < this.level.answers.length; i++) {
+      if (!this.level.answers[i].audio.ended) {
+        this._play(this._playButtons[i]);
+        return;
+      }
+    }
+  }
+
   onLevelSubmit() {
     throw new Error(`Submit handler is required`);
   }
@@ -117,7 +126,10 @@ export default class LevelGenreView extends LevelView {
     };
 
     this.level.answers.forEach((answer, index) => {
-      this.level.answers[index].audio.onended = () => this._pauseAll();
+      this.level.answers[index].audio.onended = () => {
+        this.pauseAll();
+        this.autoPlay();
+      };
     });
 
     this._form.onsubmit = (evt) => {
