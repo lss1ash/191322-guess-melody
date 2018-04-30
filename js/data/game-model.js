@@ -1,8 +1,6 @@
-import {getRandom, shuffleArray} from '../utils';
 import showResult from './show-result';
 import calculateResult from './calculate-result';
 import Timer from './timer';
-import melodies from './melodies';
 
 const previousScores = [4, 2, 9, 10, 10, 10, 7, 2, 7];
 
@@ -11,8 +9,6 @@ const SECONDS_PER_MINUTE = 60;
 const Options = {
   ARTIST_SONGS_PER_LEVEL: 3,
   GENRE_SONGS_PER_LEVEL: 4,
-  ARTIST: `levelArtist`,
-  GENRE: `levelGenre`,
   TOTAL_QUESTIONS: 10,
   ANSWER_SPEED: 30,
   MISTAKES_TO_LOOSE: 3,
@@ -20,33 +16,15 @@ const Options = {
   TIME_TO_STOP: 0
 };
 
-
-const createLevel = (levelType = getRandom(0, 2) === 0 ? Options.ARTIST : Options.GENRE) => {
-  const tempMelodies = shuffleArray(melodies.slice());
-  const rightMelody = tempMelodies.pop();
-  const level = {
-    type: levelType,
-    question: levelType === Options.ARTIST ? `Кто исполняет эту песню?` : `Выберите ${rightMelody.genre} треки`,
-    fastScoreTime: Options.ANSWER_SPEED,
-    melodie: rightMelody,
-    answers: []
-  };
-  const songs = levelType === Options.ARTIST ? Options.ARTIST_SONGS_PER_LEVEL : Options.GENRE_SONGS_PER_LEVEL;
-  for (let i = 0; i < songs; i++) {
-    const melodie = i === 0 ? rightMelody : tempMelodies.pop();
-    level.answers.push({
-      melodie,
-      right: melodie.artist === rightMelody.artist
-    });
-  }
-  level.answers = shuffleArray(level.answers);
-  return level;
+const LevelType = {
+  GENRE: `genre`,
+  ARTIST: `artist`
 };
-
 
 export default class GameModel {
   constructor() {
     this.Options = Options;
+    this.LevelType = LevelType;
     this.INITIAL_STATE = {
       currentLevel: 0,
       levels: [],
@@ -59,7 +37,6 @@ export default class GameModel {
 
   init() {
     this.state = this.INITIAL_STATE;
-    this.state = {levels: this._getRandomLevels()};
   }
 
   set state(currentState) {
@@ -89,7 +66,7 @@ export default class GameModel {
     return result;
   }
 
-  get hasNextLevel() {
+  get _hasNextLevel() {
     if (this.state.mistakes === Options.MISTAKES_TO_LOOSE) {
       return false;
     }
@@ -102,14 +79,6 @@ export default class GameModel {
     return true;
   }
 
-  _getRandomLevels() {
-    const randomLevels = [];
-    for (let i = 0; i < Options.TOTAL_QUESTIONS; i++) {
-      randomLevels.push(createLevel());
-    }
-    return randomLevels;
-  }
-
   _checkAnswer(currentAnswer) {
     const right = this._isCorrectAnswer(currentAnswer);
     const fast = right && this._isFastAnswer();
@@ -117,12 +86,14 @@ export default class GameModel {
       this.state = {mistakes: this.state.mistakes + 1};
     }
     this.state.userAnswers.push({right, fast});
-    // console.log(`{${right}, ${fast}}`);
   }
 
   _isCorrectAnswer(currentAnswer) {
     const currentLevel = this.state.levels[this.state.currentLevel - 1];
-    return currentAnswer.every((value, index) => currentLevel.answers[index].right === value);
+    if (currentLevel.type === this.LevelType.GENRE) {
+      return currentAnswer.every((value, index) => (currentLevel.answers[index].genre === currentLevel.genre) === value);
+    }
+    return currentAnswer.every((value, index) => currentLevel.answers[index].isCorrect === value);
   }
 
   _isFastAnswer() {
@@ -132,26 +103,25 @@ export default class GameModel {
     return false;
   }
 
-  getNextLevel(currentAnswer) {
-    if (this._state.currentLevel > 0) {
-      this._checkAnswer(currentAnswer);
-    }
-    if (this.hasNextLevel) {
-      const level = this._state.levels[this._state.currentLevel];
-      this.state = {currentLevel: this.state.currentLevel + 1};
-      this.getFastTimer();
-      // console.log(level.answers);
-      return level;
-    }
-    return false;
-  }
-
-  getFastTimer() {
+  _getFastTimer() {
     if (this._fastScoreTimer) {
       this._fastScoreTimer.stop();
     }
     this._fastScoreTimer = new Timer(Options.ANSWER_SPEED);
     this._fastScoreTimer.start();
+  }
+
+  getNextLevel(currentAnswer) {
+    if (this._state.currentLevel > 0) {
+      this._checkAnswer(currentAnswer);
+    }
+    if (this._hasNextLevel) {
+      const level = this._state.levels[this._state.currentLevel];
+      this.state = {currentLevel: this.state.currentLevel + 1};
+      this._getFastTimer();
+      return level;
+    }
+    return false;
   }
 
 }

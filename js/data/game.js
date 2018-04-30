@@ -1,7 +1,9 @@
 import GameModel from './game-model';
 import Timer from './timer';
+import AudioData from './audio-data';
 import Application from '../app';
 import {getNormalizedTime} from '../utils';
+import WelcomeScreen from '../screens/welcome-screen';
 import LevelArtistScreen from '../screens/level-artist-screen';
 import LevelGenreScreen from '../screens/level-genre-screen';
 import ResultSuccessScreen from '../screens/result-success-screen';
@@ -12,6 +14,7 @@ export default class Game {
   constructor() {
     this.model = new GameModel();
     this.model.init();
+    this.getAudio();
   }
 
   start() {
@@ -48,10 +51,10 @@ export default class Game {
     const time = getNormalizedTime(this._timer.seconds);
     if (level) {
       switch (level.type) {
-        case this.model.Options.ARTIST:
+        case this.model.LevelType.ARTIST:
           this.level = new LevelArtistScreen(level, time);
           break;
-        case this.model.Options.GENRE:
+        case this.model.LevelType.GENRE:
           this.level = new LevelGenreScreen(level, time);
           break;
       }
@@ -71,5 +74,22 @@ export default class Game {
     () => this.end());
     this._timer.start();
   }
+
+  getAudio() {
+    const welcome = new WelcomeScreen();
+    Application.drawScreen(welcome.screen);
+
+    const onAudioLoaded = (levels, audios) => {
+      this.model.state.levels = levels;
+      this.model.audios = audios;
+      welcome.setHandler();
+    };
+
+    const onAudioLoadingError = () => {
+    };
+    const audio = new AudioData(onAudioLoaded, onAudioLoadingError);
+    audio.get();
+  }
+
 
 }
