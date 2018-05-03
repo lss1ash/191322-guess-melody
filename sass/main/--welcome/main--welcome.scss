@@ -27,10 +27,6 @@
   text-indent: -100em;
   transform-origin: center;
   width: 0;
-
-  &--spinning {
-    animation: spin 500ms infinite;
-  }
 }
 
 .main-play:hover {
@@ -41,7 +37,21 @@
   transform: scale(1.04);
 }
 
-@keyframes spin {
-  0%  { transform: rotate(0.5turn); }
-  50% { transform: rotate(1turn); }
+.spinner {
+  width: 80px;
+  height: 80px;
+  background-color: $color-orange;
+
+  position: absolute;
+  z-index: 100;
+  top: 290px;
+
+  margin: 100px auto;
+  animation: rotateplane 1.2s infinite ease-in-out;
+}
+
+@keyframes rotateplane {
+  0% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); }
+  50% { transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); }
+  100% { transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); }
 }

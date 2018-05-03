@@ -1,5 +1,6 @@
 import Application from '../app';
 import WelcomeView from '../views/welcome-view';
+import {getElementFromString} from '../utils';
 
 export default class WelcomeScreen {
 
@@ -21,10 +22,13 @@ export default class WelcomeScreen {
   }
 
   showSpinner() {
-    this._welcome.playButton.classList.add(`.main-play--spinning`);
+    const spinner = getElementFromString(`<div class="spinner"></div>`);
+    this.spinner = this._welcome.element.insertBefore(spinner, this._welcome.playButton);
+    this._welcome.playButton.style.opacity = 0;
   }
 
   hideSpinner() {
-    this._welcome.playButton.classList.remove(`.main-play--spinning`);
+    this._welcome.element.removeChild(this.spinner);
+    this._welcome.playButton.style.opacity = 100;
   }
 }
