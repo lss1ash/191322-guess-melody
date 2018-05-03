@@ -41,7 +41,7 @@ export default class LevelGenreScreen {
   }
 
   rewind() {
-    this._levelGenre.level.answers.forEach((answer) => answer.audio.currentTime(this.AUDIO_START_POSITION));
+    this._levelGenre.level.answers.forEach((answer) => answer.audio.currentTime = this.AUDIO_START_POSITION);
   }
 
   onScreenShow() {

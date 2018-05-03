@@ -36,7 +36,7 @@ export default class LevelArtistScreen {
   }
 
   rewind() {
-    this._levelArtist.level.audio.currentTime(this.AUDIO_START_POSITION);
+    this._levelArtist.level.audio.currentTime = this.AUDIO_START_POSITION;
   }
 
   onScreenShow() {
