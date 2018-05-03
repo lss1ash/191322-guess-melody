@@ -20,7 +20,6 @@ export default class WelcomeView extends AbstractView {
   }
 
   onPlayClick() {
-    // throw new Error(`You need to create handler first!`);
   }
 
   bind() {
