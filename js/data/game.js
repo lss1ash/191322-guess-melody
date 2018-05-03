@@ -99,6 +99,7 @@ export default class Game {
     };
 
     const onAudioLoadingError = (error) => {
+      welcome.hideSpinner();
       this.dialog.show(`Ошибка при загрузке аудио`, `${error}`);
     };
     const audio = new AudioData(onAudioLoaded, onAudioLoadingError);
