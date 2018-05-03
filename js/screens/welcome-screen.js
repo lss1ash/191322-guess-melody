@@ -20,4 +20,11 @@ export default class WelcomeScreen {
     };
   }
 
+  showSpinner() {
+    this._welcome.playButton.classList.add(`.main-play--spinning`);
+  }
+
+  hideSpinner() {
+    this._welcome.playButton.classList.remove(`.main-play--spinning`);
+  }
 }
