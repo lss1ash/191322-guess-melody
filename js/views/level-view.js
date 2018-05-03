@@ -3,7 +3,9 @@ import AbstractView from './abstract-view';
 export default class LevelView extends AbstractView {
   constructor() {
     super();
-    this.pauseClass = `player-control--pause`;
+    this.SECONDS_TO_BLINK = `30`;
+    this.PAUSE_CLASS = `player-control--pause`;
+    this.BLINK_CLASS = `timer-value--red-blink`;
     this.PlayerState = {
       PAUSED: `paused`,
       PLAYING: `playing`
@@ -14,6 +16,9 @@ export default class LevelView extends AbstractView {
   set timer(time) {
     this._timer.minutesNode.innerText = time.normalizedMinutes;
     this._timer.secondsNode.innerText = time.normalizedSeconds;
+    if (time.normalizedMinutes === `00` && time.normalizedSeconds === this.SECONDS_TO_BLINK) {
+      this.blinkRed();
+    }
   }
 
   get timerTemplate() {
@@ -33,7 +38,8 @@ export default class LevelView extends AbstractView {
   }
 
   blinkRed() {
-    this._timer.minutesNode.classList.add(`timer-value--red-blink`);
-    this._timer.secondsNode.classList.add(`timer-value--red-blink`);
+    this._timer.minutesNode.classList.add(this.BLINK_CLASS);
+    this._timer.secondsNode.classList.add(this.BLINK_CLASS);
+    this._timer.dotsNode.classList.add(this.BLINK_CLASS);
   }
 }

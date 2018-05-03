@@ -71,16 +71,16 @@ export default class LevelArtistView extends LevelView {
 
   pause() {
     this.level.audio.pause();
-    if (this.playButton.classList.contains(this.pauseClass)) {
-      this.playButton.classList.remove(this.pauseClass);
+    if (this.playButton.classList.contains(this.PAUSE_CLASS)) {
+      this.playButton.classList.remove(this.PAUSE_CLASS);
     }
     this.state = this.PlayerState.PAUSED;
   }
 
   play() {
     this.level.audio.play();
-    if (!this.playButton.classList.contains(this.pauseClass)) {
-      this.playButton.classList.add(this.pauseClass);
+    if (!this.playButton.classList.contains(this.PAUSE_CLASS)) {
+      this.playButton.classList.add(this.PAUSE_CLASS);
     }
     this.state = this.PlayerState.PLAYING;
   }
@@ -93,9 +93,11 @@ export default class LevelArtistView extends LevelView {
     this._form = this.element.querySelector(`form.main-list`);
     this.radioButtons = this.element.querySelectorAll(`.main-answer-wrapper input[type=radio]`);
     this.playButton = this.element.querySelector(`.player-control`);
+
     this._timer = {
       minutesNode: this.element.querySelector(`.timer-value-mins`),
-      secondsNode: this.element.querySelector(`.timer-value-secs`)
+      secondsNode: this.element.querySelector(`.timer-value-secs`),
+      dotsNode: this.element.querySelector(`.timer-value-dots`),
     };
 
     this.level.audio.onended = () => this.pause();

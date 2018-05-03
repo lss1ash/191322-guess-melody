@@ -13,7 +13,6 @@ import DialogView from '../views/dialog-view';
 
 export default class Game {
   constructor() {
-    this.SECONDS_TO_BLICK = 30;
     this.model = new GameModel();
     this.dialog = new DialogView(Application.dialog);
     this.model.onStatisticGetSuccess = () => this.getAudio();
@@ -79,9 +78,6 @@ export default class Game {
   timerInit() {
     this._timer = new Timer(this.model.Options.TOTAL_TIME, () => {
       this.model.state = {time: this._timer.seconds};
-      if (this._timer.seconds <= this.SECONDS_TO_BLICK) {
-        this.level.blinkRed();
-      }
       this.level.drawTime(getNormalizedTime(this._timer.seconds));
     },
     () => this.end());

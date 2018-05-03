@@ -36,7 +36,7 @@ export default class LevelArtistScreen {
   }
 
   rewind() {
-    this._levelArtist.audio.fastSeek(this.AUDIO_START_POSITION);
+    this._levelArtist.level.audio.fastSeek(this.AUDIO_START_POSITION);
   }
 
   onScreenShow() {

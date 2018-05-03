@@ -69,7 +69,7 @@ export default class LevelGenreView extends LevelView {
 
   _onButtonClick(target) {
     if (this.PlayerState.PLAYING) {
-      if (!target.classList.contains(this.pauseClass)) {
+      if (!target.classList.contains(this.PAUSE_CLASS)) {
         this.pauseAll();
         this._play(target);
       } else {
@@ -86,8 +86,8 @@ export default class LevelGenreView extends LevelView {
         answer.audio.pause();
       }
       [...this._playButtons].forEach((button) => {
-        if (button.classList.contains(this.pauseClass)) {
-          button.classList.remove(this.pauseClass);
+        if (button.classList.contains(this.PAUSE_CLASS)) {
+          button.classList.remove(this.PAUSE_CLASS);
         }
       });
     });
@@ -97,8 +97,8 @@ export default class LevelGenreView extends LevelView {
   _play(target) {
     this.level.answers[+target.dataset.number - 1].audio.play();
     this.state = this.PlayerState.PLAYING;
-    if (!target.classList.contains(this.pauseClass)) {
-      target.classList.add(this.pauseClass);
+    if (!target.classList.contains(this.PAUSE_CLASS)) {
+      target.classList.add(this.PAUSE_CLASS);
     }
   }
 
@@ -120,9 +120,11 @@ export default class LevelGenreView extends LevelView {
     this.checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
     this._playButtons = this._form.querySelectorAll(`.player-control`);
     this.sendButton = this._form.querySelector(`.genre-answer-send`);
+
     this._timer = {
       minutesNode: this.element.querySelector(`.timer-value-mins`),
-      secondsNode: this.element.querySelector(`.timer-value-secs`)
+      secondsNode: this.element.querySelector(`.timer-value-secs`),
+      dotsNode: this.element.querySelector(`.timer-value-dots`),
     };
 
     this.level.answers.forEach((answer, index) => {
