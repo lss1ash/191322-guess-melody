@@ -16,8 +16,11 @@ export default class LevelView extends AbstractView {
   set timer(time) {
     this._timer.minutesNode.innerText = time.normalizedMinutes;
     this._timer.secondsNode.innerText = time.normalizedSeconds;
-    if (time.normalizedMinutes === `00` && time.normalizedSeconds === this.SECONDS_TO_BLINK) {
-      this.blinkRed();
+    if (time.normalizedMinutes === `00` && time.normalizedSeconds <= +this.SECONDS_TO_BLINK) {
+      // this.blinkRed();
+      if (!this._timer.timerNode.classList.contains(this.BLINK_CLASS)) {
+        this._timer.timerNode.classList.add(this.BLINK_CLASS);
+      }
     }
   }
 
@@ -38,8 +41,8 @@ export default class LevelView extends AbstractView {
   }
 
   blinkRed() {
-    this._timer.minutesNode.classList.add(this.BLINK_CLASS);
-    this._timer.secondsNode.classList.add(this.BLINK_CLASS);
-    this._timer.dotsNode.classList.add(this.BLINK_CLASS);
+    // this._timer.minutesNode.classList.add(this.BLINK_CLASS);
+    // this._timer.secondsNode.classList.add(this.BLINK_CLASS);
+    // this._timer.dotsNode.classList.add(this.BLINK_CLASS);
   }
 }

@@ -95,9 +95,10 @@ export default class LevelArtistView extends LevelView {
     this.playButton = this.element.querySelector(`.player-control`);
 
     this._timer = {
+      timerNode: this.element.querySelector(`.timer-value`),
       minutesNode: this.element.querySelector(`.timer-value-mins`),
       secondsNode: this.element.querySelector(`.timer-value-secs`),
-      dotsNode: this.element.querySelector(`.timer-value-dots`),
+      dotsNode: this.element.querySelector(`.timer-value-dots`)
     };
 
     this.level.audio.onended = () => this.pause();

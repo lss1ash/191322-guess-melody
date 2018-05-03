@@ -7,9 +7,15 @@ export default class Application {
     this.dialog = this._app.querySelector(`.dialog`);
     this._mainSection = this._app.querySelector(`.main`);
     this.game = new Game();
+    this.game.init();
   }
 
   static showGame() {
+    this.game.start();
+  }
+
+  static replay() {
+    this.game.init();
     this.game.start();
   }
 

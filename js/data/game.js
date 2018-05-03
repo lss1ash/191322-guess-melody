@@ -18,6 +18,9 @@ export default class Game {
     this.model.onStatisticGetSuccess = () => this.getAudio();
     this.model.onStatisticGetError = (error) => this.showError(`Ошибка получения статистических данных`, error);
     this.model.onStatisticPostError = (error) => this.showError(`Ошибка сохранения статистических данных`, error);
+  }
+
+  init() {
     this.model.init();
   }
 
@@ -42,7 +45,7 @@ export default class Game {
       resultScreen = new ResultTimeLeftScreen();
     }
     if (resultScreen) {
-      resultScreen.replay = () => Application.showWelcome();
+      resultScreen.replay = () => Application.replay();
       Application.drawScreen(resultScreen.screen);
     }
   }
