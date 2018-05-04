@@ -2,17 +2,16 @@ import LevelArtistView from '../views/level-artist-view';
 
 export default class LevelArtistScreen {
   constructor(level, time) {
+    this.AUDIO_START_POSITION = 0;
     this._level = level;
     this._time = time;
   }
 
   _init() {
     this._levelArtist = new LevelArtistView(this._level, this._time);
-    this._levelArtist.onFormClick = ({target}) => {
-      if (target.tagName.toUpperCase() === `INPUT` && target.type.toUpperCase() === `RADIO`) {
-        const userAnswer = [...this._levelArtist.element.querySelectorAll(`input[type=radio]`)].map((radio) => radio.checked);
-        this.nextLevel(userAnswer);
-      }
+    this._levelArtist.onFormClick = () => {
+      const userAnswer = [...this._levelArtist.radioButtons].map((radio) => radio.checked);
+      this.nextLevel(userAnswer);
     };
     this._levelArtist.mistakes = () => this._mistakes;
   }
@@ -34,6 +33,18 @@ export default class LevelArtistScreen {
 
   drawTime(time) {
     this._levelArtist.timer = time;
+  }
+
+  rewind() {
+    this._levelArtist.level.audio.currentTime = this.AUDIO_START_POSITION;
+  }
+
+  onScreenShow() {
+    this._levelArtist.play();
+  }
+
+  onEnd() {
+    this._levelArtist.pause();
   }
 
 }

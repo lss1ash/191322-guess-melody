@@ -18,6 +18,9 @@ export default class Game {
     this.model.onStatisticGetSuccess = () => this.getAudio();
     this.model.onStatisticGetError = (error) => this.showError(`Ошибка получения статистических данных`, error);
     this.model.onStatisticPostError = (error) => this.showError(`Ошибка сохранения статистических данных`, error);
+  }
+
+  init() {
     this.model.init();
   }
 
@@ -27,6 +30,7 @@ export default class Game {
   }
 
   end() {
+    this.level.onEnd();
     const result = this.model.result;
     let resultScreen = false;
     if (this.model.state.currentLevel === this.model.Options.TOTAL_QUESTIONS) {
@@ -41,12 +45,15 @@ export default class Game {
       resultScreen = new ResultTimeLeftScreen();
     }
     if (resultScreen) {
-      resultScreen.replay = () => Application.showWelcome();
+      resultScreen.replay = () => Application.replay();
       Application.drawScreen(resultScreen.screen);
     }
   }
 
   nextLevel(currentAnswer) {
+    if (this.level) {
+      this.level.rewind();
+    }
     this.showScreen(currentAnswer);
   }
 
@@ -65,6 +72,7 @@ export default class Game {
       this.level.mistakes = this.model.state.mistakes;
       this.level.nextLevel = (userAnswer) => this.nextLevel(userAnswer);
       Application.drawScreen(this.level.screen);
+      this.level.onScreenShow();
     } else {
       this._timer.stop();
     }
@@ -82,14 +90,16 @@ export default class Game {
   getAudio() {
     const welcome = new WelcomeScreen();
     Application.drawScreen(welcome.screen);
+    welcome.showSpinner();
 
-    const onAudioLoaded = (levels, audios) => {
+    const onAudioLoaded = (levels) => {
       this.model.state.levels = levels;
-      this.model.audios = audios;
+      welcome.hideSpinner();
       welcome.setHandler();
     };
 
     const onAudioLoadingError = (error) => {
+      welcome.hideSpinner();
       this.dialog.show(`Ошибка при загрузке аудио`, `${error}`);
     };
     const audio = new AudioData(onAudioLoaded, onAudioLoadingError);

@@ -50,13 +50,41 @@ export default class AudioData {
     });
   }
 
+  _fillLevels(audios) {
+    this.audios = audios;
+    return this.levels.map((level) => this._fillLevelWithAudio(level));
+  }
+
+  _fillLevelWithAudio(level) {
+    return new Promise((resolve) => {
+      switch (level.type) {
+        case LevelType.ARTIST: level.audio = this._findAudio(level.src); break;
+        case LevelType.GENRE: level.answers.forEach((answer, index) => {
+          level.answers[index].audio = this._findAudio(answer.src);
+        }); break;
+      }
+      resolve(level);
+    });
+  }
+
+  _findAudio(src) {
+    for (let i = 0; i < this.audios.length; i++) {
+      if (this.audios[i].src === src) {
+        return this.audios[i];
+      }
+    }
+    return false;
+  }
+
   get() {
     fetch(this.URL)
         .then(this._loadLevels)
         .then((levels) => this._fillAudioSet(levels))
         .then((audioURLs) => [...audioURLs].map((url) => this._loadAudio(url)))
         .then((audioPromises) => Promise.all(audioPromises))
-        .then((audios) => this.onSuccess(this.levels, audios))
+        .then((audios) => this._fillLevels(audios))
+        .then((levelsPromises) => Promise.all(levelsPromises))
+        .then((fullLevels) => this.onSuccess(fullLevels))
         .catch((error) => this.onError(error));
   }
 }

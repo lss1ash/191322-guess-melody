@@ -23,7 +23,7 @@ export default class LevelArtistView extends LevelView {
         <div class="player-wrapper">
           <div class="player">
             <audio></audio>
-            <button class="player-control player-control--pause"></button>
+            <button class="player-control"></button>
             <div class="player-track">
               <span class="player-status"></span>
             </div>
@@ -48,21 +48,68 @@ export default class LevelArtistView extends LevelView {
     </div>`;
   }
 
+  _onFormClick(evt) {
+    if (evt.target.tagName.toUpperCase() === `INPUT` && evt.target.type.toUpperCase() === `RADIO`) {
+      this.onFormClick();
+    }
+  }
+
+  _onButtonClick(evt) {
+    if (evt.target.tagName.toUpperCase() === `BUTTON` && evt.target.classList.contains(`player-control`)) {
+      evt.preventDefault();
+      this._onPlayerToggle();
+    }
+  }
+
+  _onPlayerToggle() {
+    if (this.state === this.PlayerState.PLAYING) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+
+  pause() {
+    this.level.audio.pause();
+    if (this.playButton.classList.contains(this.PAUSE_CLASS)) {
+      this.playButton.classList.remove(this.PAUSE_CLASS);
+    }
+    this.state = this.PlayerState.PAUSED;
+  }
+
+  play() {
+    this.level.audio.play();
+    if (!this.playButton.classList.contains(this.PAUSE_CLASS)) {
+      this.playButton.classList.add(this.PAUSE_CLASS);
+    }
+    this.state = this.PlayerState.PLAYING;
+  }
+
   onFormClick() {
     throw new Error(`Click handler is required`);
   }
 
   bind() {
     this._form = this.element.querySelector(`form.main-list`);
-    this._checkBoxes = this.element.querySelectorAll(`.genre-answer input[type=checkbox]`);
-    this._sendButton = this.element.querySelector(`.genre-answer-send`);
+    this.radioButtons = this.element.querySelectorAll(`.main-answer-wrapper input[type=radio]`);
+    this.playButton = this.element.querySelector(`.player-control`);
+
     this._timer = {
+      timerNode: this.element.querySelector(`.timer-value`),
       minutesNode: this.element.querySelector(`.timer-value-mins`),
-      secondsNode: this.element.querySelector(`.timer-value-secs`)
+      secondsNode: this.element.querySelector(`.timer-value-secs`),
+      dotsNode: this.element.querySelector(`.timer-value-dots`)
     };
 
+    this.level.audio.onended = () => this.pause();
+
     this._form.onclick = (evt) => {
-      this.onFormClick(evt);
+      this.pause();
+      this._onFormClick(evt);
+    };
+
+    this.playButton.onclick = (evt) => {
+      this._onButtonClick(evt);
     };
   }
 }

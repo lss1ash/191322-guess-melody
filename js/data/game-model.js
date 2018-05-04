@@ -27,17 +27,20 @@ export default class GameModel {
     this.statistic = new Statistic();
     this.INITIAL_STATE = {
       currentLevel: 0,
-      levels: [],
       mistakes: 0,
       time: Options.TOTAL_TIME,
-      userAnswers: [],
-      statistic: []
+      userAnswers: []
     };
   }
 
   init() {
     this.state = this.INITIAL_STATE;
-    this.statistic.get((statistic) => this._onStatisticGetSuccess(statistic), (error) => this.onStatisticGetError(error));
+    if (!Array.isArray(this.state.levels)) {
+      this.state.levels = [];
+      this.state.statistic = [];
+      this.statistic.get((statistic) => this._onStatisticGetSuccess(statistic), (error) => this.onStatisticGetError(error));
+    }
+    this.state.userAnswers = [];
   }
 
   set state(currentState) {
@@ -56,6 +59,7 @@ export default class GameModel {
     if (this.state.userAnswers.length === Options.TOTAL_QUESTIONS) {
       calculatedResult = calculateResult(this.state.userAnswers, this.state.mistakes, this.Options.TOTAL_QUESTIONS);
       this.statistic.post(calculatedResult.score, () => {}, (error) => this.onStatisticPostError(error));
+      this.state.statistic.push({score: calculatedResult.score});
     }
     const result = {
       score: calculatedResult.score,
