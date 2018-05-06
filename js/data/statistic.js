@@ -29,6 +29,8 @@ export default class Statistic {
           if (response.ok) {
             return response.json();
           } else if (response.status === 404) {
+            // Соответствует Д13, так как возвращаем пустой массив ТОЛЬКО в том случае, если код вернулся 404.
+            // Иначе бросаем ошибку -> else if нужен
             return [];
           }
           throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`);
