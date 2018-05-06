@@ -68,9 +68,9 @@ export default class AudioData {
   }
 
   _findAudio(src) {
-    for (let i = 0; i < this.audios.length; i++) {
-      if (this.audios[i].src === src) {
-        return this.audios[i];
+    for (const audio of this.audios) {
+      if (audio.src === src) {
+        return audio;
       }
     }
     return false;
