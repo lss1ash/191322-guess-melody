@@ -26,7 +26,7 @@ export default class LevelArtistView extends LevelView {
           </div>
         </div>
         <form class="main-list">
-          ${this.level.answers.map((answer, number) => this._melodyTemplate(answer, number + 1)).join(``)}
+          ${this.level.answers.map((answer, number) => this.melodyTemplate(answer, number + 1)).join(``)}
         </form>
       </div>
     </section>`;
@@ -76,18 +76,6 @@ export default class LevelArtistView extends LevelView {
     throw new Error(`Mistakes is required`);
   }
 
-  _melodyTemplate(melodie, number) {
-    return `
-    <div class="main-answer-wrapper">
-      <input class="main-answer-r" type="radio" id="answer-${number}" name="answer" value="val-${number}"/>
-      <label class="main-answer" for="answer-${number}">
-        <img class="main-answer-preview" src="${melodie.image.url}"
-             alt="${melodie.title}" width="134" height="134">
-        ${melodie.title}
-      </label>
-    </div>`;
-  }
-
   _onFormClick(evt) {
     if (evt.target.tagName.toUpperCase() === `INPUT` && evt.target.type.toUpperCase() === `RADIO`) {
       this.onFormClick();
@@ -111,5 +99,17 @@ export default class LevelArtistView extends LevelView {
 
   onFormClick() {
     throw new Error(`Click handler is required`);
+  }
+
+  static melodyTemplate(melodie, number) {
+    return `
+    <div class="main-answer-wrapper">
+    <input class="main-answer-r" type="radio" id="answer-${number}" name="answer" value="val-${number}"/>
+    <label class="main-answer" for="answer-${number}">
+    <img class="main-answer-preview" src="${melodie.image.url}"
+    alt="${melodie.title}" width="134" height="134">
+    ${melodie.title}
+    </label>
+    </div>`;
   }
 }

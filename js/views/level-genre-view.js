@@ -17,7 +17,7 @@ export default class LevelGenreView extends LevelView {
     <div class="main-wrap">
     <h2 class="title">${this.level.question}</h2>
     <form class="genre">
-    ${this.level.answers.map((answer, number) => this._melodyTemplate(answer, number + 1)).join(``)}
+    ${this.level.answers.map((answer, number) => this.melodyTemplate(answer, number + 1)).join(``)}
     <button class="genre-answer-send" disabled type="submit">Ответить</button>
     </form>
     </div>
@@ -90,23 +90,6 @@ export default class LevelGenreView extends LevelView {
     }
   }
 
-  _melodyTemplate(answer, number) {
-    return `
-    <div class="genre-answer">
-      <div class="player-wrapper">
-        <div class="player">
-          <audio></audio>
-          <button class="player-control" data-number="${number}"></button>
-          <div class="player-track">
-            <span class="player-status"></span>
-          </div>
-        </div>
-      </div>
-      <input type="checkbox" name="answer" value="answer-${number}" id="a-${number}">
-      <label class="genre-answer-check" for="a-${number}"></label>
-    </div>`;
-  }
-
   _onFormClick(evt) {
     if (evt.target.tagName.toUpperCase() === `INPUT` && evt.target.type.toUpperCase() === `CHECKBOX`) {
       this._onNoteClick();
@@ -144,5 +127,22 @@ export default class LevelGenreView extends LevelView {
 
   onLevelSubmit() {
     throw new Error(`Submit handler is required`);
+  }
+
+  static melodyTemplate(answer, number) {
+    return `
+    <div class="genre-answer">
+    <div class="player-wrapper">
+    <div class="player">
+    <audio></audio>
+    <button class="player-control" data-number="${number}"></button>
+    <div class="player-track">
+    <span class="player-status"></span>
+    </div>
+    </div>
+    </div>
+    <input type="checkbox" name="answer" value="answer-${number}" id="a-${number}">
+    <label class="genre-answer-check" for="a-${number}"></label>
+    </div>`;
   }
 }
