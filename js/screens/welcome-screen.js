@@ -4,10 +4,6 @@ import {getElementFromString} from '../utils';
 
 export default class WelcomeScreen {
 
-  _init() {
-    this._welcome = new WelcomeView();
-  }
-
   get screen() {
     if (!this._welcome) {
       this._init();
@@ -30,5 +26,9 @@ export default class WelcomeScreen {
   hideSpinner() {
     this._welcome.element.removeChild(this.spinner);
     this._welcome.playButton.style.opacity = 100;
+  }
+
+  _init() {
+    this._welcome = new WelcomeView();
   }
 }

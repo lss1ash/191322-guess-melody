@@ -7,13 +7,11 @@ export default class LevelArtistScreen {
     this._time = time;
   }
 
-  _init() {
-    this._levelArtist = new LevelArtistView(this._level, this._time);
-    this._levelArtist.onFormClick = () => {
-      const userAnswer = [...this._levelArtist.radioButtons].map((radio) => radio.checked);
-      this.nextLevel(userAnswer);
-    };
-    this._levelArtist.mistakes = () => this._mistakes;
+  get screen() {
+    if (!this._levelArtist) {
+      this._init();
+    }
+    return this._levelArtist.element;
   }
 
   set mistakes(mistakes) {
@@ -24,19 +22,21 @@ export default class LevelArtistScreen {
     throw new Error(`NextLevel must be implemented`);
   }
 
-  get screen() {
-    if (!this._levelArtist) {
-      this._init();
-    }
-    return this._levelArtist.element;
-  }
-
   drawTime(time) {
     this._levelArtist.timer = time;
   }
 
   rewind() {
     this._levelArtist.level.audio.currentTime = this.AUDIO_START_POSITION;
+  }
+
+  _init() {
+    this._levelArtist = new LevelArtistView(this._level, this._time);
+    this._levelArtist.onFormClick = () => {
+      const userAnswer = [...this._levelArtist.radioButtons].map((radio) => radio.checked);
+      this.nextLevel(userAnswer);
+    };
+    this._levelArtist.mistakes = () => this._mistakes;
   }
 
   onScreenShow() {
@@ -46,5 +46,4 @@ export default class LevelArtistScreen {
   onEnd() {
     this._levelArtist.pause();
   }
-
 }

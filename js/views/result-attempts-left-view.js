@@ -13,14 +13,14 @@ export default class ResultAttemptsLeftView extends AbstractView {
     </section>`;
   }
 
-  onReplayClick() {
-    throw new Error(`You need to create handler first!`);
-  }
-
   bind() {
     this.element.querySelector(`.main-replay`).onclick = (evt) => {
       evt.preventDefault();
       this.onReplayClick();
     };
+  }
+
+  onReplayClick() {
+    throw new Error(`You need to create handler first!`);
   }
 }

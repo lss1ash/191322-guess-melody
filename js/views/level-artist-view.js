@@ -7,10 +7,6 @@ export default class LevelArtistView extends LevelView {
     this.time = time;
   }
 
-  mistakes() {
-    throw new Error(`Mistakes is required`);
-  }
-
   get template() {
     return `
     <section class="main main--level main--level-artist">
@@ -34,6 +30,50 @@ export default class LevelArtistView extends LevelView {
         </form>
       </div>
     </section>`;
+  }
+
+  pause() {
+    this.level.audio.pause();
+    if (this.playButton.classList.contains(this.PAUSE_CLASS)) {
+      this.playButton.classList.remove(this.PAUSE_CLASS);
+    }
+    this.state = this.PlayerState.PAUSED;
+  }
+
+  play() {
+    this.level.audio.play();
+    if (!this.playButton.classList.contains(this.PAUSE_CLASS)) {
+      this.playButton.classList.add(this.PAUSE_CLASS);
+    }
+    this.state = this.PlayerState.PLAYING;
+  }
+
+  bind() {
+    this._form = this.element.querySelector(`form.main-list`);
+    this.radioButtons = this.element.querySelectorAll(`.main-answer-wrapper input[type=radio]`);
+    this.playButton = this.element.querySelector(`.player-control`);
+
+    this._timer = {
+      timerNode: this.element.querySelector(`.timer-value`),
+      minutesNode: this.element.querySelector(`.timer-value-mins`),
+      secondsNode: this.element.querySelector(`.timer-value-secs`),
+      dotsNode: this.element.querySelector(`.timer-value-dots`)
+    };
+
+    this.level.audio.onended = () => this.pause();
+
+    this._form.onclick = (evt) => {
+      this.pause();
+      this._onFormClick(evt);
+    };
+
+    this.playButton.onclick = (evt) => {
+      this._onButtonClick(evt);
+    };
+  }
+
+  mistakes() {
+    throw new Error(`Mistakes is required`);
   }
 
   _melodyTemplate(melodie, number) {
@@ -69,47 +109,7 @@ export default class LevelArtistView extends LevelView {
     }
   }
 
-  pause() {
-    this.level.audio.pause();
-    if (this.playButton.classList.contains(this.PAUSE_CLASS)) {
-      this.playButton.classList.remove(this.PAUSE_CLASS);
-    }
-    this.state = this.PlayerState.PAUSED;
-  }
-
-  play() {
-    this.level.audio.play();
-    if (!this.playButton.classList.contains(this.PAUSE_CLASS)) {
-      this.playButton.classList.add(this.PAUSE_CLASS);
-    }
-    this.state = this.PlayerState.PLAYING;
-  }
-
   onFormClick() {
     throw new Error(`Click handler is required`);
-  }
-
-  bind() {
-    this._form = this.element.querySelector(`form.main-list`);
-    this.radioButtons = this.element.querySelectorAll(`.main-answer-wrapper input[type=radio]`);
-    this.playButton = this.element.querySelector(`.player-control`);
-
-    this._timer = {
-      timerNode: this.element.querySelector(`.timer-value`),
-      minutesNode: this.element.querySelector(`.timer-value-mins`),
-      secondsNode: this.element.querySelector(`.timer-value-secs`),
-      dotsNode: this.element.querySelector(`.timer-value-dots`)
-    };
-
-    this.level.audio.onended = () => this.pause();
-
-    this._form.onclick = (evt) => {
-      this.pause();
-      this._onFormClick(evt);
-    };
-
-    this.playButton.onclick = (evt) => {
-      this._onButtonClick(evt);
-    };
   }
 }

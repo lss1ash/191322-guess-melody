@@ -19,14 +19,14 @@ export default class WelcomeView extends AbstractView {
     </section>`;
   }
 
-  onPlayClick() {
-  }
-
   bind() {
     this.playButton = this.element.querySelector(`.main-play`);
     this.playButton.onclick = (evt) => {
       evt.preventDefault();
       this.onPlayClick();
     };
+  }
+
+  onPlayClick() {
   }
 }

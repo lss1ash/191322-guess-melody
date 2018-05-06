@@ -7,25 +7,87 @@ export default class LevelGenreView extends LevelView {
     this.time = time;
   }
 
+  get template() {
+    return `
+    <section class="main main--level main--level-genre">
+    ${this.timerTemplate}
+    <div class="main-mistakes">
+    ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
+    </div>
+    <div class="main-wrap">
+    <h2 class="title">${this.level.question}</h2>
+    <form class="genre">
+    ${this.level.answers.map((answer, number) => this._melodyTemplate(answer, number + 1)).join(``)}
+    <button class="genre-answer-send" disabled type="submit">Ответить</button>
+    </form>
+    </div>
+    </section>`;
+  }
+
+  pauseAll() {
+    this.level.answers.forEach((answer) => {
+      if (!answer.audio.paused) {
+        answer.audio.pause();
+      }
+      [...this._playButtons].forEach((button) => {
+        if (button.classList.contains(this.PAUSE_CLASS)) {
+          button.classList.remove(this.PAUSE_CLASS);
+        }
+      });
+    });
+    this.state = this.PlayerState.PAUSED;
+  }
+
+  autoPlay() {
+    for (let i = 0; i < this.level.answers.length; i++) {
+      if (!this.level.answers[i].audio.ended) {
+        this._play(this._playButtons[i]);
+        return;
+      }
+    }
+  }
+
+  bind() {
+    this._form = this.element.querySelector(`form.genre`);
+    this.checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
+    this._playButtons = this._form.querySelectorAll(`.player-control`);
+    this.sendButton = this._form.querySelector(`.genre-answer-send`);
+
+    this._timer = {
+      timerNode: this.element.querySelector(`.timer-value`),
+      minutesNode: this.element.querySelector(`.timer-value-mins`),
+      secondsNode: this.element.querySelector(`.timer-value-secs`),
+      dotsNode: this.element.querySelector(`.timer-value-dots`)
+    };
+
+    this.level.answers.forEach((answer, index) => {
+      this.level.answers[index].audio.onended = () => {
+        this.pauseAll();
+        this.autoPlay();
+      };
+    });
+
+    this._form.onsubmit = (evt) => {
+      evt.preventDefault();
+      this.pauseAll();
+      this.onLevelSubmit();
+    };
+
+    this._form.onclick = (evt) => {
+      this._onFormClick(evt);
+    };
+  }
+
   mistakes() {
     throw new Error(`Mistakes is required`);
   }
 
-  get template() {
-    return `
-    <section class="main main--level main--level-genre">
-      ${this.timerTemplate}
-      <div class="main-mistakes">
-        ${`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`.repeat(this.mistakes())}
-      </div>
-      <div class="main-wrap">
-        <h2 class="title">${this.level.question}</h2>
-        <form class="genre">
-          ${this.level.answers.map((answer, number) => this._melodyTemplate(answer, number + 1)).join(``)}
-          <button class="genre-answer-send" disabled type="submit">Ответить</button>
-        </form>
-      </div>
-    </section>`;
+  _play(target) {
+    this.level.answers[+target.dataset.number - 1].audio.play();
+    this.state = this.PlayerState.PLAYING;
+    if (!target.classList.contains(this.PAUSE_CLASS)) {
+      target.classList.add(this.PAUSE_CLASS);
+    }
   }
 
   _melodyTemplate(answer, number) {
@@ -80,69 +142,7 @@ export default class LevelGenreView extends LevelView {
     }
   }
 
-  pauseAll() {
-    this.level.answers.forEach((answer) => {
-      if (!answer.audio.paused) {
-        answer.audio.pause();
-      }
-      [...this._playButtons].forEach((button) => {
-        if (button.classList.contains(this.PAUSE_CLASS)) {
-          button.classList.remove(this.PAUSE_CLASS);
-        }
-      });
-    });
-    this.state = this.PlayerState.PAUSED;
-  }
-
-  _play(target) {
-    this.level.answers[+target.dataset.number - 1].audio.play();
-    this.state = this.PlayerState.PLAYING;
-    if (!target.classList.contains(this.PAUSE_CLASS)) {
-      target.classList.add(this.PAUSE_CLASS);
-    }
-  }
-
-  autoPlay() {
-    for (let i = 0; i < this.level.answers.length; i++) {
-      if (!this.level.answers[i].audio.ended) {
-        this._play(this._playButtons[i]);
-        return;
-      }
-    }
-  }
-
   onLevelSubmit() {
     throw new Error(`Submit handler is required`);
-  }
-
-  bind() {
-    this._form = this.element.querySelector(`form.genre`);
-    this.checkBoxes = this._form.querySelectorAll(`.genre-answer input[type=checkbox]`);
-    this._playButtons = this._form.querySelectorAll(`.player-control`);
-    this.sendButton = this._form.querySelector(`.genre-answer-send`);
-
-    this._timer = {
-      timerNode: this.element.querySelector(`.timer-value`),
-      minutesNode: this.element.querySelector(`.timer-value-mins`),
-      secondsNode: this.element.querySelector(`.timer-value-secs`),
-      dotsNode: this.element.querySelector(`.timer-value-dots`)
-    };
-
-    this.level.answers.forEach((answer, index) => {
-      this.level.answers[index].audio.onended = () => {
-        this.pauseAll();
-        this.autoPlay();
-      };
-    });
-
-    this._form.onsubmit = (evt) => {
-      evt.preventDefault();
-      this.pauseAll();
-      this.onLevelSubmit();
-    };
-
-    this._form.onclick = (evt) => {
-      this._onFormClick(evt);
-    };
   }
 }

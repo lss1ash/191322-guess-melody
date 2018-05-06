@@ -7,6 +7,31 @@ export default class LevelGenreScreen {
     this._time = time;
   }
 
+  get screen() {
+    if (!this._levelGenre) {
+      this._init();
+    }
+    return this._levelGenre.element;
+  }
+
+  set mistakes(mistakes) {
+    this._mistakes = mistakes;
+  }
+
+  nextLevel() {
+    throw new Error(`NextLevel must be implemented`);
+  }
+
+  drawTime(time) {
+    this._levelGenre.timer = time;
+  }
+
+  rewind() {
+    this._levelGenre.level.answers.forEach((answer) => {
+      answer.audio.currentTime = this.AUDIO_START_POSITION;
+    });
+  }
+
   _init() {
     this._levelGenre = new LevelGenreView(this._level, this._time);
     this._levelGenre.onLevelSubmit = () => {
@@ -21,31 +46,6 @@ export default class LevelGenreScreen {
     this._levelGenre.mistakes = () => this._mistakes;
   }
 
-  set mistakes(mistakes) {
-    this._mistakes = mistakes;
-  }
-
-  nextLevel() {
-    throw new Error(`NextLevel must be implemented`);
-  }
-
-  get screen() {
-    if (!this._levelGenre) {
-      this._init();
-    }
-    return this._levelGenre.element;
-  }
-
-  drawTime(time) {
-    this._levelGenre.timer = time;
-  }
-
-  rewind() {
-    this._levelGenre.level.answers.forEach((answer) => {
-      answer.audio.currentTime = this.AUDIO_START_POSITION;
-    });
-  }
-
   onScreenShow() {
     this._levelGenre.autoPlay();
   }
@@ -53,5 +53,4 @@ export default class LevelGenreScreen {
   onEnd() {
     this._levelGenre.pauseAll();
   }
-
 }
