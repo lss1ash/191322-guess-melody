@@ -26,7 +26,7 @@ export default class LevelArtistView extends LevelView {
           </div>
         </div>
         <form class="main-list">
-          ${this.level.answers.map((answer, number) => this.melodyTemplate(answer, number + 1)).join(``)}
+          ${this.level.answers.map((answer, number) => LevelArtistView.melodyTemplate(answer, number + 1)).join(``)}
         </form>
       </div>
     </section>`;

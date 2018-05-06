@@ -17,7 +17,7 @@ export default class LevelGenreView extends LevelView {
     <div class="main-wrap">
     <h2 class="title">${this.level.question}</h2>
     <form class="genre">
-    ${this.level.answers.map((answer, number) => this.melodyTemplate(answer, number + 1)).join(``)}
+    ${this.level.answers.map((answer, number) => LevelGenreView.melodyTemplate(answer, number + 1)).join(``)}
     <button class="genre-answer-send" disabled type="submit">Ответить</button>
     </form>
     </div>
